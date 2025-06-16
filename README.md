@@ -2,9 +2,8 @@
 
 A comprehensive search engine for data structures and algorithms, built with React, TypeScript, and Tailwind CSS.
 
-[![Deploy to GitHub Pages](https://github.com/USERNAME/DSA-Search-Engine/actions/workflows/deploy.yml/badge.svg)](https://github.com/USERNAME/DSA-Search-Engine/actions/workflows/deploy.yml)
 
-👉 **[View Live Demo](https://USERNAME.github.io/DSA-Search-Engine/)** (Replace USERNAME with your GitHub username)
+👉 **[View Live Demo](dsa-search-engine-gold.vercel.app)** 
 
 ## 📋 Features
 
