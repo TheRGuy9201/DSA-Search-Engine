@@ -4,14 +4,17 @@ import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
 import AlgorithmDetailPage from './pages/AlgorithmDetailPage';
 
+// Get base URL from Vite configuration for GitHub Pages
+const baseUrl = import.meta.env.BASE_URL;
+
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     children: [
       {
-        index: true,
-        element: <HomePage />,
+        index: true,        // Handle the onPlatformSelect prop correctly
+        element: <HomePage onPlatformSelect={() => { }} />,
       },
       {
         path: 'search',
@@ -27,6 +30,9 @@ const router = createBrowserRouter([
       },
     ],
   },
-]);
+], {
+  // Use basename to handle GitHub Pages subpath
+  basename: baseUrl,
+});
 
 export default router;
