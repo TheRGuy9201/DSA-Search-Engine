@@ -1,17 +1,17 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createHashRouter, Navigate } from 'react-router-dom';
 import App from './App';
 import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
 import AlgorithmDetailPage from './pages/AlgorithmDetailPage';
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '/',
     element: <App />,
     children: [
       {
-        index: true,
-        element: <HomePage />,
+        index: true,        // Handle the onPlatformSelect prop correctly
+        element: <HomePage onPlatformSelect={() => { }} />,
       },
       {
         path: 'search',

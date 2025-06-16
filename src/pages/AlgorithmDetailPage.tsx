@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import apiService from '../services/api';
-import type { Algorithm, Example } from '../services/api';
+import type { Algorithm } from '../services/api';
 
 const AlgorithmDetailPage = () => {
   const { id } = useParams<{ id: string }>();

@@ -2,6 +2,10 @@
 
 A comprehensive search engine for data structures and algorithms, built with React, TypeScript, and Tailwind CSS.
 
+[![Deploy to GitHub Pages](https://github.com/USERNAME/DSA-Search-Engine/actions/workflows/deploy.yml/badge.svg)](https://github.com/USERNAME/DSA-Search-Engine/actions/workflows/deploy.yml)
+
+👉 **[View Live Demo](https://USERNAME.github.io/DSA-Search-Engine/)** (Replace USERNAME with your GitHub username)
+
 ## 📋 Features
 
 - **Search Engine**: Find algorithms and data structures by name, category, or complexity
@@ -51,6 +55,13 @@ src/
    ```bash
    npm run build
    ```
+
+5. **Deploy to GitHub Pages**
+   ```bash
+   npm run deploy
+   ```
+
+   Or simply push to the main branch and GitHub Actions will deploy automatically.
 
 ## 📚 Available Scripts
 
