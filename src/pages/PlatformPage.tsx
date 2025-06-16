@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BackIcon, LeetCodeIcon, CodeforcesIcon, SearchIcon, ExternalLinkIcon, BookmarkIcon, CheckCircleIcon, CircleIcon } from '../components/icons/Icons';
+import { BackIcon, LeetCodeIcon, CodeforcesIcon, SearchIcon, ExternalLinkIcon, CheckCircleIcon, CircleIcon } from '../components/icons/Icons';
 import { getPaginatedLeetcodeProblems } from '../services/problemsApi';
 import { useProblemUserData } from '../hooks/useProblemUserData';
 import type { Problem } from '../types';
@@ -277,12 +277,6 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform, onBackClick }) =>
         setCurrentPage(1); // Reset to first page when filter changes
     };
 
-    // Handle status filter change
-    const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedStatus(e.target.value);
-        setCurrentPage(1);
-    };
-
     // Handle topic filter change
     const handleTopicChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const topic = e.target.value;
@@ -307,37 +301,13 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform, onBackClick }) =>
         setCurrentPage(1);
     };
 
-    // Toggle bookmarked only filter
-    const toggleBookmarkedOnly = () => {
-        setShowBookmarkedOnly(!showBookmarkedOnly);
-        setCurrentPage(1);
-    };    // Toggle show topic tags
+    // Toggle show topic tags
     const toggleShowTopicTags = () => {
         console.log("Toggling topic tags, current state:", showTopicTags);
         setShowTopicTags(prevState => !prevState);
     };
 
-    // Filter problems based on status and bookmarked
-    const filteredProblems = problemsWithUserData.filter(problem => {
-        if (showBookmarkedOnly && !problem.bookmarked) {
-            return false;
-        }
-
-        if (selectedStatus !== 'All' && problem.status !== selectedStatus) {
-            return false;
-        }
-
-        return true;
-    });
-
-    // Status icon component
-    const StatusIcon = ({ status }: { status?: string }) => {
-        if (status === 'Solved') {
-            return <CheckCircleIcon />;
-        } else {
-            return <CircleIcon />;
-        }
-    };
+    // Difficulty badge helper function
 
     // Difficulty badge color based on difficulty level
     const getDifficultyBadge = (difficulty: string) => {
@@ -353,18 +323,7 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform, onBackClick }) =>
         }
     };
 
-    // Helper function to check if any selected topic matches a problem's tags
-    const hasMatchingTopics = (problem: Problem): boolean => {
-        if (!problem.tags || problem.tags.length === 0 || selectedTopics.length === 0) {
-            return false;
-        }
-
-        return selectedTopics.some(topic =>
-            problem.tags?.some(tag =>
-                tag.toLowerCase().includes(topic.toLowerCase())
-            )
-        );
-    };
+    // No unused helper functions
 
     return (
         <div className="page-transition min-h-screen flex flex-col items-center p-8">
@@ -412,7 +371,10 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform, onBackClick }) =>
                             <select
                                 className="bg-gray-800 rounded-lg px-3 py-2 text-white border border-gray-700 focus:border-indigo-500 focus:outline-none w-24"
                                 value={selectedStatus}
-                                onChange={(e) => setSelectedStatus(e.target.value)}
+                                onChange={(e) => {
+                                    setSelectedStatus(e.target.value);
+                                    setCurrentPage(1);
+                                }}
                             >
                                 <option value="All">Status</option>
                                 <option value="Solved">Solved</option>
