@@ -25,7 +25,8 @@ const router = createHashRouter([
         path: '*',
         element: <Navigate to="/" replace />,
       },
-    ],  },
+    ],
+  },
 ]);
 
 export default router;
