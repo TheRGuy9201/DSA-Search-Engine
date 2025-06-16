@@ -33,15 +33,21 @@ export const PlusIcon: React.FC = () => (
 );
 
 export const LeetCodeIcon: React.FC = () => (
-    <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M16.5 4H7.5C6.12 4 5 5.12 5 6.5V17.5C5 18.88 6.12 20 7.5 20H16.5C17.88 20 19 18.88 19 17.5V6.5C19 5.12 17.88 4 16.5 4ZM8 17L7 16L10 13L7 10L8 9L12 13L8 17ZM16 15H13V13H16V15Z" />
-    </svg>
+    <img
+        className="w-8 h-8 filter brightness-100 contrast-20"
+        style={{ borderRadius: '4px', padding: '3px' }}
+        src="https://img.icons8.com/?size=100&id=dc6kdToG53HN&format=png&color=f8f9fa"
+        alt="LeetCode Logo"
+    />
 );
 
 export const CodeforcesIcon: React.FC = () => (
-    <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M6 7L9 7L9 17L6 17L6 7ZM11 4L14 4L14 17L11 17L11 4ZM16 11L19 11L19 17L16 17L16 11Z" />
-    </svg>
+    <img
+        className="w-8 h-8 filter brightness-100 contrast-20"
+        style={{ borderRadius: '4px', padding: '4px' }}
+        src="https://img.icons8.com/?size=100&id=REjhvBBEfkho&format=png&color=f8f9fa"
+        alt="Codeforces Logo"
+    />
 );
 
 export const MenuIcon: React.FC = () => (
