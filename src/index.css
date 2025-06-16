@@ -68,6 +68,26 @@ body {
   animation: circuit 20s linear infinite;
 }
 
+/* Loading animation */
+.loader {
+  border: 3px solid rgba(99, 102, 241, 0.2);
+  border-radius: 50%;
+  border-top: 3px solid rgba(99, 102, 241, 0.8);
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .page-transition {
   animation: fadeIn 0.5s ease-out;
 }
@@ -89,4 +109,183 @@ body {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Topic tags styling */
+.topic-tag {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 8px;
+  margin-bottom: 4px;
+  padding: 4px 12px;
+  background: rgba(79, 132, 255, 0.15);
+  border-radius: 16px;
+  font-size: 12px;
+  color: #a3c0f9;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(79, 132, 255, 0.25);
+}
+
+.topic-tag button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 6px;
+  border-radius: 50%;
+  font-size: 14px;
+  line-height: 1;
+  background: rgba(79, 132, 255, 0.2);
+  color: #a3c0f9;
+  transition: all 0.2s ease;
+}
+
+.topic-tag button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* More tags bubble */
+.more-tags-bubble {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 12px;
+  background: #4f84ff;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  border: none;
+  transition: all 0.2s ease;
+  position: relative;
+  cursor: help;
+}
+
+.more-tags-bubble:hover {
+  background: #3b62da;
+}
+
+/* Topic tags animation */
+@keyframes tag-fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.topic-tag,
+.more-tags-bubble {
+  animation: tag-fade-in 0.3s ease-out forwards;
+  opacity: 0;
+}
+
+.topic-tag:hover {
+  background: rgba(79, 132, 255, 0.25);
+}
+
+/* Bookmark icon animation */
+@keyframes bookmark-pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.bookmark-added {
+  animation: bookmark-pulse 0.4s ease-in-out;
+}
+
+/* Status styling */
+.status-solved {
+  color: #3aa363;
+}
+
+.status-attempted {
+  color: #e0a450;
+}
+
+.status-not-attempted {
+  color: #687993;
+}
+
+/* Staggered animation for tags */
+.topic-tag[data-index="0"] {
+  animation-delay: 0.05s;
+}
+
+.topic-tag[data-index="1"] {
+  animation-delay: 0.15s;
+}
+
+.more-tags-bubble {
+  animation-delay: 0.25s;
+}
+
+/* Tooltip styling */
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-content {
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+  background: rgba(15, 23, 42, 0.95);
+  color: #e2e8f0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: normal;
+  z-index: 100;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(79, 132, 255, 0.3);
+  min-width: 120px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.tooltip-content::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(15, 23, 42, 0.95) transparent transparent transparent;
+}
+
+.tooltip-container:hover .tooltip-content {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Selected topic tags styling */
+.topic-tag.selected-topic {
+  background: rgba(79, 132, 255, 0.3);
+  border-color: rgba(79, 132, 255, 0.5);
+  color: #bfd4ff;
 }

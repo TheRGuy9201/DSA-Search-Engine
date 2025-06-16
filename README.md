@@ -62,6 +62,30 @@ src/
 
    Or simply push to the main branch and GitHub Actions will deploy automatically.
 
+## 📝 LeetCode Problem Updates
+
+The website includes problems from LeetCode that are loaded from a static JSON file. This file is created by a Python scraper. There are multiple ways to update this data:
+
+### Manual Updates
+Run the scraper script manually when you want to update:
+```bash
+cd backend
+python leetcode_scraper.py
+```
+
+### Automated Updates (Recommended)
+The repository includes a GitHub Action that automatically updates the LeetCode problems once a month (on the 1st day at midnight UTC). This ensures users see up-to-date problems without manual intervention.
+
+You can also trigger manual updates from the GitHub Actions tab in your repository.
+
+### Update Schedule
+- GitHub Action runs automatically on the 1st day of each month
+- Problems are scraped from LeetCode API
+- Changes are committed automatically if new problems are found
+- Vercel deployment updates with the new data
+
+This means the website will stay up to date without you needing to manually run the scraper.
+
 ## 📚 Available Scripts
 
 - `npm run dev` - Start the development server

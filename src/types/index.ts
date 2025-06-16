@@ -39,3 +39,43 @@ export interface AlgorithmFilter {
  * Options for sorting algorithm results
  */
 export type SortOption = 'name' | 'category' | 'timeComplexity' | 'spaceComplexity' | 'popularity';
+
+/**
+ * Problem type for coding platform problems
+ */
+export interface Problem {
+  id: number;
+  title: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard' | string;
+  url: string;
+  slug?: string;
+  acceptance_rate?: number;
+  tags?: string[];
+  status?: 'Solved' | 'Attempted' | 'Not Attempted';
+  bookmarked?: boolean;
+}
+
+/**
+ * Metadata for problem listings
+ */
+export interface ProblemsMetadata {
+  total_problems: number;
+  last_updated: string;
+}
+
+/**
+ * Response structure for problems API
+ */
+export interface ProblemsResponse {
+  metadata: ProblemsMetadata;
+  problems: Problem[];
+}
+
+/**
+ * Pagination state for problem lists
+ */
+export interface PaginationState {
+  currentPage: number;
+  totalPages: number;
+  itemsPerPage: number;
+}
