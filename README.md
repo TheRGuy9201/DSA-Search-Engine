@@ -16,6 +16,17 @@ A comprehensive search engine for data structures and algorithms, built with Rea
 - **Tailwind CSS**: For utility-first styling
 - **Vite**: For incredibly fast development and build
 - **React Router**: For client-side routing
+- **Firebase**: For Google authentication
+
+## 🛠️ Environment Setup
+
+1. Clone this repository
+2. Install dependencies with `npm install`
+3. Create a `.env.local` file by copying `.env.example`
+4. Add your Firebase credentials to `.env.local` (see [GOOGLE_AUTH_SETUP.md](./GOOGLE_AUTH_SETUP.md) for details)
+5. Run the development server with `npm run dev`
+
+**Note:** The `.env.local` file contains sensitive API keys and is ignored by Git. For deployment instructions to properly set up environment variables on hosting platforms, see [DEPLOYMENT_ENV_SETUP.md](./DEPLOYMENT_ENV_SETUP.md).
 
 ## 🏗️ Project Structure
 

@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import UserAvatar from './UserAvatar';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { currentUser } = useAuth();
 
   return (
     <nav className="bg-gray-800 text-white">
@@ -29,6 +32,18 @@ const Navbar = () => {
               >
                 Search
               </Link>
+
+              {/* Auth buttons */}
+              {currentUser ? (
+                <UserAvatar />
+              ) : (
+                <Link
+                  to="/signin"
+                  className="ml-2 px-3 py-2 rounded-md text-sm font-medium bg-indigo-600 hover:bg-indigo-700"
+                >
+                  Sign In
+                </Link>
+              )}
             </div>
           </div>
 
@@ -84,7 +99,29 @@ const Navbar = () => {
             >
               Search
             </Link>
+
+            {/* Auth button for mobile */}
+            {!currentUser && (
+              <Link
+                to="/signin"
+                className="block px-3 py-2 mt-2 rounded-md text-base font-medium bg-indigo-600 hover:bg-indigo-700"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Sign In
+              </Link>
+            )}
           </div>
+
+          {/* Mobile user avatar */}
+          {currentUser && (
+            <div className="px-4 py-3 border-t border-gray-700">
+              <div className="flex items-center">
+                <div className="ml-2">
+                  <UserAvatar />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </nav>

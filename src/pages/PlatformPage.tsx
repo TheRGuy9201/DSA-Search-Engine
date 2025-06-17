@@ -3,13 +3,20 @@ import { BackIcon, LeetCodeIcon, CodeforcesIcon, SearchIcon, ExternalLinkIcon, C
 import { getPaginatedLeetcodeProblems, getPaginatedCodeforcesProblems } from '../services/problemsApi';
 import { useProblemUserData } from '../hooks/useProblemUserData';
 import type { Problem } from '../types';
+import { useParams, useNavigate } from 'react-router-dom';
 
 interface PlatformPageProps {
     platform: string;
     onBackClick: () => void;
 }
 
-const PlatformPage: React.FC<PlatformPageProps> = ({ platform, onBackClick }) => {
+const PlatformPage: React.FC<PlatformPageProps> = ({ platform: propsPlatform, onBackClick }) => {
+    const { platformName: urlPlatformName } = useParams<{ platformName: string }>();
+    const navigate = useNavigate();
+
+    // Use the platform from props or from URL params
+    const platform = urlPlatformName || propsPlatform;
+
     // States for problem data
     const [problems, setProblems] = useState<Problem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -517,10 +524,15 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform, onBackClick }) =>
 
     return (
         <div className="page-transition min-h-screen flex flex-col items-center p-8">
-            <div className="w-full max-w-6xl relative">
-                {/* Back button - always returns to home */}
+            <div className="w-full max-w-6xl relative">                {/* Back button - returns to home */}
                 <button
-                    onClick={onBackClick}
+                    onClick={() => {
+                        if (urlPlatformName) {
+                            navigate('/');
+                        } else {
+                            onBackClick();
+                        }
+                    }}
                     className="absolute left-0 top-0 flex items-center space-x-2 px-4 py-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-all duration-300"
                 >
                     <BackIcon />

@@ -11,6 +11,62 @@ body {
   color: white;
 }
 
+/* Autofill style overrides */
+@keyframes autofillStart {
+  from {
+    background: transparent;
+  }
+
+  to {
+    background: transparent;
+  }
+}
+
+@keyframes autofillCancel {
+  from {
+    background: transparent;
+  }
+
+  to {
+    background: transparent;
+  }
+}
+
+input:-webkit-autofill {
+  animation-name: autofillStart;
+  animation-fill-mode: both;
+}
+
+input:not(:-webkit-autofill) {
+  animation-name: autofillCancel;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s;
+  -webkit-text-fill-color: white !important;
+  background-color: #1f2937 !important;
+  box-shadow: 0 0 0px 1000px #1f2937 inset !important;
+  caret-color: white;
+}
+
+/* For autofilled inputs - change icon color */
+.eye-icon-autofill {
+  stroke: black !important;
+  color: black !important;
+}
+
+/* Glass effect for buttons and cards */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
 /* Transition classes */
 .smooth-scroll {
   scroll-behavior: smooth;
@@ -102,13 +158,6 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.glass-effect {
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
 /* Topic tags styling */
@@ -343,4 +392,34 @@ body {
   background-color: rgba(126, 34, 206, 0.3);
   color: #d8b4fe;
   border: 1px solid rgb(126, 34, 206, 0.5);
+}
+
+/* Sign-in button style */
+.crystal-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, rgba(79, 132, 255, 0.8) 0%, rgba(99, 102, 241, 0.8) 100%);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.crystal-button:hover {
+  background: linear-gradient(90deg, rgba(79, 132, 255, 1) 0%, rgba(99, 102, 241, 1) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.crystal-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }

@@ -1,18 +1,12 @@
 import { useState, useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
 import './App.css';
 import Sidebar from './components/Sidebar';
-import HomePage from './pages/HomePage';
-import SettingsPage from './pages/SettingsPage';
-import ProblemsetPage from './pages/ProblemsetPage';
-import SearchPage from './pages/SearchPage';
-import MorePage from './pages/MorePage';
-import PlatformPage from './pages/PlatformPage';
 import { MenuIcon } from './components/icons/Icons';
+import GoogleSignIn from './components/GoogleSignIn';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState('home');
-  const [currentPlatform, setCurrentPlatform] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
   // Listen to scroll events for the app
@@ -26,36 +20,6 @@ function App() {
   }, []);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-
-  // Function to handle platform selection
-  const handlePlatformSelection = (platform: string) => {
-    setCurrentPlatform(platform);
-    setCurrentPage('platform');
-  };
-
-  // Function to handle back button click - always go to home
-  const handleBackClick = () => {
-    setCurrentPage('home');
-  };
-
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'home':
-        return <HomePage onPlatformSelect={handlePlatformSelection} />;
-      case 'settings':
-        return <SettingsPage />;
-      case 'problemset':
-        return <ProblemsetPage />;
-      case 'search':
-        return <SearchPage />;
-      case 'more':
-        return <MorePage />;
-      case 'platform':
-        return <PlatformPage platform={currentPlatform || ''} onBackClick={handleBackClick} />;
-      default:
-        return <HomePage onPlatformSelect={handlePlatformSelection} />;
-    }
-  };
 
   // Overlay for when sidebar is open
   const sidebarOverlay = isSidebarOpen ? (
@@ -77,18 +41,22 @@ function App() {
         <MenuIcon />
       </button>
 
+      {/* Google Sign In Button */}
+      <div className="fixed top-4 right-4 z-50">
+        <GoogleSignIn />
+      </div>
+
       {sidebarOverlay}
 
       {/* Sidebar */}
       <Sidebar
         isOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}
-        setCurrentPage={setCurrentPage}
       />
 
-      {/* Main Content */}
+      {/* Main Content - Render the current route */}
       <main className="min-h-screen">
-        {renderPage()}
+        <Outlet />
       </main>
     </div>
   );
