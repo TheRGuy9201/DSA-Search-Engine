@@ -2,9 +2,6 @@
 
 A comprehensive search engine for data structures and algorithms, built with React, TypeScript, and Tailwind CSS.
 
-
-👉 **[View Live Demo](dsa-search-engine-gold.vercel.app)** 
-
 ## 📋 Features
 
 - **Search Engine**: Find algorithms and data structures by name, category, or complexity
