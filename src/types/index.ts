@@ -46,13 +46,14 @@ export type SortOption = 'name' | 'category' | 'timeComplexity' | 'spaceComplexi
 export interface Problem {
   id: number;
   title: string;
-  difficulty: 'Easy' | 'Medium' | 'Hard' | string;
+  difficulty: 'Easy' | 'Medium' | 'Hard' | 'Beginner' | 'Lower-Mid' | 'Mid-Level' | 'Upper-Mid' | 'Very Hard' | string;
   url: string;
   slug?: string;
   acceptance_rate?: number;
   tags?: string[];
   status?: 'Solved' | 'Attempted' | 'Not Attempted';
   bookmarked?: boolean;
+  points?: number;  // For Codeforces problem rating
 }
 
 /**

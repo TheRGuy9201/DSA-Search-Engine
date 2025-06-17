@@ -289,3 +289,58 @@ body {
   border-color: rgba(79, 132, 255, 0.5);
   color: #bfd4ff;
 }
+
+/* Custom difficulty badges for Codeforces */
+.platform-difficulty-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* Codeforces difficulty specific colors */
+.difficulty-beginner {
+  background-color: rgba(22, 163, 74, 0.3);
+  color: #86efac;
+  border: 1px solid rgb(22, 163, 74, 0.5);
+}
+
+.difficulty-easy {
+  background-color: rgba(5, 150, 105, 0.3);
+  color: #6ee7b7;
+  border: 1px solid rgb(5, 150, 105, 0.5);
+}
+
+.difficulty-lower-mid {
+  background-color: rgba(13, 148, 136, 0.3);
+  color: #5eead4;
+  border: 1px solid rgb(13, 148, 136, 0.5);
+}
+
+.difficulty-mid-level {
+  background-color: rgba(202, 138, 4, 0.3);
+  color: #fde047;
+  border: 1px solid rgb(202, 138, 4, 0.5);
+}
+
+.difficulty-upper-mid {
+  background-color: rgba(234, 88, 12, 0.3);
+  color: #fdba74;
+  border: 1px solid rgb(234, 88, 12, 0.5);
+}
+
+.difficulty-hard {
+  background-color: rgba(220, 38, 38, 0.3);
+  color: #fca5a5;
+  border: 1px solid rgb(220, 38, 38, 0.5);
+}
+
+.difficulty-very-hard {
+  background-color: rgba(126, 34, 206, 0.3);
+  color: #d8b4fe;
+  border: 1px solid rgb(126, 34, 206, 0.5);
+}

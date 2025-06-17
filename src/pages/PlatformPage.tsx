@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BackIcon, LeetCodeIcon, CodeforcesIcon, SearchIcon, ExternalLinkIcon, CheckCircleIcon, CircleIcon } from '../components/icons/Icons';
-import { getPaginatedLeetcodeProblems } from '../services/problemsApi';
+import { getPaginatedLeetcodeProblems, getPaginatedCodeforcesProblems } from '../services/problemsApi';
 import { useProblemUserData } from '../hooks/useProblemUserData';
 import type { Problem } from '../types';
 
@@ -15,6 +15,7 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform, onBackClick }) =>
     const [isLoading, setIsLoading] = useState(true);
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [filteredInfo, setFilteredInfo] = useState<string | null>(null);
 
     // Pagination states
     const [currentPage, setCurrentPage] = useState(1);
@@ -31,6 +32,21 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform, onBackClick }) =>
     const [showTopicTags, setShowTopicTags] = useState(false);
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
+    // Calculate difficulty based on points for Codeforces problems
+    const getCodeforcesDifficulty = (problem: Problem) => {
+        const points = problem.points as number | null;
+
+        if (points === null || points === undefined) return problem.difficulty;
+
+        if (points <= 1000) return "Beginner";
+        if (points <= 1300) return "Easy";
+        if (points <= 1600) return "Lower-Mid";
+        if (points <= 1900) return "Mid-Level";
+        if (points <= 2200) return "Upper-Mid";
+        if (points <= 2500) return "Hard";
+        return "Very Hard";
+    };
+
     // Get user data (bookmarks and status) with the custom hook
     const {
         problemsWithUserData,
@@ -38,14 +54,40 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform, onBackClick }) =>
         updateProblemStatus,
     } = useProblemUserData(problems);
 
-    // Placeholder data for Codeforces (until we implement the scraper)
-    const codeforcesProblems = [
-        { id: 1, title: 'Watermelon', difficulty: 'Easy', url: 'https://codeforces.com/problemset/problem/4/A', tags: ['Math', 'Brute Force'] },
-        { id: 2, title: 'Way Too Long Words', difficulty: 'Easy', url: 'https://codeforces.com/problemset/problem/71/A', tags: ['String', 'Implementation'] },
-        { id: 3, title: 'Theatre Square', difficulty: 'Medium', url: 'https://codeforces.com/problemset/problem/1/A', tags: ['Math'] },
-        { id: 4, title: 'Team', difficulty: 'Easy', url: 'https://codeforces.com/problemset/problem/231/A', tags: ['Greedy', 'Implementation'] },
-        { id: 5, title: 'Next Round', difficulty: 'Easy', url: 'https://codeforces.com/problemset/problem/158/A', tags: ['Implementation'] }
-    ];
+    // Topic options for different platforms
+    const getTopicOptions = () => {
+        if (platform === 'leetcode') {
+            return (
+                <>
+                    <option value="Array">Array</option>
+                    <option value="String">String</option>
+                    <option value="Hash Table">Hash Table</option>
+                    <option value="Dynamic Programming">DP</option>
+                    <option value="Math">Math</option>
+                    <option value="Sorting">Sorting</option>
+                    <option value="Greedy">Greedy</option>
+                    <option value="Depth-First Search">DFS</option>
+                    <option value="Binary Search">Binary Search</option>
+                    <option value="Tree">Tree</option>
+                </>
+            );
+        } else {
+            return (
+                <>
+                    <option value="implementation">Implementation</option>
+                    <option value="math">Math</option>
+                    <option value="greedy">Greedy</option>
+                    <option value="dp">DP</option>
+                    <option value="data structures">Data Structures</option>
+                    <option value="brute force">Brute Force</option>
+                    <option value="constructive algorithms">Constructive</option>
+                    <option value="graphs">Graphs</option>
+                    <option value="sortings">Sorting</option>
+                    <option value="binary search">Binary Search</option>
+                </>
+            );
+        }
+    };
 
     // Debounce search term
     useEffect(() => {
@@ -179,12 +221,104 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform, onBackClick }) =>
                     } else {
                         setProblems(filteredProblems);
                     }
-
                 } else if (platform === 'codeforces') {
-                    // For now, use the placeholder data
-                    setProblems(codeforcesProblems);
-                    setTotalProblems(codeforcesProblems.length);
-                    setTotalPages(1);
+                    // For Codeforces, we'll follow a similar approach as LeetCode
+                    const fetchAllProblems = selectedTopics.length > 0;
+
+                    // Different approach based on whether we need all problems or just the current page
+                    let allProblems: Problem[] = [];
+
+                    // Fetch problems with pagination
+                    if (fetchAllProblems) {
+                        // Fetch all problems without pagination for topic filtering
+                        const { problems: allFetchedProblems } = await getPaginatedCodeforcesProblems(1, 5000, {
+                            difficulty: selectedDifficulty !== 'All' ? selectedDifficulty : undefined,
+                            searchTerm: debouncedSearchTerm || undefined
+                        });
+
+                        allProblems = allFetchedProblems;
+                        console.log(`Fetched ${allProblems.length} total Codeforces problems for topic filtering`);
+
+                        // Set filtered info message
+                        setFilteredInfo("Note: Problems with no tags are automatically filtered out.");
+                    } else {
+                        // Normal paginated fetch
+                        const { problems: fetchedProblems, totalProblems, totalPages } =
+                            await getPaginatedCodeforcesProblems(currentPage, itemsPerPage, {
+                                difficulty: selectedDifficulty !== 'All' ? selectedDifficulty : undefined,
+                                searchTerm: debouncedSearchTerm || undefined
+                            });
+
+                        allProblems = fetchedProblems;
+                        setTotalProblems(totalProblems);
+                        setTotalPages(totalPages);
+
+                        // Set filtered info message
+                        setFilteredInfo("Note: Problems with no tags are automatically filtered out.");
+                    }
+
+                    // Apply filtering based on topics if needed
+                    let filteredProblems = allProblems;
+
+                    if (selectedTopics.length > 0) {
+                        // Find problems that match ANY of the selected topics
+                        filteredProblems = allProblems.filter(problem => {
+                            if (!problem.tags || problem.tags.length === 0) return false;
+
+                            // Check if problem has any of the selected topics
+                            return selectedTopics.some(topic =>
+                                problem.tags?.some(tag =>
+                                    tag.toLowerCase().includes(topic.toLowerCase())
+                                )
+                            );
+                        });
+
+                        // Still sort so that problems with all topics appear first
+                        const problemsWithAllTopics = filteredProblems.filter(problem => {
+                            if (!problem.tags || problem.tags.length === 0) return false;
+
+                            return selectedTopics.every(topic =>
+                                problem.tags?.some(tag =>
+                                    tag.toLowerCase().includes(topic.toLowerCase())
+                                )
+                            );
+                        });
+
+                        const allTopicsIds = new Set(problemsWithAllTopics.map(p => p.id));
+
+                        filteredProblems.sort((a, b) => {
+                            if (allTopicsIds.has(a.id) && !allTopicsIds.has(b.id)) return -1;
+                            if (!allTopicsIds.has(a.id) && allTopicsIds.has(b.id)) return 1;
+                            return 0;
+                        });
+
+                        console.log(`Found ${filteredProblems.length} Codeforces problems with ANY selected topic`);
+                        console.log(`Found ${problemsWithAllTopics.length} Codeforces problems with ALL selected topics`);
+                    }
+
+                    // For topic filtering, handle pagination client-side
+                    if (selectedTopics.length > 0) {
+                        const totalFilteredProblems = filteredProblems.length;
+                        const totalFilteredPages = Math.ceil(totalFilteredProblems / itemsPerPage);
+
+                        // Adjust current page if it's out of bounds
+                        const adjustedCurrentPage = Math.min(currentPage, totalFilteredPages || 1);
+
+                        // Get the slice for the current page
+                        const startIndex = (adjustedCurrentPage - 1) * itemsPerPage;
+                        const endIndex = startIndex + itemsPerPage;
+                        const paginatedProblems = filteredProblems.slice(startIndex, endIndex);
+
+                        setProblems(paginatedProblems);
+                        setTotalProblems(totalFilteredProblems);
+                        setTotalPages(totalFilteredPages);
+
+                        if (adjustedCurrentPage !== currentPage) {
+                            setCurrentPage(adjustedCurrentPage);
+                        }
+                    } else {
+                        setProblems(filteredProblems);
+                    }
                 }
 
                 setError(null);
@@ -307,23 +441,79 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform, onBackClick }) =>
         setShowTopicTags(prevState => !prevState);
     };
 
-    // Difficulty badge helper function
-
-    // Difficulty badge color based on difficulty level
-    const getDifficultyBadge = (difficulty: string) => {
-        switch (difficulty.toLowerCase()) {
-            case 'easy':
-                return <span className="px-2 py-1 rounded-full text-xs bg-green-900 text-green-300">Easy</span>;
-            case 'medium':
-                return <span className="px-2 py-1 rounded-full text-xs bg-yellow-900 text-yellow-300">Medium</span>;
-            case 'hard':
-                return <span className="px-2 py-1 rounded-full text-xs bg-red-900 text-red-300">Hard</span>;
-            default:
-                return <span className="px-2 py-1 rounded-full text-xs bg-gray-900 text-gray-300">{difficulty}</span>;
+    // For displaying info about Codeforces difficulty levels
+    const renderCodeforcesTooltip = () => {
+        if (platform === 'codeforces') {
+            return (
+                <div className="relative ml-2 group">
+                    <div className="cursor-help text-gray-400 hover:text-indigo-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                        </svg>
+                    </div>
+                    <div className="hidden group-hover:block absolute left-0 bottom-full mb-2 bg-gray-900 text-white text-sm p-3 rounded-lg shadow-lg w-60 z-10">
+                        <h4 className="font-bold mb-1 border-b border-gray-700 pb-1">Codeforces Difficulty Levels:</h4>
+                        <ul className="text-xs space-y-1">
+                            <li><span className="inline-block w-20 font-medium">Beginner:</span> 800 – 1000</li>
+                            <li><span className="inline-block w-20 font-medium">Easy:</span> 1100 – 1300</li>
+                            <li><span className="inline-block w-20 font-medium">Lower-Mid:</span> 1400 – 1600</li>
+                            <li><span className="inline-block w-20 font-medium">Mid-Level:</span> 1700 – 1900</li>
+                            <li><span className="inline-block w-20 font-medium">Upper-Mid:</span> 2000 – 2200</li>
+                            <li><span className="inline-block w-20 font-medium">Hard:</span> 2300 – 2500</li>
+                            <li><span className="inline-block w-20 font-medium">Very Hard:</span> 2600 – 3000+</li>
+                        </ul>
+                    </div>
+                </div>
+            );
         }
+        return null;
     };
 
-    // No unused helper functions
+    // Difficulty badge color based on difficulty level
+    const getDifficultyBadge = (difficulty: string, problem?: Problem) => {
+        // For Codeforces-specific difficulties
+        if (platform === 'codeforces' && problem) {
+            // Calculate difficulty based on points
+            const calculatedDifficulty = getCodeforcesDifficulty(problem);
+            const difficultyLower = calculatedDifficulty.toLowerCase();
+
+            // Render the badge with points info if available
+            const pointsDisplay = problem.points ? ` (${problem.points})` : '';
+
+            switch (difficultyLower) {
+                case 'beginner':
+                    return <span className="platform-difficulty-badge difficulty-beginner">Beginner{pointsDisplay}</span>;
+                case 'easy':
+                    return <span className="platform-difficulty-badge difficulty-easy">Easy{pointsDisplay}</span>;
+                case 'lower-mid':
+                    return <span className="platform-difficulty-badge difficulty-lower-mid">Lower-Mid{pointsDisplay}</span>;
+                case 'mid-level':
+                    return <span className="platform-difficulty-badge difficulty-mid-level">Mid-Level{pointsDisplay}</span>;
+                case 'upper-mid':
+                    return <span className="platform-difficulty-badge difficulty-upper-mid">Upper-Mid{pointsDisplay}</span>;
+                case 'hard':
+                    return <span className="platform-difficulty-badge difficulty-hard">Hard{pointsDisplay}</span>;
+                case 'very hard':
+                    return <span className="platform-difficulty-badge difficulty-very-hard">Very Hard{pointsDisplay}</span>;
+                default:
+                    return <span className="platform-difficulty-badge">{calculatedDifficulty}{pointsDisplay}</span>;
+            }
+        }
+        // For LeetCode and default difficulties
+        else {
+            switch (difficulty.toLowerCase()) {
+                case 'easy':
+                    return <span className="px-2 py-1 rounded-full text-xs bg-green-900 text-green-300">Easy</span>;
+                case 'medium':
+                    return <span className="px-2 py-1 rounded-full text-xs bg-yellow-900 text-yellow-300">Medium</span>;
+                case 'hard':
+                    return <span className="px-2 py-1 rounded-full text-xs bg-red-900 text-red-300">Hard</span>;
+                default:
+                    return <span className="px-2 py-1 rounded-full text-xs bg-gray-900 text-gray-300">{difficulty}</span>;
+            }
+        }
+    };
 
     return (
         <div className="page-transition min-h-screen flex flex-col items-center p-8">
@@ -345,7 +535,26 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform, onBackClick }) =>
                     <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-blue-500 mb-2">
                         {platformName} Problems
                     </h1>
-                    <p className="text-gray-400">Explore and solve problems from {platformName}</p>
+                    <div className="flex items-center">
+                        <p className="text-gray-400">Explore and solve problems from {platformName}</p>
+                        {platform === 'codeforces' && renderCodeforcesTooltip()}
+                    </div>                    {platform === 'codeforces' && (
+                        <div className="mt-4 text-sm text-gray-400 bg-gray-800/50 p-3 rounded-lg max-w-2xl">
+                            <p className="mb-2"><strong>Note:</strong> Problems are categorized by difficulty based on their rating points:</p>                            <div className="grid grid-cols-2 gap-x-8 gap-y-1 text-xs">
+                                <div><span className="platform-difficulty-badge difficulty-beginner text-xs">Beginner</span>: 800 – 1000</div>
+                                <div><span className="platform-difficulty-badge difficulty-easy text-xs">Easy</span>: 1100 – 1300</div>
+                                <div><span className="platform-difficulty-badge difficulty-lower-mid text-xs">Lower-Mid</span>: 1400 – 1600</div>
+                                <div><span className="platform-difficulty-badge difficulty-mid-level text-xs">Mid-Level</span>: 1700 – 1900</div>
+                                <div><span className="platform-difficulty-badge difficulty-upper-mid text-xs">Upper-Mid</span>: 2000 – 2200</div>
+                                <div><span className="platform-difficulty-badge difficulty-hard text-xs">Hard</span>: 2300 – 2500</div>
+                                <div><span className="platform-difficulty-badge difficulty-very-hard text-xs">Very Hard</span>: 2600+</div>
+                            </div>
+                            <p className="mt-1 text-xs italic">Recent problems will appear after they are rated.</p>
+                            {filteredInfo && (
+                                <p className="mt-1 text-xs italic">{filteredInfo}</p>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -357,16 +566,32 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform, onBackClick }) =>
                     {/* Filter dropdowns row */}
                     <div className="flex flex-wrap items-center gap-3">
                         <div className="flex gap-2 items-center">
-                            <select
-                                className="bg-gray-800 rounded-lg px-3 py-2 text-white border border-gray-700 focus:border-indigo-500 focus:outline-none w-28"
-                                value={selectedDifficulty}
-                                onChange={handleDifficultyChange}
-                            >
-                                <option value="All">Difficulty</option>
-                                <option value="Easy">Easy</option>
-                                <option value="Medium">Medium</option>
-                                <option value="Hard">Hard</option>
-                            </select>
+                            <div className="flex items-center">
+                                <select
+                                    className="bg-gray-800 rounded-lg px-3 py-2 text-white border border-gray-700 focus:border-indigo-500 focus:outline-none w-28"
+                                    value={selectedDifficulty}
+                                    onChange={handleDifficultyChange}
+                                >
+                                    <option value="All">Difficulty</option>
+                                    {platform === 'leetcode' ? (
+                                        <>
+                                            <option value="Easy">Easy</option>
+                                            <option value="Medium">Medium</option>
+                                            <option value="Hard">Hard</option>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <option value="Beginner">Beginner</option>
+                                            <option value="Easy">Easy</option>
+                                            <option value="Lower-Mid">Lower-Mid</option>
+                                            <option value="Mid-Level">Mid-Level</option>
+                                            <option value="Upper-Mid">Upper-Mid</option>
+                                            <option value="Hard">Hard</option>
+                                            <option value="Very Hard">Very Hard</option>
+                                        </>
+                                    )}
+                                </select>
+                            </div>
 
                             <select
                                 className="bg-gray-800 rounded-lg px-3 py-2 text-white border border-gray-700 focus:border-indigo-500 focus:outline-none w-24"
@@ -388,16 +613,7 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform, onBackClick }) =>
                                 value=""
                             >
                                 <option value="">Topics</option>
-                                <option value="Array">Array</option>
-                                <option value="String">String</option>
-                                <option value="Hash Table">Hash Table</option>
-                                <option value="Dynamic Programming">DP</option>
-                                <option value="Math">Math</option>
-                                <option value="Sorting">Sorting</option>
-                                <option value="Greedy">Greedy</option>
-                                <option value="Depth-First Search">DFS</option>
-                                <option value="Binary Search">Binary Search</option>
-                                <option value="Tree">Tree</option>
+                                {getTopicOptions()}
                             </select>
                         </div>
 
@@ -592,7 +808,11 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform, onBackClick }) =>
                                                     </div>
                                                 )}
                                             </td>
-                                            <td className="py-4 px-4 text-center">{getDifficultyBadge(problem.difficulty)}</td>
+                                            <td className="py-4 px-4 text-center">
+                                                {platform === 'codeforces'
+                                                    ? getDifficultyBadge(problem.difficulty, problem)
+                                                    : getDifficultyBadge(problem.difficulty)}
+                                            </td>
                                             <td className="py-4 px-4 text-center">
                                                 <button
                                                     onClick={() => toggleBookmark(problem.id)}
