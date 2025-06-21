@@ -2,6 +2,9 @@ import { createBrowserRouter, Navigate, useNavigate } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import App from './App';
 
+// Get base URL from environment variable
+const basename = import.meta.env.VITE_BASE_URL || '/';
+
 // Use dynamic imports for code-splitting
 const HomePage = lazy(() => import('./pages/HomePage'));
 const AlgorithmsPage = lazy(() => import('./pages/AlgorithmsPage'));
@@ -52,10 +55,11 @@ const AlgorithmDetailPageWrapper = () => {
  * Router configuration for React Router v6.
  * Uses code splitting with suspense for better performance.
  */
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
+const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <App />,
     children: [
       {
         index: true,
@@ -119,6 +123,10 @@ const router = createBrowserRouter([
       },
     ],
   },
-]);
+  ],
+  {
+    basename // Use the environment variable for base URL
+  }
+);
 
 export default router;

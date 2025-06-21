@@ -58,161 +58,83 @@ const AlgorithmCard: React.FC<{ algorithm: Algorithm }> = ({ algorithm }) => {
 };
 
 const AlgorithmsPage = () => {
-  const navigate = useNavigate();
   const [algorithms, setAlgorithms] = useState<Algorithm[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
   useEffect(() => {
     const fetchAlgorithms = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
-        const data = await apiService.searchAlgorithms();
+        const data = selectedCategory === 'All' 
+          ? await apiService.searchAlgorithms()
+          : await apiService.getAlgorithmsByCategory(selectedCategory);
         setAlgorithms(data);
         setError(null);
       } catch (err) {
-        console.error('Error fetching algorithms:', err);
         setError('Failed to load algorithms. Please try again later.');
+        console.error('Error fetching algorithms:', err);
       } finally {
         setLoading(false);
       }
     };
-    
     fetchAlgorithms();
-  }, []);
-  
-  // Filter algorithms based on category and search term
-  // Ensure all algorithms have string IDs to prevent "Cannot convert object to primitive value" errors
-  const safeAlgorithms = algorithms.map(algo => ({
-    ...algo,
-    id: typeof algo.id === 'object' ? `unknown-${Math.random().toString(36).substring(7)}` : String(algo.id)
-  }));
+  }, [selectedCategory]);
 
-  const filteredAlgorithms = safeAlgorithms.filter((algo) => {
-    const matchesCategory = selectedCategory === 'All' || algo.category === selectedCategory;
-    const matchesSearch = 
-      !searchTerm || 
-      algo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      algo.description.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    return matchesCategory && matchesSearch;
-  });
-  
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gray-900">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
       </div>
     );
   }
-  
+
   if (error) {
     return (
-      <div className="text-center p-8 min-h-screen bg-gray-900 flex flex-col items-center justify-center">
-        <div className="text-red-400 mb-4 bg-red-900/20 p-4 rounded-lg border border-red-700/30 inline-block">
-          {error}
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-red-500 text-center">
+          <p className="text-xl mb-4">Error</p>
+          <p>{error}</p>
         </div>
-        <button 
-          onClick={() => navigate(0)} 
-          className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 transition-colors"
-        >
-          Try Again
-        </button>
       </div>
     );
   }
-  
+
   return (
-    <div className="min-h-screen bg-gray-900">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-br from-indigo-900 to-purple-900 text-white py-16 px-4 border-b border-indigo-700/50">
-        <div className="container mx-auto">
-          <motion.h1 
-            className="text-4xl md:text-5xl font-bold mb-4 text-white"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            Algorithm Explorer
-          </motion.h1>
-          <motion.p 
-            className="text-xl opacity-90 max-w-2xl text-indigo-100"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-          >
-            Discover, learn, and implement essential algorithms for solving complex problems.
-          </motion.p>
-        </div>
+    <div className="container mx-auto px-4 py-8">
+      {/* Centered Header Section */}
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-bold text-white mb-4">Algorithm Explorer</h1>
+        <p className="text-gray-400 max-w-2xl mx-auto">
+          Discover and learn about different algorithms, their implementations, and use cases.
+          Choose a category below to start exploring.
+        </p>
       </div>
 
-      {/* Search and Filter Section */}
-      <div className="container mx-auto py-8 px-4">
-        <div className="bg-gray-800 rounded-xl shadow-lg p-4 mb-8 border border-gray-700/50">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="flex-1">
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg className="h-5 w-5 text-indigo-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <input
-                  type="text"
-                  className="pl-10 pr-4 py-2 w-full bg-gray-700 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="Search algorithms..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-            </div>
-            
-            <div className="flex flex-wrap gap-2">
-              {CATEGORIES.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    selectedCategory === category
-                      ? 'bg-indigo-600 text-white'
-                      : 'bg-gray-700 text-gray-200 hover:bg-gray-600'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
+      {/* Category Selection */}
+      <div className="flex justify-center gap-4 mb-8 flex-wrap">
+        {CATEGORIES.map((category) => (
+          <button
+            key={category}
+            onClick={() => setSelectedCategory(category)}
+            className={`px-4 py-2 rounded-full transition-all duration-300 ${
+              selectedCategory === category
+                ? 'bg-indigo-600 text-white'
+                : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+            }`}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
 
-        {/* Algorithm Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <AnimatePresence>
-            {filteredAlgorithms.map((algorithm) => (
-              <motion.div
-                key={algorithm.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <AlgorithmCard algorithm={algorithm} />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
-        
-        {filteredAlgorithms.length === 0 && (
-          <div className="text-center py-12 bg-gray-800 rounded-xl border border-gray-700/50 shadow-lg">
-            <svg className="mx-auto h-12 w-12 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <h3 className="mt-2 text-lg font-medium text-white">No algorithms found</h3>
-            <p className="mt-1 text-indigo-300">Try changing your search or filter criteria.</p>
-          </div>
-        )}
+      {/* Algorithm Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <AnimatePresence>
+          {algorithms.map((algorithm) => (
+            <AlgorithmCard key={algorithm.id} algorithm={algorithm} />
+          ))}
+        </AnimatePresence>
       </div>
     </div>
   );

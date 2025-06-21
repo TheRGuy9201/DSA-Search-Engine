@@ -1,7 +1,9 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import * as React from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import type { User } from 'firebase/auth';
 import { auth, signInWithGoogle, logOut } from '../services/firebase';
+
+const { createContext, useContext, useEffect, useState } = React;
 
 // Type for the auth context
 interface AuthContextType {
