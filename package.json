@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "postbuild": "tailwindcss -i ./src/index.css -o ./dist/assets/index.css --minify"
+    "preview": "vite preview --host",
+    "serve": "npm run build && npm run preview"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.4",

@@ -5,10 +5,12 @@ import { resolve } from 'path'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: '/', // Ensure base URL is correct
   resolve: {
     alias: {
       // Create an alias for firebase to ensure proper resolution
-      'firebase': resolve(__dirname, 'node_modules/firebase')
+      'firebase': resolve(__dirname, 'node_modules/firebase'),
+      '@': resolve(__dirname, 'src') // Add src alias for better imports
     }
   },
   optimizeDeps: {
