@@ -260,9 +260,20 @@ export const QuickSortAnimation: React.FC = () => {
         }}
       />
       <div className="mt-4 text-center text-sm text-gray-400">
-        <p>Pivot element is shown in indigo</p>
-        <p>Comparing elements are shown in amber</p>
-        <p>Sorted elements are shown in green</p>
+        <div className="flex justify-center flex-wrap gap-4 text-sm">
+          <span className="flex items-center">
+            <div className="w-4 h-4 bg-indigo-600 rounded-full mr-2"></div>
+            Pivot element
+          </span>
+          <span className="flex items-center">
+            <div className="w-4 h-4 bg-amber-500 rounded-full mr-2"></div>
+            Traversing at
+          </span>
+          <span className="flex items-center">
+            <div className="w-4 h-4 bg-emerald-400 rounded-full mr-2"></div>
+            Sorted
+          </span>
+        </div>
         {isCompleted && (
           <motion.p 
             initial={{ opacity: 0, y: 10 }}

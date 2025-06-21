@@ -163,7 +163,11 @@ export const AlgorithmContent: React.FC<AlgorithmContentProps> = ({ algorithm })
                 <div className="prose prose-invert max-w-none">
                   <h2 className="text-xl font-semibold mb-4 text-white">Description</h2>
                   <p className="text-gray-300">{algorithm.description}</p>                {animationVisible && animationData && (
-                  <div className="mt-8 bg-gray-800/50 p-8 rounded-xl border border-gray-700/50 backdrop-blur-sm transform hover:scale-[1.02] transition-transform">
+                  <div
+  className={`p-8 rounded-xl border border-gray-700/50 backdrop-blur-sm transform hover:scale-[1.02] transition-transform
+    ${safeId === 'breadth-first-search' ? 'mt-8 bg-grey-800/40 min-h-[700px]' : 'mt-8 bg-gray-800/50'}`}
+>
+
                     <motion.h3 
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -172,7 +176,7 @@ export const AlgorithmContent: React.FC<AlgorithmContentProps> = ({ algorithm })
                       {animationData.title}
                     </motion.h3>
                     
-                    <div className="relative h-80 bg-gray-900/80 shadow-xl rounded-xl overflow-hidden">
+                    <div className="relative h-800 bg-gray-900/80 shadow-xl rounded-xl overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-b from-gray-900/10 to-gray-900/40" />                      <div className="relative z-10 w-full h-full">
                         {animationData.component && React.createElement(animationData.component)}
                       </div>
@@ -204,9 +208,14 @@ export const AlgorithmContent: React.FC<AlgorithmContentProps> = ({ algorithm })
               )}
               {activeTab === 'use-cases' && (
                 <div>
-                  <h2 className="text-xl font-semibold mb-4 text-white">Use Cases</h2>
-                  {algorithmData?.useCases ? (
-                    <UseCasesList useCases={algorithmData.useCases} />
+                  <h2 className="text-xl font-semibold mb-4 text-white">Use Cases</h2>                  {algorithmData?.useCases ? (                    <UseCasesList useCases={
+                      (Array.isArray(algorithmData.useCases) && typeof algorithmData.useCases[0] === 'string')
+                        ? (algorithmData.useCases as string[]).map(uc => ({
+                            title: 'Use Case',
+                            description: uc
+                          }))
+                        : (algorithmData.useCases as any[])
+                    } />
                   ) : (
                     <ul className="list-disc pl-6 text-gray-300">
                       {algorithm.useCases?.map((useCase, index) => (
@@ -218,9 +227,19 @@ export const AlgorithmContent: React.FC<AlgorithmContentProps> = ({ algorithm })
               )}
               {activeTab === 'related-problems' && (
                 <div>
-                  <h2 className="text-xl font-semibold mb-4 text-white">Related Problems</h2>
-                  {algorithmData?.relatedProblems ? (
-                    <RelatedProblemsList problems={algorithmData.relatedProblems} />
+                  <h2 className="text-xl font-semibold mb-4 text-white">Related Problems</h2>                  {algorithmData?.relatedProblems ? (                    <RelatedProblemsList problems={algorithmData.relatedProblems.map((problem: any) => {
+                      // Convert to expected format if necessary
+                      if ('link' in problem && !('url' in problem)) {
+                        return {
+                          id: problem.id || 'N/A',
+                          platform: problem.platform || 'other',
+                          title: problem.title,
+                          difficulty: problem.difficulty,
+                          url: problem.link
+                        };
+                      }
+                      return problem;
+                    })} />
                   ) : (
                     <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 text-center text-gray-300">
                       <p>No related problems available for this algorithm.</p>

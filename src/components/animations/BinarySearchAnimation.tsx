@@ -271,10 +271,24 @@ export const BinarySearchAnimation: React.FC = () => {
         maxTarget={maxValue}
       />
       <div className="mt-4 text-center text-sm text-gray-400">
-        <p>Target value is shown in amber</p>
-        <p>Current middle element is shown in indigo</p>
-        <p>Active search range is shown in gray</p>
-        <p>Found element will be shown in green</p>
+        <div className="flex justify-center flex-wrap gap-4 text-sm">
+          <span className="flex items-center">
+            <div className="w-4 h-4 bg-indigo-600 rounded-full mr-2"></div>
+            Mid value
+          </span>
+          <span className="flex items-center">
+            <div className="w-4 h-4 bg-amber-500 rounded-full mr-2"></div>
+            Target
+          </span>
+          <span className="flex items-center">
+            <div className="w-4 h-4 bg-gray-700 rounded-full mr-2"></div>
+            Visited
+          </span>
+          <span className="flex items-center">
+            <div className="w-4 h-4 bg-gray-400 rounded-full mr-2"></div>
+            Not Visited
+          </span>
+        </div>
         {isCompleted && (
           <motion.p 
             initial={{ opacity: 0, y: 10 }}

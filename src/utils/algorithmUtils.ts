@@ -1,6 +1,7 @@
 import React from 'react';
 import { QuickSortAnimation } from '../components/animations/QuickSortAnimation';
 import { BinarySearchAnimation } from '../components/animations/BinarySearchAnimation';
+import { BFSAnimation } from '../components/animations/BFSAnimation';
 
 // Utility functions
 export const formatComplexity = (complexity: string): string => {
@@ -66,6 +67,11 @@ const animationMap: Record<string, AnimationData> = {
     component: QuickSortAnimation,
     title: 'Quick Sort Visualization',
     description: 'See how Quick Sort partitions the array around a pivot element (shown in indigo). Elements being compared are highlighted in amber, and sorted elements turn green.'
+  },
+  'breadth-first-search': {
+    component: BFSAnimation,
+    title: 'Breadth-First Search Visualization',
+    description: 'Observe how BFS explores a graph by visiting all neighbors of a node before moving to the next level. The blue node is currently being explored, orange nodes are in the queue waiting to be visited, and green nodes have been fully explored.'
   }
 };
 
