@@ -173,9 +173,8 @@ export const AlgorithmContent: React.FC<AlgorithmContentProps> = ({ algorithm })
                     </motion.h3>
                     
                     <div className="relative h-80 bg-gray-900/80 shadow-xl rounded-xl overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-b from-gray-900/10 to-gray-900/40" />
-                      <div className="relative z-10 w-full h-full flex items-center justify-center">
-                        {/* Your existing animation components */}
+                      <div className="absolute inset-0 bg-gradient-to-b from-gray-900/10 to-gray-900/40" />                      <div className="relative z-10 w-full h-full">
+                        {animationData.component && React.createElement(animationData.component)}
                       </div>
                     </div>
                     

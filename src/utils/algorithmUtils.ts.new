@@ -1,0 +1,88 @@
+import React from 'react';
+import { QuickSortAnimation } from '../components/animations/QuickSortAnimation';
+
+// Utility functions
+export const formatComplexity = (complexity: string): string => {
+  return complexity;
+};
+
+export const groupByCategory = <T extends { category: string }>(items: T[]): Record<string, T[]> => {
+  return items.reduce((acc: Record<string, T[]>, item) => {
+    const { category } = item;
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(item);
+    return acc;
+  }, {});
+};
+
+export const getCategoryColor = (category: string): { bg: string; text: string } => {
+  switch (category.toLowerCase()) {
+    case 'search':
+      return { bg: 'bg-blue-100', text: 'text-blue-800' };
+    case 'sort':
+      return { bg: 'bg-green-100', text: 'text-green-800' };
+    case 'graph':
+      return { bg: 'bg-purple-100', text: 'text-purple-800' };
+    case 'data structure':
+      return { bg: 'bg-orange-100', text: 'text-orange-800' };
+    case 'dynamic programming':
+      return { bg: 'bg-amber-100', text: 'text-amber-800' };
+    case 'greedy':
+      return { bg: 'bg-rose-100', text: 'text-rose-800' };
+    default:
+      return { bg: 'bg-gray-200', text: 'text-gray-800' };
+  }
+};
+
+// Import algorithm implementations
+import { binarySearchImplementations, binarySearchRelatedProblems, binarySearchUseCases } from '../algorithms/binary-search/implementations';
+import { quickSortImplementations, quickSortRelatedProblems, quickSortUseCases } from '../algorithms/quick-sort/implementations';
+import { dijkstraImplementations, dijkstraRelatedProblems, dijkstraUseCases } from '../algorithms/dijkstra/implementations';
+import { heapSortImplementations, heapSortRelatedProblems, heapSortUseCases } from '../algorithms/heap-sort/implementations';
+import { mergeSortImplementations, mergeSortRelatedProblems, mergeSortUseCases } from '../algorithms/merge-sort/implementations';
+import { breadthFirstSearchImplementations, breadthFirstSearchRelatedProblems, breadthFirstSearchUseCases } from '../algorithms/breadth-first-search/implementations';
+import { linkedListImplementations, linkedListRelatedProblems, linkedListUseCases } from '../algorithms/linked-list/implementations';
+import { depthFirstSearchImplementations, depthFirstSearchRelatedProblems, depthFirstSearchUseCases } from '../algorithms/depth-first-search/implementations';
+import { hashTableImplementations, hashTableRelatedProblems, hashTableUseCases } from '../algorithms/hash-table/implementations';
+
+// Animation types and mapping
+interface AlgorithmAnimation {
+  component: React.FC;
+  title: string;
+  description: string;
+}
+
+const algorithmAnimations: Record<string, AlgorithmAnimation> = {
+  'quicksort': {
+    component: QuickSortAnimation,
+    title: 'Quick Sort Visualization',
+    description: 'Watch how Quick Sort partitions and recursively sorts the array. The pivot element is shown in indigo, comparing elements in amber, and sorted elements in green.'
+  }
+};
+
+export const getAlgorithmAnimation = (algorithmId: string): AlgorithmAnimation | null => {
+  return algorithmAnimations[algorithmId] || null;
+};
+
+// Algorithm implementations mapping
+export interface AlgorithmData {
+  implementations: Record<string, string>;
+  relatedProblems: Array<{ title: string; link: string; difficulty: string }>;
+  useCases: string[];
+}
+
+export const algorithmImplementationsMap: Record<string, AlgorithmData> = {
+  'binary-search': {
+    implementations: binarySearchImplementations,
+    relatedProblems: binarySearchRelatedProblems,
+    useCases: binarySearchUseCases
+  },
+  'quicksort': {
+    implementations: quickSortImplementations,
+    relatedProblems: quickSortRelatedProblems,
+    useCases: quickSortUseCases
+  },
+  // ... other algorithms
+};

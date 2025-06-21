@@ -1,14 +1,12 @@
-/**
- * Format a time complexity string for consistent display
- */
+import React from 'react';
+import { QuickSortAnimation } from '../components/animations/QuickSortAnimation';
+import { BinarySearchAnimation } from '../components/animations/BinarySearchAnimation';
+
+// Utility functions
 export const formatComplexity = (complexity: string): string => {
-  // Already in good format, return as is
   return complexity;
 };
 
-/**
- * Group algorithms by category
- */
 export const groupByCategory = <T extends { category: string }>(items: T[]): Record<string, T[]> => {
   return items.reduce((acc: Record<string, T[]>, item) => {
     const { category } = item;
@@ -20,9 +18,6 @@ export const groupByCategory = <T extends { category: string }>(items: T[]): Rec
   }, {});
 };
 
-/**
- * Get color for different algorithm categories
- */
 export const getCategoryColor = (category: string): { bg: string; text: string } => {
   switch (category.toLowerCase()) {
     case 'search':
@@ -53,176 +48,118 @@ import { linkedListImplementations, linkedListRelatedProblems, linkedListUseCase
 import { depthFirstSearchImplementations, depthFirstSearchRelatedProblems, depthFirstSearchUseCases } from '../algorithms/depth-first-search/implementations';
 import { hashTableImplementations, hashTableRelatedProblems, hashTableUseCases } from '../algorithms/hash-table/implementations';
 
-// Map algorithm IDs to their implementations
-export const algorithmImplementationsMap: Record<string, any> = {
+// Animation types and mapping
+interface AnimationData {
+  component: React.FC;
+  title: string;
+  description: string;
+}
+
+// Map of algorithm IDs to their animations
+const animationMap: Record<string, AnimationData> = {
+  'binary-search': {
+    component: BinarySearchAnimation,
+    title: 'Binary Search Visualization',
+    description: 'Watch how binary search efficiently finds a target value by repeatedly dividing the search range in half. The amber bar shows the target value, the indigo bar shows the current middle element being compared, and the gray bars show the active search range.'
+  },
+  'quick-sort': {
+    component: QuickSortAnimation,
+    title: 'Quick Sort Visualization',
+    description: 'See how Quick Sort partitions the array around a pivot element (shown in indigo). Elements being compared are highlighted in amber, and sorted elements turn green.'
+  }
+};
+
+export const getAlgorithmAnimation = (algorithmId: string): AnimationData | null => {
+  return animationMap[algorithmId] || null;
+};
+
+// Algorithm implementations mapping
+export interface AlgorithmData {
+  implementations: Record<string, string>;
+  relatedProblems: Array<{ title: string; link: string; difficulty: string }>;
+  useCases: string[];
+}
+
+export const algorithmImplementationsMap: Record<string, AlgorithmData> = {  
   'binary-search': {
     implementations: binarySearchImplementations,
-    relatedProblems: binarySearchRelatedProblems,
-    useCases: binarySearchUseCases
+    relatedProblems: binarySearchRelatedProblems.map(p => ({ 
+      title: p.title, 
+      link: p.url, 
+      difficulty: p.difficulty 
+    })),
+    useCases: binarySearchUseCases.map(uc => uc.description)
   },
   'quick-sort': {
     implementations: quickSortImplementations,
-    relatedProblems: quickSortRelatedProblems,
-    useCases: quickSortUseCases
+    relatedProblems: quickSortRelatedProblems.map(p => ({ 
+      title: p.title, 
+      link: p.url, 
+      difficulty: p.difficulty 
+    })),
+    useCases: quickSortUseCases.map(uc => uc.description)
   },
   'dijkstra': {
     implementations: dijkstraImplementations,
-    relatedProblems: dijkstraRelatedProblems,
-    useCases: dijkstraUseCases
+    relatedProblems: dijkstraRelatedProblems.map(p => ({ 
+      title: p.title, 
+      link: p.url, 
+      difficulty: p.difficulty 
+    })),
+    useCases: dijkstraUseCases.map(uc => uc.description)
   },
   'heap-sort': {
     implementations: heapSortImplementations,
-    relatedProblems: heapSortRelatedProblems,
-    useCases: heapSortUseCases
+    relatedProblems: heapSortRelatedProblems.map(p => ({ 
+      title: p.title, 
+      link: p.url, 
+      difficulty: p.difficulty 
+    })),
+    useCases: heapSortUseCases.map(uc => uc.description)
   },
   'merge-sort': {
     implementations: mergeSortImplementations,
-    relatedProblems: mergeSortRelatedProblems,
-    useCases: mergeSortUseCases
+    relatedProblems: mergeSortRelatedProblems.map(p => ({ 
+      title: p.title, 
+      link: p.url, 
+      difficulty: p.difficulty 
+    })),
+    useCases: mergeSortUseCases.map(uc => uc.description)
   },
   'breadth-first-search': {
     implementations: breadthFirstSearchImplementations,
-    relatedProblems: breadthFirstSearchRelatedProblems,
-    useCases: breadthFirstSearchUseCases
+    relatedProblems: breadthFirstSearchRelatedProblems.map(p => ({ 
+      title: p.title, 
+      link: p.url, 
+      difficulty: p.difficulty 
+    })),
+    useCases: breadthFirstSearchUseCases.map(uc => uc.description)
   },
   'linked-list': {
     implementations: linkedListImplementations,
-    relatedProblems: linkedListRelatedProblems,
-    useCases: linkedListUseCases
+    relatedProblems: linkedListRelatedProblems.map(p => ({ 
+      title: p.title, 
+      link: p.url, 
+      difficulty: p.difficulty 
+    })),
+    useCases: linkedListUseCases.map(uc => uc.description)
   },
   'depth-first-search': {
     implementations: depthFirstSearchImplementations,
-    relatedProblems: depthFirstSearchRelatedProblems,
-    useCases: depthFirstSearchUseCases
+    relatedProblems: depthFirstSearchRelatedProblems.map(p => ({ 
+      title: p.title, 
+      link: p.url, 
+      difficulty: p.difficulty 
+    })),
+    useCases: depthFirstSearchUseCases.map(uc => uc.description)
   },
   'hash-table': {
     implementations: hashTableImplementations,
-    relatedProblems: hashTableRelatedProblems,
-    useCases: hashTableUseCases
+    relatedProblems: hashTableRelatedProblems.map(p => ({ 
+      title: p.title, 
+      link: p.url, 
+      difficulty: p.difficulty 
+    })),
+    useCases: hashTableUseCases.map(uc => uc.description)
   }
-};
-
-// Function to get algorithm animation component based on ID
-export const getAlgorithmAnimation = (algorithmId: string) => {
-  switch (algorithmId) {
-    case 'binary-search':
-      return {
-        title: 'Binary Search Animation',
-        description: 'This animation demonstrates how binary search iteratively halves the search space until it locates the target element.'
-      };
-    case 'quick-sort':
-      return {
-        title: 'Quick Sort Animation',
-        description: 'This animation shows the partitioning and divide-and-conquer process of the quick sort algorithm.'
-      };
-    case 'dijkstra':
-      return {
-        title: 'Dijkstra Algorithm Animation',
-        description: 'This animation visualizes how Dijkstra\'s algorithm finds the shortest path in a weighted graph.'
-      };
-    case 'heap-sort':
-      return {
-        title: 'Heap Sort Animation',
-        description: 'This animation shows the process of building a max heap and then extracting elements one by one to create a sorted array.'
-      };
-    case 'merge-sort':
-      return {
-        title: 'Merge Sort Animation',
-        description: 'This animation demonstrates the divide-and-conquer approach of merge sort, splitting the array into subarrays and merging them in sorted order.'
-      };
-    case 'breadth-first-search':
-      return {
-        title: 'Breadth-First Search Animation',
-        description: 'This animation demonstrates how BFS explores a graph level by level, visiting all nodes at the current depth before moving to nodes at the next depth.'
-      };
-    default:
-      return null;
-  }
-};
-
-// Get time complexity descriptions
-export const getTimeComplexityDetails = (algorithmId: string) => {
-  const complexityDetails: Record<string, { best: string, average: string, worst: string }> = {
-    'binary-search': {
-      best: 'O(1)',
-      average: 'O(log n)',
-      worst: 'O(log n)'
-    },
-    'quick-sort': {
-      best: 'O(n log n)',
-      average: 'O(n log n)',
-      worst: 'O(n²)'
-    },
-    'dijkstra': {
-      best: 'O((V + E) log V)',
-      average: 'O((V + E) log V)',
-      worst: 'O((V + E) log V)'
-    },
-    'heap-sort': {
-      best: 'O(n log n)',
-      average: 'O(n log n)',
-      worst: 'O(n log n)'
-    },
-    'merge-sort': {
-      best: 'O(n log n)',
-      average: 'O(n log n)',
-      worst: 'O(n log n)'
-    },
-    'breadth-first-search': {
-      best: 'O(V + E)',
-      average: 'O(V + E)',
-      worst: 'O(V + E)'
-    }
-  };
-
-  return complexityDetails[algorithmId] || { best: '-', average: '-', worst: '-' };
-};
-
-/**
- * Generate a code snippet with syntax highlighting classes
- * Note: This is a simple implementation. In a real app,
- * you'd use libraries like Prism.js or highlight.js
- */
-export const formatCodeSnippet = (code: string): string => {
-  // In a real implementation, this would apply syntax highlighting
-  return code;
-};
-
-/**
- * Extract key points from algorithm description
- */
-export const extractKeyPoints = (description: string): string[] => {
-  // Simple implementation that splits by periods and filters out short sentences
-  return description
-    .split('.')
-    .map(s => s.trim())
-    .filter(s => s.length > 20)
-    .map(s => s + '.');
-};
-
-/**
- * Compare two algorithms by their average time complexity (simplified)
- */
-export const compareAlgorithms = (a: { timeComplexity: string }, b: { timeComplexity: string }): number => {
-  const complexityOrder: Record<string, number> = {
-    'O(1)': 1,
-    'O(log n)': 2,
-    'O(n)': 3,
-    'O(n log n)': 4,
-    'O(n²)': 5,
-    'O(2^n)': 6,
-    'O(n!)': 7
-  };
-
-  // Extract the primary complexity (ignoring "average", "worst case", etc.)
-  const getMainComplexity = (complexity: string): number => {
-    for (const [key, value] of Object.entries(complexityOrder)) {
-      if (complexity.includes(key)) {
-        return value;
-      }
-    }
-    return 99; // Unknown complexity
-  };
-
-  return getMainComplexity(a.timeComplexity) - getMainComplexity(b.timeComplexity);
 };
