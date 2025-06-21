@@ -27,10 +27,10 @@ const Navbar = () => {
                 Home
               </Link>
               <Link
-                to="/search"
+                to="/algorithms"
                 className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700"
               >
-                Search
+                Algorithms
               </Link>
 
               {/* Auth buttons */}
@@ -93,11 +93,11 @@ const Navbar = () => {
               Home
             </Link>
             <Link
-              to="/search"
+              to="/algorithms"
               className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700"
               onClick={() => setIsMenuOpen(false)}
             >
-              Search
+              Algorithms
             </Link>
 
             {/* Auth button for mobile */}

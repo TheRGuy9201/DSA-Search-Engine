@@ -6,8 +6,8 @@ import type { Problem } from '../types';
 import { useParams, useNavigate } from 'react-router-dom';
 
 interface PlatformPageProps {
-    platform: string;
-    onBackClick: () => void;
+    platform?: string;
+    onBackClick?: () => void;
 }
 
 const PlatformPage: React.FC<PlatformPageProps> = ({ platform: propsPlatform, onBackClick }) => {
@@ -15,7 +15,7 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform: propsPlatform, on
     const navigate = useNavigate();
 
     // Use the platform from props or from URL params
-    const platform = urlPlatformName || propsPlatform;
+    const platform = urlPlatformName || propsPlatform || '';
 
     // States for problem data
     const [problems, setProblems] = useState<Problem[]>([]);
@@ -527,10 +527,10 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform: propsPlatform, on
             <div className="w-full max-w-6xl relative">                {/* Back button - returns to home */}
                 <button
                     onClick={() => {
-                        if (urlPlatformName) {
-                            navigate('/');
-                        } else {
+                        if (onBackClick) {
                             onBackClick();
+                        } else {
+                            navigate('/');
                         }
                     }}
                     className="absolute left-0 top-0 flex items-center space-x-2 px-4 py-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-all duration-300"

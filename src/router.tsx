@@ -4,7 +4,7 @@ import App from './App';
 
 // Use dynamic imports for code-splitting
 const HomePage = lazy(() => import('./pages/HomePage'));
-const SearchPage = lazy(() => import('./pages/SearchPage'));
+const AlgorithmsPage = lazy(() => import('./pages/AlgorithmsPage'));
 const AlgorithmDetailPage = lazy(() => import('./pages/AlgorithmDetailPage'));
 const SignInPage = lazy(() => import('./pages/SignInPage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
@@ -29,6 +29,29 @@ const HomepageWrapper = () => {
   );
 };
 
+// PlatformPage wrapper with navigate
+const PlatformPageWrapper = () => {
+  const navigate = useNavigate();
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <PlatformPage onBackClick={() => navigate('/')} />
+    </Suspense>
+  );
+};
+
+// AlgorithmDetailPage wrapper with loading state
+const AlgorithmDetailPageWrapper = () => {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <AlgorithmDetailPage />
+    </Suspense>
+  );
+};
+
+/**
+ * Router configuration for React Router v6.
+ * Uses code splitting with suspense for better performance.
+ */
 const router = createBrowserRouter([
   {
     path: '/',
@@ -36,15 +59,19 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <HomepageWrapper />,
+        element: <HomepageWrapper />
+      },
+      {
+        path: 'algorithms',
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AlgorithmsPage />
+          </Suspense>
+        ),
       },
       {
         path: 'search',
-        element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <SearchPage />
-          </Suspense>
-        ),
+        element: <Navigate to="/algorithms" replace />,
       },
       {
         path: 'settings',
@@ -72,11 +99,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'algorithm/:id',
-        element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <AlgorithmDetailPage />
-          </Suspense>
-        ),
+        element: <AlgorithmDetailPageWrapper />
       },
       {
         path: 'signin',
@@ -88,11 +111,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'platform/:platformName',
-        element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <PlatformPage platform="" onBackClick={() => { }} />
-          </Suspense>
-        ),
+        element: <PlatformPageWrapper />
       },
       {
         path: '*',

@@ -18,9 +18,10 @@ export type Example = {
 };
 
 // Mock data - in a real app, this would come from an API
+// CRITICAL: Make sure all IDs are string primitives to avoid "Cannot convert object to primitive value" errors
 const mockAlgorithms: Algorithm[] = [
   {
-    id: 'binary-search',
+    id: String('binary-search'),
     name: 'Binary Search',
     category: 'Search',
     timeComplexity: 'O(log n)',
@@ -107,6 +108,32 @@ function partition(arr, left, right) {
     timeComplexity: 'Access: O(n), Insert: O(1)',
     spaceComplexity: 'O(n)',
     description: 'A linear data structure where each element points to the next element.',
+    implementation: `class Node {
+  constructor(data) {
+    this.data = data;
+    this.next = null;
+  }
+}
+
+class LinkedList {
+  constructor() {
+    this.head = null;
+  }
+  
+  insertFront(data) {
+    const newNode = new Node(data);
+    newNode.next = this.head;
+    this.head = newNode;
+  }
+  
+  printList() {
+    let current = this.head;
+    while (current !== null) {
+      console.log(current.data);
+      current = current.next;
+    }
+  }
+}`,
     useCases: [
       'Implementing stacks and queues',
       'Creating dynamic memory allocation',
@@ -121,6 +148,23 @@ function partition(arr, left, right) {
     timeComplexity: 'O(V + E)',
     spaceComplexity: 'O(V)',
     description: 'Algorithm for traversing or searching tree or graph data structures that explores all the vertices at the present depth before moving to vertices at the next depth level.',
+    implementation: `function bfs(graph, start) {
+  const visited = new Set();
+  const queue = [start];
+  visited.add(start);
+  
+  while (queue.length > 0) {
+    const vertex = queue.shift();
+    console.log(vertex);
+    
+    for (const neighbor of graph[vertex]) {
+      if (!visited.has(neighbor)) {
+        visited.add(neighbor);
+        queue.push(neighbor);
+      }
+    }
+  }
+}`,
     useCases: [
       'Shortest path in unweighted graphs',
       'Web crawlers',
@@ -135,6 +179,16 @@ function partition(arr, left, right) {
     timeComplexity: 'O(V + E)',
     spaceComplexity: 'O(V)',
     description: 'Algorithm for traversing or searching tree or graph data structures that explores as far as possible along each branch before backtracking.',
+    implementation: `function dfs(graph, start, visited = new Set()) {
+  visited.add(start);
+  console.log(start);
+  
+  for (const neighbor of graph[start]) {
+    if (!visited.has(neighbor)) {
+      dfs(graph, neighbor, visited);
+    }
+  }
+}`,
     useCases: [
       'Topological sorting',
       'Finding connected components',
@@ -149,6 +203,42 @@ function partition(arr, left, right) {
     timeComplexity: 'Average: O(1) for search, insert, delete',
     spaceComplexity: 'O(n)',
     description: 'A data structure that implements an associative array abstract data type, a structure that can map keys to values.',
+    implementation: `class HashTable {
+  constructor(size = 53) {
+    this.keyMap = new Array(size);
+  }
+
+  _hash(key) {
+    let total = 0;
+    let WEIRD_PRIME = 31;
+    for (let i = 0; i < Math.min(key.length, 100); i++) {
+      let char = key[i];
+      let value = char.charCodeAt(0) - 96;
+      total = (total * WEIRD_PRIME + value) % this.keyMap.length;
+    }
+    return total;
+  }
+
+  set(key, value) {
+    let index = this._hash(key);
+    if (!this.keyMap[index]) {
+      this.keyMap[index] = [];
+    }
+    this.keyMap[index].push([key, value]);
+  }
+
+  get(key) {
+    let index = this._hash(key);
+    if (this.keyMap[index]) {
+      for (let i = 0; i < this.keyMap[index].length; i++) {
+        if (this.keyMap[index][i][0] === key) {
+          return this.keyMap[index][i][1];
+        }
+      }
+    }
+    return undefined;
+  }
+}`,
     useCases: [
       'Implementing dictionaries',
       'Database indexing',
@@ -167,12 +257,37 @@ const apiService = {
   searchAlgorithms: async (searchTerm?: string): Promise<Algorithm[]> => {
     await delay(500); // Simulate network delay
 
+    // CRITICAL: Ensure all IDs are primitive strings to prevent "Cannot convert object to primitive value" errors
+    const algorithms = mockAlgorithms.map(algo => {
+      // Handle any potential edge cases
+      let safeId;
+      try {
+        if (algo.id === undefined || algo.id === null) {
+          console.error('Encountered algorithm with missing id', algo);
+          safeId = `unknown-${Math.random().toString(36).substring(7)}`;
+        } else if (typeof algo.id === 'object') {
+          console.error('Encountered algorithm with object id', algo);
+          safeId = `unknown-${Math.random().toString(36).substring(7)}`;
+        } else {
+          safeId = String(algo.id);
+        }
+      } catch (error) {
+        console.error('Error converting algorithm ID to string', error);
+        safeId = `unknown-${Math.random().toString(36).substring(7)}`;
+      }
+
+      return {
+        ...algo,
+        id: safeId // Ensure ID is always a primitive string
+      };
+    });
+
     if (!searchTerm) {
-      return mockAlgorithms;
+      return algorithms;
     }
 
     const term = searchTerm.toLowerCase();
-    return mockAlgorithms.filter(algo =>
+    return algorithms.filter(algo =>
       algo.name.toLowerCase().includes(term) ||
       algo.category.toLowerCase().includes(term) ||
       algo.description.toLowerCase().includes(term) ||
@@ -183,7 +298,36 @@ const apiService = {
   // Get a single algorithm by ID
   getAlgorithmById: async (id: string): Promise<Algorithm | undefined> => {
     await delay(300); // Simulate network delay
-    return mockAlgorithms.find(algo => algo.id === id);
+    
+    try {
+      // CRITICAL: Convert search ID to string for reliable comparison
+      const searchId = String(id);
+      console.log(`Looking for algorithm with ID: "${searchId}"`);
+      
+      // Find algorithm by comparing string representations
+      const algorithm = mockAlgorithms.find(algo => {
+        const algoId = String(algo.id);
+        const match = algoId === searchId;
+        if (match) {
+          console.log(`Found match: ${algoId} === ${searchId}`);
+        }
+        return match;
+      });
+      
+      // Ensure the ID is a string in the returned object
+      if (algorithm) {
+        return { 
+          ...algorithm, 
+          id: String(algorithm.id) // Force ID to be a string 
+        };
+      }
+      
+      console.log(`No algorithm found with ID: "${searchId}"`);
+      return undefined;
+    } catch (error) {
+      console.error('Error in getAlgorithmById:', error);
+      return undefined;
+    }
   },
 
   // Get algorithms by category

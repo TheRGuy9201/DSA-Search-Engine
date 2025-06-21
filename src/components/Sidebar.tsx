@@ -15,7 +15,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
 
     const navItems = [
         { name: 'Home', icon: <HomeIcon />, path: '/' },
-        { name: 'Search', icon: <SearchIcon />, path: '/search' },
+        { name: 'Algorithms', icon: <SearchIcon />, path: '/algorithms' },
         { name: 'Problemset', icon: <ProblemsetIcon />, path: '/problemset' },
         { name: 'Settings', icon: <SettingsIcon />, path: '/settings' },
         { name: 'More', icon: <PlusIcon />, path: '/more' },
