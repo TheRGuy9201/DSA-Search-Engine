@@ -162,10 +162,9 @@ export const AlgorithmContent: React.FC<AlgorithmContentProps> = ({ algorithm })
               {activeTab === 'description' && (
                 <div className="prose prose-invert max-w-none">
                   <h2 className="text-xl font-semibold mb-4 text-white">Description</h2>
-                  <p className="text-gray-300">{algorithm.description}</p>                {animationVisible && animationData && (
-                  <div
+                  <p className="text-gray-300">{algorithm.description}</p>                {animationVisible && animationData && (                  <div
   className={`p-8 rounded-xl border border-gray-700/50 backdrop-blur-sm transform hover:scale-[1.02] transition-transform
-    ${safeId === 'breadth-first-search' ? 'mt-8 bg-grey-800/40 min-h-[700px]' : 'mt-8 bg-gray-800/50'}`}
+    ${safeId === 'breadth-first-search' || safeId === 'depth-first-search' || safeId === 'linked-list' ? 'mt-8 bg-grey-800/40 min-h-[700px]' : 'mt-8 bg-gray-800/50'}`}
 >
 
                     <motion.h3 

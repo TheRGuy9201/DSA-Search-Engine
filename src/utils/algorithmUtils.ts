@@ -2,6 +2,8 @@ import React from 'react';
 import { QuickSortAnimation } from '../components/animations/QuickSortAnimation';
 import { BinarySearchAnimation } from '../components/animations/BinarySearchAnimation';
 import { BFSAnimation } from '../components/animations/BFSAnimation';
+import { DFSAnimation } from '../components/animations/DFSAnimation';
+import { LinkedListAnimation } from '../components/animations/LinkedListAnimation';
 
 // Utility functions
 export const formatComplexity = (complexity: string): string => {
@@ -72,6 +74,16 @@ const animationMap: Record<string, AnimationData> = {
     component: BFSAnimation,
     title: 'Breadth-First Search Visualization',
     description: 'Observe how BFS explores a graph by visiting all neighbors of a node before moving to the next level. The blue node is currently being explored, orange nodes are in the queue waiting to be visited, and green nodes have been fully explored.'
+  },
+  'depth-first-search': {
+    component: DFSAnimation,
+    title: 'Depth-First Search Visualization',
+    description: 'Watch how DFS explores a graph by following a path as far as possible before backtracking. The amber node is currently being explored, purple nodes are in the stack waiting to be visited, and green nodes have been fully explored.'
+  },
+  'linked-list': {
+    component: LinkedListAnimation,
+    title: 'Linked List Operations Visualization',
+    description: 'Explore how linked list operations work through this interactive visualization. Insert new nodes at the end of the list, delete nodes from the beginning, and traverse the entire list to see how pointers connect each node to the next one.'
   }
 };
 
