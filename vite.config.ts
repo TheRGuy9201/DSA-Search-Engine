@@ -29,6 +29,7 @@ export default defineConfig({
     outDir: 'dist',
     chunkSizeWarningLimit: 600, // Increase from default 500kb to 600kb
     sourcemap: false, // Disable sourcemaps for production to reduce file size
+    cssCodeSplit: true, // Ensure CSS is properly handled
     rollupOptions: {
       output: {
         manualChunks: (id) => {
@@ -48,8 +49,14 @@ export default defineConfig({
 
             return 'vendor'; // Other 3rd-party dependencies
           }
+        },
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name && assetInfo.name.endsWith('.css')) {
+            return 'assets/[name][extname]';
+          }
+          return 'assets/[name]-[hash][extname]';
         }
-      },
+      }
     }
   }
 })

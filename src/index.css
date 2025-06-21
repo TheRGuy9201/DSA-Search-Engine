@@ -1,5 +1,9 @@
+/* Tailwind directives */
+/* CSS Reset and base styles */
 @tailwind base;
+/* Component classes */
 @tailwind components;
+/* Utility classes */
 @tailwind utilities;
 
 /* Custom styles for smooth transitions and animations */
