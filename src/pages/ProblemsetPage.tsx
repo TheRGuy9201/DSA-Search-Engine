@@ -154,8 +154,7 @@ const Tooltip = ({ children, text }: { children: React.ReactNode, text: string }
 const CheckboxFilter = ({ 
   label, 
   options, 
-  selectedValues, 
-  onChange 
+  selectedValues,
 }: { 
   label: string, 
   options: string[], 
@@ -354,13 +353,13 @@ const ProblemsetPage: React.FC = () => {
     return <SortIcon direction={filters.sortOrder} />;
   };
 
-  // Toggle search expansion
-  const toggleSearchExpansion = () => {
-    setIsSearchExpanded(!isSearchExpanded);
-    if (isFilterDropdownVisible) {
-      setIsFilterDropdownVisible(false);
-    }
-  };
+  // // Toggle search expansion
+  // const toggleSearchExpansion = () => {
+  //   setIsSearchExpanded(!isSearchExpanded);
+  //   if (isFilterDropdownVisible) {
+  //     setIsFilterDropdownVisible(false);
+  //   }
+  // };
 
   // Toggle filter dropdown
   const toggleFilterDropdown = () => {
