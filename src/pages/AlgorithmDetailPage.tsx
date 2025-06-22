@@ -65,13 +65,14 @@ const AlgorithmDetailPage: React.FC = () => {
         if (!data) {
           setError('Algorithm not found');
           return;
-        }
-
-        // Validate required fields
-        if (!data.name || !data.implementation) {
-          setError('Invalid algorithm data');
+        }        // Validate required fields
+        if (!data.name) {
+          setError('Invalid algorithm data: missing name');
           return;
         }
+        
+        // Implementation might be provided through algorithmImplementationsMap
+        // so we don't want to block algorithms that use that approach
         
         // Ensure all fields are properly typed
         setAlgorithm({

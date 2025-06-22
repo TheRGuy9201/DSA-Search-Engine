@@ -102,101 +102,6 @@ function partition(arr, left, right) {
     ]
   },
   {
-    id: 'linked-list',
-    name: 'Linked List',
-    category: 'Data Structure',
-    timeComplexity: 'Access: O(n), Insert: O(1)',
-    spaceComplexity: 'O(n)',
-    description: 'A linear data structure where each element points to the next element.',
-    implementation: `class Node {
-  constructor(data) {
-    this.data = data;
-    this.next = null;
-  }
-}
-
-class LinkedList {
-  constructor() {
-    this.head = null;
-  }
-  
-  insertFront(data) {
-    const newNode = new Node(data);
-    newNode.next = this.head;
-    this.head = newNode;
-  }
-  
-  printList() {
-    let current = this.head;
-    while (current !== null) {
-      console.log(current.data);
-      current = current.next;
-    }
-  }
-}`,
-    useCases: [
-      'Implementing stacks and queues',
-      'Creating dynamic memory allocation',
-      'Building hash tables with chaining',
-      'Representing graphs (adjacency lists)'
-    ]
-  },
-  {
-    id: 'breadth-first-search',
-    name: 'Breadth-First Search (BFS)',
-    category: 'Graph',
-    timeComplexity: 'O(V + E)',
-    spaceComplexity: 'O(V)',
-    description: 'Algorithm for traversing or searching tree or graph data structures that explores all the vertices at the present depth before moving to vertices at the next depth level.',
-    implementation: `function bfs(graph, start) {
-  const visited = new Set();
-  const queue = [start];
-  visited.add(start);
-  
-  while (queue.length > 0) {
-    const vertex = queue.shift();
-    console.log(vertex);
-    
-    for (const neighbor of graph[vertex]) {
-      if (!visited.has(neighbor)) {
-        visited.add(neighbor);
-        queue.push(neighbor);
-      }
-    }
-  }
-}`,
-    useCases: [
-      'Shortest path in unweighted graphs',
-      'Web crawlers',
-      'Finding connected components',
-      'Testing bipartiteness of a graph'
-    ]
-  },
-  {
-    id: 'depth-first-search',
-    name: 'Depth-First Search (DFS)',
-    category: 'Graph',
-    timeComplexity: 'O(V + E)',
-    spaceComplexity: 'O(V)',
-    description: 'Algorithm for traversing or searching tree or graph data structures that explores as far as possible along each branch before backtracking.',
-    implementation: `function dfs(graph, start, visited = new Set()) {
-  visited.add(start);
-  console.log(start);
-  
-  for (const neighbor of graph[start]) {
-    if (!visited.has(neighbor)) {
-      dfs(graph, neighbor, visited);
-    }
-  }
-}`,
-    useCases: [
-      'Topological sorting',
-      'Finding connected components',
-      'Maze generation',
-      'Cycle detection in graphs'
-    ]
-  },
-  {
     id: 'hash-table',
     name: 'Hash Table',
     category: 'Data Structure',
@@ -244,6 +149,197 @@ class LinkedList {
       'Database indexing',
       'Caching',
       'Symbol tables in compilers'
+    ]
+  },
+  // Adding new algorithms
+  {
+    id: 'merge-sort',
+    name: 'Merge Sort',
+    category: 'Sort',
+    timeComplexity: 'O(n log n)',
+    spaceComplexity: 'O(n)',
+    description: 'A divide-and-conquer algorithm that divides the input array into two halves, recursively sorts them, and then merges the sorted halves.',
+    implementation: `function mergeSort(arr) {
+  // Base case: arrays with 0 or 1 element are already sorted
+  if (arr.length <= 1) return arr;
+  
+  // Split the array into two halves
+  const mid = Math.floor(arr.length / 2);
+  const leftArr = arr.slice(0, mid);
+  const rightArr = arr.slice(mid);
+  
+  // Recursively sort both halves
+  const leftSorted = mergeSort(leftArr);
+  const rightSorted = mergeSort(rightArr);
+  
+  // Merge the sorted halves
+  return merge(leftSorted, rightSorted);
+}
+
+function merge(left, right) {
+  const result = [];
+  let leftIndex = 0;
+  let rightIndex = 0;
+  
+  // Compare elements from both arrays and add smaller one to result
+  while (leftIndex < left.length && rightIndex < right.length) {
+    if (left[leftIndex] < right[rightIndex]) {
+      result.push(left[leftIndex]);
+      leftIndex++;
+    } else {
+      result.push(right[rightIndex]);
+      rightIndex++;
+    }
+  }
+  
+  // Add remaining elements from either array
+  return [...result, ...left.slice(leftIndex), ...right.slice(rightIndex)];
+}`,
+    useCases: [
+      'Stable sorting of large datasets',
+      'External sorting',
+      'Sorting linked lists',
+      'Counting inversions in an array'
+    ]
+  },
+  {
+    id: 'breadth-first-search',
+    name: 'Breadth-First Search',
+    category: 'Graph',
+    timeComplexity: 'O(V + E) where V is vertices and E is edges',
+    spaceComplexity: 'O(V)',
+    description: 'A graph traversal algorithm that explores all neighbors at the present depth before moving on to nodes at the next depth level.',
+    useCases: [
+      'Finding shortest path in unweighted graphs',
+      'Web crawlers',
+      'Social networking features',
+      'Garbage collection algorithms'
+    ]
+  },
+  {
+    id: 'depth-first-search',
+    name: 'Depth-First Search',
+    category: 'Graph',
+    timeComplexity: 'O(V + E) where V is vertices and E is edges',
+    spaceComplexity: 'O(V)',
+    description: 'A graph traversal algorithm that explores as far as possible along each branch before backtracking.',
+    useCases: [
+      'Topological sorting',
+      'Finding connected components',
+      'Maze generation',
+      'Solving puzzles with backtracking'
+    ]
+  },
+  {
+    id: 'linked-list',
+    name: 'Linked List',
+    category: 'Data Structure',
+    timeComplexity: 'O(1) for insertion/deletion at beginning, O(n) for access',
+    spaceComplexity: 'O(n)',
+    description: 'A linear data structure where elements are stored in nodes and each node points to the next node in the sequence.',
+    useCases: [
+      'Implementing stacks and queues',
+      'Dynamic memory allocation',
+      'Representing graphs (adjacency lists)',
+      'Undo functionality in applications'
+    ]
+  },
+  {
+    id: 'dijkstra',
+    name: 'Dijkstra\'s Algorithm',
+    category: 'Graph',
+    timeComplexity: 'O(V² without heap, O(E + V log V) with binary heap',
+    spaceComplexity: 'O(V)',
+    description: 'A shortest-path algorithm that finds the shortest path from a source node to all other nodes in a weighted graph with positive edge weights.',
+    useCases: [
+      'GPS navigation systems',
+      'Network routing protocols',
+      'Flight scheduling',
+      'Robotics path planning'
+    ]
+  },
+  {
+    id: 'heap-sort',
+    name: 'Heap Sort',
+    category: 'Sort',
+    timeComplexity: 'O(n log n)',
+    spaceComplexity: 'O(1)',
+    description: 'A comparison-based sorting algorithm that uses a binary heap data structure to build a max-heap and then repeatedly extracts the maximum element.',
+    useCases: [
+      'In-place sorting with guaranteed O(n log n) performance',
+      'Priority queue implementation',
+      'External sorting with limited memory',
+      'Systems with real-time constraints'
+    ]
+  },
+  {
+    id: 'dynamic-programming',
+    name: 'Dynamic Programming',
+    category: 'Dynamic Programming',
+    timeComplexity: 'Varies by problem',
+    spaceComplexity: 'Varies by problem',
+    description: 'A method for solving complex problems by breaking them down into simpler subproblems and storing the solutions to avoid redundant calculations.',
+    useCases: [
+      'Optimization problems',
+      'Resource allocation',
+      'Sequence alignment in bioinformatics',
+      'Shortest path algorithms'
+    ]
+  },
+  {
+    id: 'trie',
+    name: 'Trie',
+    category: 'Data Structure',
+    timeComplexity: 'O(m) for operations where m is key length',
+    spaceComplexity: 'O(ALPHABET_SIZE * m * n) where n is number of keys',
+    description: 'A tree-like data structure that stores a dynamic set of strings, with nodes representing characters and paths representing words or prefixes.',
+    useCases: [
+      'Autocomplete suggestions',
+      'Spell checkers',
+      'IP routing',
+      'Word games'
+    ]
+  },
+  {
+    id: 'a-star-search',
+    name: 'A* Search Algorithm',
+    category: 'Pathfinding',
+    timeComplexity: 'O(b^d) where b is branching factor and d is depth',
+    spaceComplexity: 'O(b^d)',
+    description: 'An informed search algorithm that finds the shortest path between nodes using a heuristic function to guide the search.',
+    useCases: [
+      'Game pathfinding',
+      'Robot navigation',
+      'Route planning in maps',
+      'Puzzle solving'
+    ]
+  },
+  {
+    id: 'union-find',
+    name: 'Union-Find',
+    category: 'Union Find',
+    timeComplexity: 'Nearly O(1) amortized with path compression',
+    spaceComplexity: 'O(n)',
+    description: 'A data structure that keeps track of elements partitioned into disjoint sets, with operations to find which set an element belongs to and merge sets.',
+    useCases: [
+      'Detecting cycles in undirected graphs',
+      'Finding connected components',
+      'Kruskal\'s algorithm for minimum spanning trees',
+      'Network connectivity'
+    ]
+  },
+  {
+    id: 'kmp-algorithm',
+    name: 'KMP Algorithm',
+    category: 'String',
+    timeComplexity: 'O(n + m) where n is text length and m is pattern length',
+    spaceComplexity: 'O(m)',
+    description: 'A string-matching algorithm that uses information about previous partial matches to avoid redundant character comparisons.',
+    useCases: [
+      'Efficient string searching',
+      'Pattern matching in texts',
+      'Bioinformatics for DNA pattern matching',
+      'Plagiarism detection'
     ]
   }
 ];

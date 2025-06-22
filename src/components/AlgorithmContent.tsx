@@ -195,13 +195,16 @@ export const AlgorithmContent: React.FC<AlgorithmContentProps> = ({ algorithm })
               )}
               {activeTab === 'implementation' && (
                 <div>
-                  <h2 className="text-xl font-semibold mb-4 text-white">Implementation</h2>
-                  {algorithmData?.implementations ? (
+                  <h2 className="text-xl font-semibold mb-4 text-white">Implementation</h2>                  {algorithmData?.implementations ? (
                     <CodeImplementation implementations={algorithmData.implementations} />
-                  ) : (
+                  ) : algorithm.implementation ? (
                     <pre className="bg-gray-800 p-4 rounded-lg overflow-x-auto text-gray-300">
                       <code>{algorithm.implementation}</code>
                     </pre>
+                  ) : (
+                    <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 text-center text-gray-400">
+                      <p>No implementation available for this algorithm.</p>
+                    </div>
                   )}
                 </div>
               )}
