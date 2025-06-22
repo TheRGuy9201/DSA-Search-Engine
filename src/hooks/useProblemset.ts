@@ -12,6 +12,9 @@ interface UseProblemsetFilters {
   difficulty: string;
   tag: string;
   status: string;
+  bookmarkedOnly: boolean;
+  sortBy: string;
+  sortOrder: 'asc' | 'desc';
 }
 
 interface UseProblemsetReturn {
@@ -27,11 +30,15 @@ interface UseProblemsetReturn {
   setDifficulty: (difficulty: string) => void;
   setTag: (tag: string) => void;
   setStatus: (status: string) => void;
+  setBookmarkedOnly: (bookmarkedOnly: boolean) => void;
+  setSortBy: (sortBy: string) => void;
+  setSortOrder: (order: 'asc' | 'desc') => void;
+  resetFilters: () => void;
   handleSearch: (e: React.FormEvent) => void;
-  problemsWithUserData: Problem[];
-  toggleBookmark: (id: number) => void;
-  updateProblemStatus: (id: number, status: 'Solved' | 'Attempted' | 'Not Attempted') => void;
-  isBookmarked: (id: number) => boolean;
+  problemsWithUserData: Problem[];  
+  toggleBookmark: (id: number, source?: string) => void;
+  updateProblemStatus: (id: number, status: 'Solved' | 'Attempted' | 'Not Attempted', source?: string) => void;
+  isBookmarked: (id: number, source?: string) => boolean;
 }
 
 interface ProblemResult {
@@ -52,6 +59,11 @@ export const useProblemset = (itemsPerPageParam: number = 20): UseProblemsetRetu
   const [difficulty, setDifficulty] = useState<string>('All');
   const [tag, setTag] = useState<string>('All');
   const [status, setStatus] = useState<string>('All');
+  const [bookmarkedOnly, setBookmarkedOnly] = useState<boolean>(false);
+  
+  // Sorting state
+  const [sortBy, setSortBy] = useState<string>('id');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -61,6 +73,19 @@ export const useProblemset = (itemsPerPageParam: number = 20): UseProblemsetRetu
   // Apply user data (solved status, bookmarks) to problems
   const { problemsWithUserData, toggleBookmark, updateProblemStatus, isBookmarked } = useProblemUserData(problems);
 
+  // Reset all filters to default values
+  const resetFilters = useCallback(() => {
+    setSearchTerm('');
+    setPlatform('All');
+    setDifficulty('All');
+    setTag('All');
+    setStatus('All');
+    setBookmarkedOnly(false);
+    setSortBy('id');
+    setSortOrder('asc');
+    setCurrentPage(1);
+  }, []);
+
   // Function to fetch problems
   const fetchProblems = useCallback(async () => {
     setLoading(true);
@@ -69,7 +94,8 @@ export const useProblemset = (itemsPerPageParam: number = 20): UseProblemsetRetu
       searchTerm: searchTerm.trim(),
       difficulty: difficulty !== 'All' ? difficulty : undefined,
       tags: tag !== 'All' ? [tag] : undefined,
-      status: status !== 'All' ? status : undefined
+      status: status !== 'All' ? status : undefined,
+      bookmarkedOnly: bookmarkedOnly
     };
 
     try {
@@ -108,9 +134,6 @@ export const useProblemset = (itemsPerPageParam: number = 20): UseProblemsetRetu
         
         combinedTotal = leetcodeResult.totalProblems + codeforcesResult.totalProblems;
 
-        // Sort by id for now (could be improved with more sophisticated sorting)
-        combinedProblems.sort((a, b) => a.id - b.id);
-
         // Take only itemsPerPage items
         combinedProblems = combinedProblems.slice(0, itemsPerPage);
       } else if (platform === 'LeetCode') {
@@ -142,12 +165,12 @@ export const useProblemset = (itemsPerPageParam: number = 20): UseProblemsetRetu
     } finally {
       setLoading(false);
     }
-  }, [currentPage, platform, difficulty, tag, status, searchTerm, itemsPerPage]);
+  }, [currentPage, platform, difficulty, tag, status, searchTerm, bookmarkedOnly, itemsPerPage, sortBy, sortOrder]);
 
   // Fetch problems when filters or pagination change
   useEffect(() => {
     fetchProblems();
-  }, [fetchProblems, currentPage, platform, difficulty, tag, status]);
+  }, [fetchProblems, currentPage, platform, difficulty, tag, status, bookmarkedOnly, sortBy, sortOrder]);
 
   // Reset to page 1 when search term changes and user submits search
   const handleSearch = (e: React.FormEvent) => {
@@ -168,13 +191,20 @@ export const useProblemset = (itemsPerPageParam: number = 20): UseProblemsetRetu
       platform,
       difficulty,
       tag,
-      status
+      status,
+      bookmarkedOnly,
+      sortBy,
+      sortOrder
     },
     setSearchTerm,
     setPlatform,
     setDifficulty,
     setTag,
     setStatus,
+    setBookmarkedOnly,
+    setSortBy,
+    setSortOrder,
+    resetFilters,
     handleSearch,
     problemsWithUserData,
     toggleBookmark,

@@ -77,6 +77,29 @@ export const fetchCodeforcesProblems = async (): Promise<ProblemsResponse> => {
     }
 };
 
+// Helper function to get bookmarked problems
+const getBookmarkedProblems = (source: string): number[] => {
+    try {
+        const savedUserData = localStorage.getItem('dsa-search-engine-problem-data');
+        if (!savedUserData) return [];
+        
+        const userData = JSON.parse(savedUserData);
+        const bookmarkedIds: number[] = [];
+        
+        Object.entries(userData).forEach(([key, value]: [string, any]) => {
+            if (key.startsWith(`${source}-`) && value.bookmarked) {
+                const id = parseInt(key.split('-')[1]);
+                if (!isNaN(id)) bookmarkedIds.push(id);
+            }
+        });
+        
+        return bookmarkedIds;
+    } catch (error) {
+        console.error('Error getting bookmarked problems:', error);
+        return [];
+    }
+};
+
 /**
  * Get paginated LeetCode problems with optional filtering
  */
@@ -89,6 +112,8 @@ export const getPaginatedLeetcodeProblems = async (
         tags?: string[];
         status?: string;
         bookmarkedOnly?: boolean;
+        sortBy?: string;
+        sortOrder?: 'asc' | 'desc';
     } = {}
 ): Promise<{ problems: Problem[]; totalProblems: number; totalPages: number }> => {
     const { problems } = await fetchLeetcodeProblems();
@@ -96,10 +121,12 @@ export const getPaginatedLeetcodeProblems = async (
     // Apply filters
     let filteredProblems = [...problems];
 
+    // Filter by difficulty
     if (filters.difficulty && filters.difficulty !== 'All') {
         filteredProblems = filteredProblems.filter(p => p.difficulty === filters.difficulty);
     }
 
+    // Filter by search term
     if (filters.searchTerm) {
         const searchLower = filters.searchTerm.toLowerCase();
         filteredProblems = filteredProblems.filter(p =>
@@ -108,16 +135,45 @@ export const getPaginatedLeetcodeProblems = async (
         );
     }
 
+    // Filter by tags
     if (filters.tags && filters.tags.length > 0) {
         filteredProblems = filteredProblems.filter(p => {
             if (!p.tags || p.tags.length === 0) return false;
 
-            // Check if the problem contains ALL selected tags
-            return filters.tags!.every(filterTag =>
+            // Check if the problem contains ANY of the selected tags
+            return filters.tags!.some(filterTag =>
                 p.tags!.some(problemTag =>
                     problemTag.toLowerCase().includes(filterTag.toLowerCase())
                 )
             );
+        });
+    }
+
+    // Filter by bookmarked status
+    if (filters.bookmarkedOnly) {
+        const bookmarkedIds = getBookmarkedProblems('LeetCode');
+        filteredProblems = filteredProblems.filter(p => bookmarkedIds.includes(p.id));
+    }
+
+    // Sort problems if sortBy is provided
+    if (filters.sortBy) {
+        filteredProblems.sort((a, b) => {
+            const sortOrder = filters.sortOrder === 'desc' ? -1 : 1;
+            
+            switch (filters.sortBy) {
+                case 'id':
+                    return (a.id - b.id) * sortOrder;
+                case 'title':
+                    return a.title.localeCompare(b.title) * sortOrder;
+                case 'difficulty':
+                    // Custom sort for difficulty levels
+                    const difficultyOrder = { 'Easy': 1, 'Medium': 2, 'Hard': 3 };
+                    const diffA = difficultyOrder[a.difficulty as keyof typeof difficultyOrder] || 0;
+                    const diffB = difficultyOrder[b.difficulty as keyof typeof difficultyOrder] || 0;
+                    return (diffA - diffB) * sortOrder;
+                default:
+                    return 0;
+            }
         });
     }
 
@@ -150,12 +206,17 @@ export const getPaginatedCodeforcesProblems = async (
         tags?: string[];
         status?: string;
         bookmarkedOnly?: boolean;
+        sortBy?: string;
+        sortOrder?: 'asc' | 'desc';
     } = {}
 ): Promise<{ problems: Problem[]; totalProblems: number; totalPages: number }> => {
     const { problems } = await fetchCodeforcesProblems();
 
     // Apply filters
-    let filteredProblems = [...problems]; if (filters.difficulty && filters.difficulty !== 'All') {
+    let filteredProblems = [...problems]; 
+    
+    // Filter by difficulty
+    if (filters.difficulty && filters.difficulty !== 'All') {
         // For Codeforces, filter based on point ranges
         filteredProblems = filteredProblems.filter(p => {
             if (p.points === null || p.points === undefined) {
@@ -184,6 +245,7 @@ export const getPaginatedCodeforcesProblems = async (
         });
     }
 
+    // Filter by search term
     if (filters.searchTerm) {
         const searchLower = filters.searchTerm.toLowerCase();
         filteredProblems = filteredProblems.filter(p =>
@@ -192,6 +254,7 @@ export const getPaginatedCodeforcesProblems = async (
         );
     }
 
+    // Filter by tags
     if (filters.tags && filters.tags.length > 0) {
         filteredProblems = filteredProblems.filter(p => {
             if (!p.tags || p.tags.length === 0) return false;
@@ -202,6 +265,33 @@ export const getPaginatedCodeforcesProblems = async (
                     problemTag.toLowerCase().includes(filterTag.toLowerCase())
                 )
             );
+        });
+    }
+
+    // Filter by bookmarked status
+    if (filters.bookmarkedOnly) {
+        const bookmarkedIds = getBookmarkedProblems('Codeforces');
+        filteredProblems = filteredProblems.filter(p => bookmarkedIds.includes(p.id));
+    }
+
+    // Sort problems if sortBy is provided
+    if (filters.sortBy) {
+        filteredProblems.sort((a, b) => {
+            const sortOrder = filters.sortOrder === 'desc' ? -1 : 1;
+            
+            switch (filters.sortBy) {
+                case 'id':
+                    return (a.id - b.id) * sortOrder;
+                case 'title':
+                    return a.title.localeCompare(b.title) * sortOrder;
+                case 'difficulty':
+                    // Sort by points for Codeforces
+                    const pointsA = a.points || 0;
+                    const pointsB = b.points || 0;
+                    return (pointsA - pointsB) * sortOrder;
+                default:
+                    return 0;
+            }
         });
     }
 
