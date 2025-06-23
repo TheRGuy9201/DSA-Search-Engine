@@ -4,10 +4,15 @@ export interface GoogleUser {
   email: string;
   name: string;
   picture: string;
+  photoURL?: string;
   id: string;
   verified_email?: boolean;
   given_name?: string;
   family_name?: string;
+  leetcodeId?: string;
+  codeforcesId?: string;
+  institution?: string;
+  linkedIn?: string;
 }
 
 /**

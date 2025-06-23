@@ -26,6 +26,12 @@ export const fetchLeetcodeProblems = async (): Promise<ProblemsResponse> => {
 
         const data: ProblemsResponse = await response.json();
 
+        // Add source property to each problem for proper matching with external APIs
+        data.problems = data.problems.map(problem => ({
+            ...problem,
+            source: 'leetcode'
+        }));
+
         // Update cache
         leetcodeProblemsCache = data;
         lastLeetCodeFetchTime = currentTime;
@@ -57,8 +63,13 @@ export const fetchCodeforcesProblems = async (): Promise<ProblemsResponse> => {
 
         const data: ProblemsResponse = await response.json();
 
-        // Filter out problems with null tags
-        data.problems = data.problems.filter(problem => problem.tags && problem.tags.length > 0);
+        // Filter out problems with null tags and add source property
+        data.problems = data.problems
+            .filter(problem => problem.tags && problem.tags.length > 0)
+            .map(problem => ({
+                ...problem,
+                source: 'codeforces'
+            }));
 
         // Update metadata to reflect filtered problems count
         if (data.metadata) {

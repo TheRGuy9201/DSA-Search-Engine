@@ -1,5 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { Problem } from '../types';
+import { useAuth } from '../context/AuthContext';
+import { fetchAllProblemStats, fetchAllSolvedProblemsData } from '../services/problemStatsApi';
+import type { AllSolvedProblems } from '../services/problemStatsApi';
+import { logActivity, getCombinedProblemStatus } from '../services/activityTrackingService';
 
 // Type for storing user data about problems
 interface UserProblemData {
@@ -9,6 +13,9 @@ interface UserProblemData {
     };
 }
 
+// In future implementation, we could use these to map our problems with external API problems
+// For now, we'll rely on user-marked problems and activity tracking
+
 // Helper function to generate composite ID (source-id)
 const generateCompositeId = (id: number, source: string): string => {
     return `${source}-${id}`;
@@ -17,8 +24,48 @@ const generateCompositeId = (id: number, source: string): string => {
 // Custom hook to manage problem user data (bookmarks and status)
 export const useProblemUserData = (problems: Problem[]) => {
     const [userData, setUserData] = useState<UserProblemData>({});
+    const [externalSolvedProblems, setExternalSolvedProblems] = useState<AllSolvedProblems | null>(null);
 
-    // Load user data from localStorage on initial render
+    // Get current user details from AuthContext
+    const { currentUser } = useAuth();
+
+    // Function to fetch statistics and solved problem lists from external platforms
+    const fetchExternalPlatformsData = useCallback(async () => {
+        if (!currentUser?.leetcodeId && !currentUser?.codeforcesId) {
+            console.log("No external platform IDs found in user profile");
+            return;
+        }
+
+        try {
+            // Fetch aggregated stats
+            const stats = await fetchAllProblemStats(currentUser?.leetcodeId || '', currentUser?.codeforcesId || '');
+            console.log('Fetched external platform stats:', stats);
+            
+            // Fetch actual solved problem lists
+            const solvedProblems = await fetchAllSolvedProblemsData(
+                currentUser?.leetcodeId || '', 
+                currentUser?.codeforcesId || ''
+            );
+            console.log('Fetched solved problems:', 
+                {
+                    leetcode: { 
+                        count: solvedProblems.leetcode.solvedProblemIds?.length || 0,
+                        slugs: solvedProblems.leetcode.solvedProblemSlugs?.length || 0 
+                    },
+                    codeforces: { 
+                        count: solvedProblems.codeforces.solvedProblemIds?.length || 0
+                    }
+                }
+            );
+            
+            // Store the list of solved problems
+            setExternalSolvedProblems(solvedProblems);
+        } catch (error) {
+            console.error('Error fetching external platform data:', error);
+        }
+    }, [currentUser]);
+
+    // Load user data from localStorage on initial render and when user changes
     useEffect(() => {
         const savedUserData = localStorage.getItem('dsa-search-engine-problem-data');
         if (savedUserData) {
@@ -28,7 +75,29 @@ export const useProblemUserData = (problems: Problem[]) => {
                 console.error('Error parsing saved problem data:', e);
             }
         }
-    }, []);
+
+        // Fetch stats and solved problems from external platforms if user has accounts linked
+        fetchExternalPlatformsData();
+    }, [fetchExternalPlatformsData]);
+
+    // Debug whenever external solved problems update
+    useEffect(() => {
+        if (externalSolvedProblems) {
+            console.log("External solved problems updated:", {
+                leetcode: {
+                    success: externalSolvedProblems.leetcode.success,
+                    ids: externalSolvedProblems.leetcode.solvedProblemIds.length,
+                    slugs: externalSolvedProblems.leetcode.solvedProblemSlugs.length,
+                    titles: externalSolvedProblems.leetcode.solvedProblemTitles.length
+                },
+                codeforces: {
+                    success: externalSolvedProblems.codeforces.success,
+                    ids: externalSolvedProblems.codeforces.solvedProblemIds.length,
+                    names: externalSolvedProblems.codeforces.solvedProblemNames.length
+                }
+            });
+        }
+    }, [externalSolvedProblems]);
 
     // Save user data to localStorage whenever it changes
     useEffect(() => {
@@ -55,8 +124,15 @@ export const useProblemUserData = (problems: Problem[]) => {
     // Function to update problem status
     const updateProblemStatus = (problemId: number, status: 'Solved' | 'Attempted' | 'Not Attempted', source: string = 'unknown') => {
         const compositeId = generateCompositeId(problemId, source);
+        
         setUserData(prev => {
             const current = prev[compositeId] || { status: 'Not Attempted', bookmarked: false };
+            
+            // If status is being changed to "Solved" and it wasn't already "Solved", log the activity
+            if (status === 'Solved' && current.status !== 'Solved') {
+                logActivity(1); // Log one solved problem for today's activity
+            }
+            
             return {
                 ...prev,
                 [compositeId]: {
@@ -73,18 +149,59 @@ export const useProblemUserData = (problems: Problem[]) => {
         return !!userData[compositeId]?.bookmarked;
     };
 
-    // Function to get problem status
-    const getProblemStatus = (problemId: number, source: string = 'unknown'): 'Solved' | 'Attempted' | 'Not Attempted' => {
-        const compositeId = generateCompositeId(problemId, source);
-        return userData[compositeId]?.status || 'Not Attempted';
+    // Function to get problem status - checks both local storage and external platforms
+    const getProblemStatus = (problemId: number, source: string = 'unknown', problem?: any): 'Solved' | 'Attempted' | 'Not Attempted' => {
+        // Use enhanced function that checks both local storage and external platform data
+        return getCombinedProblemStatus(problemId, source, externalSolvedProblems, problem);
     };
 
     // Apply user data to problems
     const problemsWithUserData = problems.map(problem => {
-        const source = (problem as any).source || 'unknown';
+        // Determine the source of the problem (leetcode, codeforces, etc.)
+        // The source might be explicitly set or determined from the problem URL
+        let source = (problem as any).source || 'unknown';
+        
+        // If source is not explicitly set, try to determine it from various properties
+        if (source === 'unknown') {
+            // First check URL
+            if (problem.url) {
+                const url = problem.url.toLowerCase();
+                if (url.includes('leetcode.com')) {
+                    source = 'leetcode';
+                } else if (url.includes('codeforces.com')) {
+                    source = 'codeforces';
+                }
+            }
+            
+            // Try to identify from problem properties and format
+            if (source === 'unknown') {
+                // LeetCode problems often have a slug property or certain format
+                if (problem.slug) {
+                    source = 'leetcode';
+                }
+                
+                // CodeForces problems often include contest IDs or have a specific format
+                // Like "123A - Problem Name" or "Contest 123 - Problem A"
+                const title = problem.title || '';
+                if (
+                    title.match(/^\d+[A-Z]\s*-/) || // Format: "123A - Problem"
+                    title.match(/Contest\s*\d+/) || // Format: "Contest 123"
+                    problem.url?.includes('contest') // URL includes 'contest'
+                ) {
+                    source = 'codeforces';
+                }
+            }
+        }
+        
+        // Debug log to help troubleshoot
+        if (externalSolvedProblems && (source === 'leetcode' || source === 'codeforces')) {
+            console.debug(`[Debug] Problem ${problem.id} source: ${source}, title: ${problem.title}`);
+        }
+        
         return {
             ...problem,
-            status: getProblemStatus(problem.id, source),
+            // Pass the full problem object to getProblemStatus for better matching
+            status: getProblemStatus(problem.id, source, problem),
             bookmarked: isBookmarked(problem.id, source)
         };
     });

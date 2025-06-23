@@ -20,13 +20,23 @@ interface FormField {
 
 const SignInPage: React.FC = () => {
   const navigate = useNavigate();
-  const { signIn, loading: authLoading, error: authError } = useAuth();  const [mode, setMode] = useState<AuthMode>('signin');
+  const { currentUser, signIn, loading: authLoading, error: authError } = useAuth();
+  const [mode, setMode] = useState<AuthMode>('signin');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [, setIsFormDirty] = useState(false);
-  
-  // Field states with validation
+    // Redirect if user is already logged in
+  useEffect(() => {
+    // Check if we have a current user in context or in localStorage
+    const isLoggedIn = currentUser || localStorage.getItem('dsa_user');
+    
+    if (isLoggedIn) {
+      console.log('User already logged in, redirecting to home page');
+      navigate('/', { replace: true });
+    }
+  }, [currentUser, navigate]);
+    // Field states with validation
   const [fields, setFields] = useState<Record<string, FormField>>({
     username: {
       type: 'text',
@@ -67,6 +77,24 @@ const SignInPage: React.FC = () => {
       label: 'Confirm password',
       showPassword: false,
       autoComplete: 'new-password',
+      isValid: true,
+      touched: false
+    },
+    leetcodeId: {
+      type: 'text',
+      value: '',
+      placeholder: 'LeetCode Username (optional)',
+      name: 'leetcodeId',
+      label: 'LeetCode Username',
+      isValid: true,
+      touched: false
+    },
+    codeforcesId: {
+      type: 'text',
+      value: '',
+      placeholder: 'CodeForces Username (optional)',
+      name: 'codeforcesId',
+      label: 'CodeForces Username',
       isValid: true,
       touched: false
     }
@@ -234,9 +262,8 @@ const SignInPage: React.FC = () => {
         ...updatedFields[key],
         touched: true
       };
-      
-      // Skip validation for fields not used in current mode
-      if (mode === 'signin' && (key === 'username' || key === 'confirmPassword')) {
+        // Skip validation for fields not used in current mode
+      if (mode === 'signin' && (key === 'username' || key === 'confirmPassword' || key === 'leetcodeId' || key === 'codeforcesId')) {
         return;
       }
       
@@ -251,7 +278,6 @@ const SignInPage: React.FC = () => {
     setFields(updatedFields);
     return isValid;
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -263,9 +289,19 @@ const SignInPage: React.FC = () => {
 
     setIsLoading(true);
     try {
-      // Only using Google auth for now
+      // If we're in signup mode, save platform IDs
+      if (mode === 'signup') {
+        // Save platform IDs to localStorage for future use in settings
+        const platformData = {
+          leetcodeId: fields.leetcodeId.value,
+          codeforcesId: fields.codeforcesId.value
+        };
+        localStorage.setItem('platform_ids', JSON.stringify(platformData));
+      }
+      
+      // Use Google auth for authentication
       await handleGoogleSignIn();
-
+      
       // For future implementation with email/password
       // if (mode === 'signup') {
       //   // Handle sign up
@@ -284,12 +320,17 @@ const SignInPage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleGoogleSignIn = async () => {
+  };  const handleGoogleSignIn = async () => {
     try {
-      await signIn();
-      navigate('/');
+      const user = await signIn();
+      
+      // Only navigate if we successfully got a user
+      if (user && user.email) {
+        console.log('Successfully signed in, redirecting to home page');
+        navigate('/', { replace: true });
+      } else {
+        throw new Error('User information is incomplete');
+      }
     } catch (error) {
       console.error('Google sign-in error:', error);
       throw new Error('Failed to sign in with Google. Please try again.');
@@ -439,9 +480,7 @@ const SignInPage: React.FC = () => {
                   <p className="mt-1 text-xs text-red-400">{fields.password.errorMessage}</p>
                 )}
               </div>
-            </div>
-
-            {/* Confirm password field - only show for signup */}
+            </div>            {/* Confirm password field - only show for signup */}
             {mode === 'signup' && (
               <div>
                 <label htmlFor="confirmPassword" className="sr-only">Confirm password</label>
@@ -472,6 +511,81 @@ const SignInPage: React.FC = () => {
                   <p className="mt-1 text-xs text-red-400">{fields.confirmPassword.errorMessage}</p>
                 )}
               </div>
+            )}
+            
+            {/* Platform IDs - only show for signup */}
+            {mode === 'signup' && (
+              <>
+                <div className="pt-3 pb-1">
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-2 bg-slate-800/50 text-gray-400">Platform Integrations</span>
+                  </div>
+                </div>
+                
+                {/* LeetCode ID field */}
+                <div>
+                  <label htmlFor="leetcodeId" className="sr-only">LeetCode Username</label>
+                  <div className="relative flex items-center">
+                    <div className="absolute left-3 flex items-center pointer-events-none">
+                      <img src="https://leetcode.com/static/images/LeetCode_logo.png" alt="LeetCode" className="h-5 w-5" />
+                    </div>
+                    <input
+                      id="leetcodeId"
+                      name="leetcodeId"
+                      type="text"
+                      value={fields.leetcodeId.value}
+                      onChange={(e) => handleInputChange('leetcodeId', e.target.value)}
+                      className="appearance-none rounded-lg w-full pl-11 pr-3 py-3 bg-slate-700/50 border border-slate-600 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                      placeholder="LeetCode Username (optional)"
+                    />
+                  </div>
+                  {!fields.leetcodeId.value && (
+                    <a 
+                      href="https://leetcode.com/accounts/signup/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="mt-1 text-xs text-indigo-400 hover:text-indigo-300 flex items-center"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
+                      </svg>
+                      Create a LeetCode account
+                    </a>
+                  )}
+                </div>
+                
+                {/* CodeForces ID field */}
+                <div>
+                  <label htmlFor="codeforcesId" className="sr-only">CodeForces Username</label>
+                  <div className="relative flex items-center">
+                    <div className="absolute left-3 flex items-center pointer-events-none">
+                      <img src="https://codeforces.org/s/0/favicon-32x32.png" alt="CodeForces" className="h-5 w-5" />
+                    </div>
+                    <input
+                      id="codeforcesId"
+                      name="codeforcesId"
+                      type="text"
+                      value={fields.codeforcesId.value}
+                      onChange={(e) => handleInputChange('codeforcesId', e.target.value)}
+                      className="appearance-none rounded-lg w-full pl-11 pr-3 py-3 bg-slate-700/50 border border-slate-600 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                      placeholder="CodeForces Username (optional)"
+                    />
+                  </div>
+                  {!fields.codeforcesId.value && (
+                    <a 
+                      href="https://codeforces.com/register" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="mt-1 text-xs text-indigo-400 hover:text-indigo-300 flex items-center"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
+                      </svg>
+                      Create a CodeForces account
+                    </a>
+                  )}
+                </div>
+              </>
             )}
           </div>
 

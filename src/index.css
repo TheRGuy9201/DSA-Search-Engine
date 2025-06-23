@@ -15,6 +15,140 @@ body {
   color: white;
 }
 
+/* Enhanced animations for UI components */
+@layer utilities {
+  /* Animation for background gradients */
+  @keyframes bg-position {
+    0% {
+      background-position: 0% center;
+    }
+    100% {
+      background-position: 200% center;
+    }
+  }
+  
+  .animate-bg-pos {
+    animation: bg-position 8s infinite linear;
+  }
+  
+  .bg-size-200 {
+    background-size: 200% auto;
+  }
+  
+  /* Pulse animation with different speed */
+  @keyframes pulse-slow {
+    0%, 100% {
+      opacity: 0.2;
+    }
+    50% {
+      opacity: 0.3;
+    }
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse-slow 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  /* Floating animation for background elements */
+  @keyframes float {
+    0% {
+      transform: translate(10%, 10%);
+    }
+    50% {
+      transform: translate(13%, 13%);
+    }
+    100% {
+      transform: translate(10%, 10%);
+    }
+  }
+  
+  .animate-float {
+    animation: float 10s ease-in-out infinite;
+  }
+  
+  /* Blinking cursor animation */
+  @keyframes blink {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+  
+  .animate-blink {
+    animation: blink 1s step-end infinite;
+  }
+  
+  /* Shine effect for buttons */
+  @keyframes shine {
+    0% {
+      width: 0%;
+      left: -10%;
+    }
+    100% {
+      width: 40%;
+      left: 100%;
+    }
+  }
+  
+  .animate-shine {
+    animation: shine 1s ease-in-out;
+  }
+  
+  /* Loading spinner animation */
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .loader {
+    border: 3px solid rgba(79, 70, 229, 0.3);
+    border-radius: 50%;
+    border-top-color: #4f46e5;
+    width: 2rem;
+    height: 2rem;
+    animation: spin 1s linear infinite;
+  }
+  
+  /* Glass effect with improved styling */
+  .glass-effect {
+    background: rgba(17, 24, 39, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Background patterns */
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(79, 70, 229, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(79, 70, 229, 0.1) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Page transitions */
+.page-transition {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Autofill style overrides */
 @keyframes autofillStart {
   from {

@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate, useNavigate } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import App from './App';
+import { useAuth } from './context/AuthContext';
 
 // Get base URL from environment variable
 const basename = import.meta.env.VITE_BASE_URL || '/';
@@ -21,6 +22,28 @@ const LoadingSpinner = () => (
     <div className="loader"></div>
   </div>
 );
+
+// Auth redirect component that prevents accessing sign-in page when logged in
+const AuthRedirect = () => {
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    // Check if we have a current user in context or in localStorage
+    const isLoggedIn = currentUser || localStorage.getItem('dsa_user');
+    
+    if (isLoggedIn) {
+      console.log('User already logged in, redirecting from sign in to home page');
+      navigate('/', { replace: true });
+    }
+  }, [currentUser, navigate]);
+
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <SignInPage />
+    </Suspense>
+  );
+};
 
 // We'll use a component with useNavigate
 const HomepageWrapper = () => {
@@ -107,11 +130,7 @@ const router = createBrowserRouter(
       },
       {
         path: 'signin',
-        element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <SignInPage />
-          </Suspense>
-        ),
+        element: <AuthRedirect />
       },
       {
         path: 'platform/:platformName',

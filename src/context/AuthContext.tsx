@@ -62,23 +62,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         // Get user info using the access token
         const userInfo = await getGoogleUserInfo(tokenResponse.access_token);
         
-        // Store user info in session storage
+        // Store user info in local storage
         storeUserSession(userInfo);
         
-        // Update state
+        // Update state with the user info
         setCurrentUser(userInfo);
+        
+        // Dispatch an event that authentication is complete
+        window.dispatchEvent(new CustomEvent('auth_completed', { detail: { success: true, user: userInfo } }));
       } catch (err) {
         console.error('Error processing Google login:', err);
         const errorMessage = err instanceof Error ? err.message : 'Failed to sign in with Google';
         setError(errorMessage);
+        window.dispatchEvent(new CustomEvent('auth_completed', { detail: { success: false, error: errorMessage } }));
       } finally {
         setLoading(false);
       }
     },
     onError: (errorResponse) => {
       console.error('Google login error:', errorResponse);
-      setError('Google sign-in failed. Please try again.');
+      const errorMessage = 'Google sign-in failed. Please try again.';
+      setError(errorMessage);
       setLoading(false);
+      window.dispatchEvent(new CustomEvent('auth_completed', { detail: { success: false, error: errorMessage } }));
     }
   });
 
@@ -86,32 +92,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setLoading(true);
       setError(null);
-      // This will trigger the Google login flow
-      googleLogin();
-      // The user will be set in the onSuccess callback
-      // We return a promise that will resolve once we have user data
+      
       return new Promise<GoogleUser>((resolve, reject) => {
-        const checkInterval = 100; // ms
-        const timeoutDuration = 30000; // 30 seconds
-        let elapsedTime = 0;
+        // Set up listener for auth completion before initiating login
+        const authCompletedListener = (event: CustomEvent) => {
+          if (event.detail.success) {
+            resolve(event.detail.user);
+          } else {
+            reject(new Error(event.detail.error || 'Authentication failed'));
+          }
+          // Remove the listener after it's triggered
+          window.removeEventListener('auth_completed' as any, authCompletedListener as EventListener);
+        };
         
-        const checkUser = setInterval(() => {
-          if (currentUser) {
-            clearInterval(checkUser);
-            resolve(currentUser);
-          }
-          
-          elapsedTime += checkInterval;
-          if (elapsedTime >= timeoutDuration) {
-            clearInterval(checkUser);
-            reject(new Error('Sign-in timed out. Please try again.'));
-          }
-          
-          if (error) {
-            clearInterval(checkUser);
-            reject(new Error(error));
-          }
-        }, checkInterval);
+        // Add listener for auth completion event
+        window.addEventListener('auth_completed' as any, authCompletedListener as EventListener);
+        
+        // Start the Google login flow after setting up the listener
+        googleLogin();
+        
+        // Set a timeout to clean up if auth never completes
+        setTimeout(() => {
+          window.removeEventListener('auth_completed' as any, authCompletedListener as EventListener);
+          reject(new Error('Sign-in timed out. Please try again.'));
+        }, 30000); // 30 seconds timeout
       });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to sign in with Google';
@@ -146,12 +150,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     signIn,
     signOut,
   };
-
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
 
   return (
     <AuthContext.Provider value={value}>

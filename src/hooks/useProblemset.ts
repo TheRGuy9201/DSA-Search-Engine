@@ -39,6 +39,7 @@ interface UseProblemsetReturn {
   toggleBookmark: (id: number, source?: string) => void;
   updateProblemStatus: (id: number, status: 'Solved' | 'Attempted' | 'Not Attempted', source?: string) => void;
   isBookmarked: (id: number, source?: string) => boolean;
+  getProblemStatus: (id: number, source?: string) => 'Solved' | 'Attempted' | 'Not Attempted';
 }
 
 interface ProblemResult {
@@ -71,7 +72,7 @@ export const useProblemset = (itemsPerPageParam: number = 20): UseProblemsetRetu
   const [itemsPerPage] = useState<number>(itemsPerPageParam);
   
   // Apply user data (solved status, bookmarks) to problems
-  const { problemsWithUserData, toggleBookmark, updateProblemStatus, isBookmarked } = useProblemUserData(problems);
+  const { problemsWithUserData, toggleBookmark, updateProblemStatus, isBookmarked, getProblemStatus } = useProblemUserData(problems);
 
   // Reset all filters to default values
   const resetFilters = useCallback(() => {
@@ -209,6 +210,7 @@ export const useProblemset = (itemsPerPageParam: number = 20): UseProblemsetRetu
     problemsWithUserData,
     toggleBookmark,
     updateProblemStatus,
-    isBookmarked
+    isBookmarked,
+    getProblemStatus
   };
 };
