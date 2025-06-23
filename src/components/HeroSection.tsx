@@ -1,6 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection: React.FC = () => {
+    const navigate = useNavigate();
     return (
         <div className="w-full min-h-screen flex flex-col items-center justify-center px-4 text-center">
             <div className="absolute inset-0 -z-10 h-full w-full bg-[#0f172a]">
@@ -15,12 +17,22 @@ const HeroSection: React.FC = () => {
                 Your all-in-one platform for mastering Data Structures and Algorithms
             </p>
             <div className="flex flex-col md:flex-row gap-4">
-                <button className="px-8 py-3 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-lg shadow-lg hover:opacity-90 transition-all duration-300 text-white font-semibold">
+                <button 
+                    onClick={() => navigate('/signin')}
+                    className="px-8 py-3 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-lg shadow-lg hover:opacity-90 transition-all duration-300 text-white font-semibold">
                     Get Started
                 </button>
-                <button className="px-8 py-3 border border-indigo-500 rounded-lg hover:bg-indigo-500 hover:bg-opacity-20 transition-all duration-300 text-white font-semibold">
+                <button 
+                    onClick={() => navigate('/algorithms')}
+                    className="px-8 py-3 border border-indigo-500 rounded-lg hover:bg-indigo-500 hover:bg-opacity-20 transition-all duration-300 text-white font-semibold">
                     Learn More
                 </button>
+            </div>
+            
+            <div className="absolute bottom-6 text-lg font-medium tracking-wide">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-gray-200 to-gray-400">
+                    Made with <span className="text-red-500 animate-pulse">♥</span> by <span className="text-indigo-400 hover:text-indigo-300 transition-colors duration-300 cursor-pointer">Reeck</span>
+                </span>
             </div>
         </div>
     );

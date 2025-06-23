@@ -23,8 +23,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           react: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          firebase: ['firebase/app', 'firebase/auth']
+          router: ['react-router-dom']
         }
       }
     }
@@ -32,7 +31,6 @@ export default defineConfig({
   resolve: {
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
     alias: {
-      'firebase': resolve(__dirname, 'node_modules/firebase'),
       '@': resolve(__dirname, 'src')
     }
   },

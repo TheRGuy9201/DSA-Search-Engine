@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { logOut } from '../services/firebase';
 
 const UserAvatar: React.FC = () => {
-    const { currentUser } = useAuth();
+    const { currentUser, signOut } = useAuth();
     const [showDropdown, setShowDropdown] = React.useState(false);
 
     const toggleDropdown = () => {
@@ -13,7 +12,7 @@ const UserAvatar: React.FC = () => {
 
     const handleSignOut = async () => {
         try {
-            await logOut();
+            await signOut();
             setShowDropdown(false);
         } catch (error) {
             console.error('Error signing out:', error);
@@ -28,8 +27,8 @@ const UserAvatar: React.FC = () => {
     // Get first letter of username or email in uppercase - ALWAYS show just the first character
     const getInitial = () => {
         // For usernames like "ricky_9201", extract just "R"
-        if (currentUser.displayName && currentUser.displayName.length > 0) {
-            return currentUser.displayName.charAt(0).toUpperCase();
+        if (currentUser.name && currentUser.name.length > 0) {
+            return currentUser.name.charAt(0).toUpperCase();
         } else if (currentUser.email && currentUser.email.length > 0) {
             return currentUser.email.charAt(0).toUpperCase();
         }

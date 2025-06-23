@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HomeIcon, SettingsIcon, ProblemsetIcon, SearchIcon, PlusIcon } from '../components/icons/Icons';
 import { useAuth } from '../context/AuthContext';
-import { logOut } from '../services/firebase';
 
 interface SidebarProps {
     isOpen: boolean;
@@ -21,10 +20,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         { name: 'More', icon: <PlusIcon />, path: '/more' },
     ];
 
+    const { signOut } = useAuth();
+    
     // Sign out handler
     const handleSignOut = async () => {
         try {
-            await logOut();
+            await signOut();
             toggleSidebar();
             navigate('/');
         } catch (error) {
@@ -32,13 +33,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         }
     };
 
-    // Get first letter of username or email in uppercase - ALWAYS show just the first character
+    // Get first letter of username or email in uppercase
     const getInitial = () => {
         if (!currentUser) return '?';
 
-        // For usernames like "ricky_9201", extract just "R"
-        if (currentUser.displayName && currentUser.displayName.length > 0) {
-            return currentUser.displayName.charAt(0).toUpperCase();
+        if (currentUser.name && currentUser.name.length > 0) {
+            return currentUser.name.charAt(0).toUpperCase();
         } else if (currentUser.email && currentUser.email.length > 0) {
             return currentUser.email.charAt(0).toUpperCase();
         }
