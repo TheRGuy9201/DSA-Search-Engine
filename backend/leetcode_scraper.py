@@ -44,7 +44,8 @@ def scrape_leetcode():
                 "url": f"https://leetcode.com/problems/{slug}/",
                 "slug": slug,
                 "acceptance_rate": acceptance_rate,
-                "tags": tags
+                "tags": tags,
+                "source": "leetcode"  # Add source for better matching
             })
 
         except KeyError as e:

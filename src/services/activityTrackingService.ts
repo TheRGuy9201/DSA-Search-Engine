@@ -1,5 +1,4 @@
 import { fetchAllProblemStats } from './problemStatsApi';
-import { debugLog, recordProblemMatch } from './debugUtils';
 
 // Interface for the activity data
 export interface ActivityData {
@@ -236,37 +235,26 @@ export const getCombinedProblemStatus = (
     const normalizedSource = source.toLowerCase();
     
     // Debug logging to help troubleshoot
-    console.debug(`Checking problem status: ID=${problemId}, Source=${source}`);
+    console.debug(`Checking problem status: ID=${problemId}, Source=${source}, Title=${problem?.title}`);
     
     // Check LeetCode problems
     if (normalizedSource.includes('leetcode') && externalSolvedProblems.leetcode?.success) {
+      console.debug(`LeetCode API returned: ${externalSolvedProblems.leetcode.solvedProblemIds?.length || 0} IDs, ${externalSolvedProblems.leetcode.solvedProblemSlugs?.length || 0} slugs, ${externalSolvedProblems.leetcode.solvedProblemTitles?.length || 0} titles`);
+      
       // Enhanced matching for LeetCode problems
         // Match 1: Direct ID match
       if (externalSolvedProblems.leetcode.solvedProblemIds?.includes(problemId)) {
-        debugLog(`Problem ${problemId} found in LeetCode solved list by ID match`);
-        recordProblemMatch(
-          { id: problemId, title: problem?.title || 'Unknown', source: 'leetcode' },
-          'direct_id_match',
-          String(problemId)
-        );
         return 'Solved';
       }
         // Match 2: By slug if available (more reliable for LeetCode)
       const slug = problem?.slug;
       if (slug && externalSolvedProblems.leetcode.solvedProblemSlugs?.includes(slug)) {
-        debugLog(`Problem ${problemId} found in LeetCode solved list by slug: ${slug}`);
-        recordProblemMatch(
-          { id: problemId, title: problem?.title || 'Unknown', source: 'leetcode' },
-          'slug_match',
-          slug
-        );
         return 'Solved';
       }
       
       // Match 3: By title exact match
       const title = problem?.title;
       if (title && externalSolvedProblems.leetcode.solvedProblemTitles?.includes(title)) {
-        console.debug(`Problem ${problemId} found in LeetCode solved list by exact title match: ${title}`);
         return 'Solved';
       }
       

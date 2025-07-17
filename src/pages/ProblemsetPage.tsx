@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useProblemset } from '../hooks/useProblemset';
 import { useProblemStats } from '../hooks/useProblemStats';
 import { useAuth } from '../context/AuthContext';
-import { DebugPanel } from '../components/DebugPanel';
 import type { Problem } from '../types';
 
 // Supported platforms
@@ -264,7 +263,11 @@ const ProblemsetPage: React.FC = () => {
     return problemsWithUserData.map(problem => {
       const source = (problem as any).source || 'unknown';
       // Get the most up-to-date status from our combined stats
-      let status = getProblemStatus(problem.id, source);
+      let status = getProblemStatus(problem.id, source, {
+        contestId: (problem as any).contestId,
+        index: (problem as any).index,
+        slug: problem.slug
+      });
       
       // Preview system for testing (will show some problems as solved)
       if (status === 'Not Attempted' && currentUser) {
@@ -450,8 +453,6 @@ const ProblemsetPage: React.FC = () => {
     setIsFilterDropdownVisible(false);
     handleSearch(e);
   };
-
-  // This is not used anymore since we pass it directly to the DebugPanel component
 
   return (
     <div className="page-transition min-h-screen flex flex-col items-center p-4 md:p-8">
@@ -892,9 +893,6 @@ const ProblemsetPage: React.FC = () => {
             </div>
           )}
         </div>
-
-        {/* Debug Panel (hidden by default) */}
-        <DebugPanel isAdmin={currentUser?.email?.endsWith('@example.com')} />
       </div>
     </div>
   );

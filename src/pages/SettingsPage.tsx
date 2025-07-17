@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useUserProfile } from '../hooks/useUserProfile';
 import { useProblemStats } from '../hooks/useProblemStats';
 // We're importing and using ActivityData and defaultActivityData through useProblemStats hook now
 
@@ -8,35 +8,56 @@ const RequiredField: React.FC = () => (
   <span className="text-red-500 ml-1">*</span>
 );
 
-interface UserProfile {
-  firstName: string;
-  lastName: string;
-  institution: string;
-  email: string;
-  profileImage: string | null;
-  leetcodeId: string;
-  codeforcesId: string;
-  linkedin: string;
-  darkMode: boolean;
-  emailNotifications: boolean;
-}
-
-const defaultProfile: UserProfile = {
-  firstName: '',
-  lastName: '',
-  institution: '',
-  email: '',
-  profileImage: null,
-  leetcodeId: '',
-  codeforcesId: '',
-  linkedin: '',
-  darkMode: true,
-  emailNotifications: false
-};
-
 const SettingsPage: React.FC = () => {
-  const { currentUser } = useAuth();
-  const [profile, setProfile] = useState<UserProfile>(defaultProfile);
+  const { 
+    profile, 
+    saveProfile, 
+    leetcodeId, 
+    codeforcesId 
+  } = useUserProfile();
+  
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncSuccess, setSyncSuccess] = useState(false);
+  const [syncError, setSyncError] = useState('');
+  
+  const handleSyncSubmissions = async () => {
+    if (!profile.leetcodeId && !profile.codeforcesId) {
+      setSyncError('Please enter your LeetCode and/or CodeForces usernames first');
+      return;
+    }
+    
+    setIsSyncing(true);
+    setSyncError('');
+    
+    try {
+      // Clear the API cache first
+      const keysToRemove = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && (
+          key.startsWith('leetcode-') || 
+          key.startsWith('codeforces-') || 
+          key.startsWith('all-solved:')
+        )) {
+          keysToRemove.push(key);
+        }
+      }
+      keysToRemove.forEach(key => localStorage.removeItem(key));
+      
+      // Force refresh the stats
+      await refreshStats();
+      
+      setSyncSuccess(true);
+      setTimeout(() => setSyncSuccess(false), 5000);
+    } catch (error) {
+      console.error('Sync error:', error);
+      setSyncError('Failed to sync submissions. Please try again.');
+      setTimeout(() => setSyncError(''), 5000);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+  
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -49,33 +70,18 @@ const SettingsPage: React.FC = () => {
     problemStats, 
     isLoading: isLoadingStats, 
     refreshStats 
-  } = useProblemStats(profile.leetcodeId, profile.codeforcesId);
+  } = useProblemStats(leetcodeId, codeforcesId);
 
-  // Load profile data from localStorage on component mount
+  // Load profile data and set up initial state
   useEffect(() => {
-    const savedProfile = localStorage.getItem('user_profile');
-    if (savedProfile) {
-      try {
-        const parsedProfile = JSON.parse(savedProfile);
-        setProfile(prev => ({ ...prev, ...parsedProfile }));
-        
-        if (parsedProfile.profileImage) {
-          setImagePreview(parsedProfile.profileImage);
-        }
-      } catch (e) {
-        console.error('Error parsing saved profile:', e);
-      }
+    if (profile.profileImage) {
+      setImagePreview(profile.profileImage);
     }
-    
-    // If user has email from Google Auth, populate it
-    if (currentUser?.email) {
-      setProfile(prev => ({ ...prev, email: currentUser.email }));
-    }
-  }, [currentUser]);
+  }, [profile]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setProfile(prev => ({ ...prev, [name]: value }));
+    saveProfile({ [name]: value });
     
     // Clear error for this field if it exists
     if (errors[name]) {
@@ -84,7 +90,7 @@ const SettingsPage: React.FC = () => {
   };
 
   const handleToggle = (name: 'darkMode' | 'emailNotifications') => {
-    setProfile(prev => ({ ...prev, [name]: !prev[name] }));
+    saveProfile({ [name]: !profile[name] });
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,7 +100,7 @@ const SettingsPage: React.FC = () => {
       reader.onloadend = () => {
         const base64Image = reader.result as string;
         setImagePreview(base64Image);
-        setProfile(prev => ({ ...prev, profileImage: base64Image }));
+        saveProfile({ profileImage: base64Image });
       };
       reader.readAsDataURL(file);
     }
@@ -130,9 +136,7 @@ const SettingsPage: React.FC = () => {
       // Mock API call - replace with actual API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Store profile data in localStorage
-      localStorage.setItem('user_profile', JSON.stringify(profile));
-      
+      // Profile is already saved via the saveProfile function
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3000);
       
@@ -314,6 +318,57 @@ const SettingsPage: React.FC = () => {
                   onChange={handleInputChange}
                   className="w-full bg-gray-800 rounded-lg px-4 py-2 text-white border border-gray-700 focus:border-indigo-500 focus:outline-none" 
                 />
+              </div>
+              
+              <div className="col-span-1 md:col-span-2">
+                <div className="flex flex-col space-y-3">
+                  <button 
+                    onClick={handleSyncSubmissions}
+                    disabled={isSyncing || (!profile.leetcodeId && !profile.codeforcesId)}
+                    className={`px-4 py-2 rounded-lg text-white transition-colors flex items-center gap-2 ${
+                      isSyncing 
+                        ? 'bg-gray-600 cursor-not-allowed' 
+                        : 'bg-green-600 hover:bg-green-700'
+                    }`}
+                  >
+                    {isSyncing ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
+                        Syncing Submissions...
+                      </>
+                    ) : (
+                      <>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        Sync Submissions
+                      </>
+                    )}
+                  </button>
+                  
+                  {syncSuccess && (
+                    <div className="text-green-400 text-sm flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      Submissions synced successfully! Navigate to problemset to see updated status.
+                    </div>
+                  )}
+                  
+                  {syncError && (
+                    <div className="text-red-400 text-sm flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                      </svg>
+                      {syncError}
+                    </div>
+                  )}
+                  
+                  <p className="text-xs text-gray-400">
+                    Real-time sync your latest submissions from LeetCode and CodeForces. 
+                    This will clear cache and fetch the most recent data.
+                  </p>
+                </div>
               </div>
               
               <div>

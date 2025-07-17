@@ -64,7 +64,10 @@ def scrape_codeforces_problems():
                 "slug": f"{contest_id}{index}",
                 "tags": tags,
                 "solved_count": solved_count,
-                "points": points
+                "points": points,
+                "source": "codeforces",  # Add source for better matching
+                "contestId": contest_id,  # Add contest ID for better matching
+                "index": index  # Add index for better matching
             })
             
             problem_id += 1

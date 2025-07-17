@@ -61,6 +61,29 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform: propsPlatform, on
         updateProblemStatus,
     } = useProblemUserData(problems);
 
+    // Function to cycle through problem status (only for LeetCode)
+    const toggleProblemStatus = (problemId: number, currentStatus: string) => {
+        if (platform !== 'leetcode') return; // Only allow status changes for LeetCode
+        
+        let newStatus: 'Solved' | 'Attempted' | 'Not Attempted';
+        
+        switch (currentStatus) {
+            case 'Not Attempted':
+                newStatus = 'Attempted';
+                break;
+            case 'Attempted':
+                newStatus = 'Solved';
+                break;
+            case 'Solved':
+                newStatus = 'Not Attempted';
+                break;
+            default:
+                newStatus = 'Attempted';
+        }
+        
+        updateProblemStatus(problemId, newStatus, 'leetcode');
+    };
+
     // Topic options for different platforms
     const getTopicOptions = () => {
         if (platform === 'leetcode') {
@@ -547,10 +570,16 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform: propsPlatform, on
                     <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-blue-500 mb-2">
                         {platformName} Problems
                     </h1>
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-4 mb-4">
                         <p className="text-gray-400">Explore and solve problems from {platformName}</p>
                         {platform === 'codeforces' && renderCodeforcesTooltip()}
-                    </div>                    {platform === 'codeforces' && (
+                    </div>
+                    
+                    {platform === 'leetcode' && (
+                        <div className="mb-4 text-sm text-blue-400 bg-blue-900/20 p-3 rounded-lg">
+                            <p>💡 <strong>Tip:</strong> Click on the status column to toggle between "Not Attempted" → "Attempted" → "Solved". Changes will be reflected in the main problem set.</p>
+                        </div>
+                    )}                    {platform === 'codeforces' && (
                         <div className="mt-4 text-sm text-gray-400 bg-gray-800/50 p-3 rounded-lg max-w-2xl">
                             <p className="mb-2"><strong>Note:</strong> Problems are categorized by difficulty based on their rating points:</p>                            <div className="grid grid-cols-2 gap-x-8 gap-y-1 text-xs">
                                 <div><span className="platform-difficulty-badge difficulty-beginner text-xs">Beginner</span>: 800 – 1000</div>
@@ -806,18 +835,47 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform: propsPlatform, on
                                                 )}
                                             </td>
                                             <td className="py-4 px-4 text-center">
-                                                {problem.status === 'Solved' ? (
-                                                    <div className="flex items-center justify-center gap-2">
-                                                        <CheckCircleIcon />
-                                                        <span className="text-green-500 text-sm font-medium">Solved</span>
-                                                    </div>
+                                                {platform === 'leetcode' ? (
+                                                    // Clickable status for LeetCode
+                                                    <button
+                                                        onClick={() => toggleProblemStatus(problem.id, problem.status || 'Not Attempted')}
+                                                        className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-md transition-all duration-200 hover:bg-gray-700 cursor-pointer"
+                                                        title="Click to toggle status"
+                                                    >
+                                                        {problem.status === 'Solved' ? (
+                                                            <>
+                                                                <CheckCircleIcon />
+                                                                <span className="text-green-500 text-sm font-medium">Solved</span>
+                                                            </>
+                                                        ) : problem.status === 'Attempted' ? (
+                                                            <>
+                                                                <div className="w-4 h-4 rounded-full border-2 border-yellow-500 flex items-center justify-center">
+                                                                    <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+                                                                </div>
+                                                                <span className="text-yellow-500 text-sm font-medium">Attempted</span>
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <CircleIcon />
+                                                                <span className="text-gray-400 text-sm">Not Attempted</span>
+                                                            </>
+                                                        )}
+                                                    </button>
                                                 ) : (
-                                                    <div className="flex items-center justify-center gap-2">
-                                                        <CircleIcon />
-                                                        <span className="text-gray-400 text-sm">
-                                                            {problem.status || 'Not Attempted'}
-                                                        </span>
-                                                    </div>
+                                                    // Non-clickable status for CodeForces
+                                                    problem.status === 'Solved' ? (
+                                                        <div className="flex items-center justify-center gap-2">
+                                                            <CheckCircleIcon />
+                                                            <span className="text-green-500 text-sm font-medium">Solved</span>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="flex items-center justify-center gap-2">
+                                                            <CircleIcon />
+                                                            <span className="text-gray-400 text-sm">
+                                                                {problem.status || 'Not Attempted'}
+                                                            </span>
+                                                        </div>
+                                                    )
                                                 )}
                                             </td>
                                             <td className="py-4 px-4 text-center">

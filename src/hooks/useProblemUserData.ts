@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { Problem } from '../types';
-import { useAuth } from '../context/AuthContext';
+import { useUserProfile } from './useUserProfile';
 import { fetchAllProblemStats, fetchAllSolvedProblemsData } from '../services/problemStatsApi';
 import type { AllSolvedProblems } from '../services/problemStatsApi';
 import { logActivity, getCombinedProblemStatus } from '../services/activityTrackingService';
@@ -26,25 +26,25 @@ export const useProblemUserData = (problems: Problem[]) => {
     const [userData, setUserData] = useState<UserProblemData>({});
     const [externalSolvedProblems, setExternalSolvedProblems] = useState<AllSolvedProblems | null>(null);
 
-    // Get current user details from AuthContext
-    const { currentUser } = useAuth();
+    // Get current user profile including platform IDs
+    const { leetcodeId, codeforcesId } = useUserProfile();
 
     // Function to fetch statistics and solved problem lists from external platforms
     const fetchExternalPlatformsData = useCallback(async () => {
-        if (!currentUser?.leetcodeId && !currentUser?.codeforcesId) {
+        if (!leetcodeId && !codeforcesId) {
             console.log("No external platform IDs found in user profile");
             return;
         }
 
         try {
             // Fetch aggregated stats
-            const stats = await fetchAllProblemStats(currentUser?.leetcodeId || '', currentUser?.codeforcesId || '');
+            const stats = await fetchAllProblemStats(leetcodeId || '', codeforcesId || '');
             console.log('Fetched external platform stats:', stats);
             
             // Fetch actual solved problem lists
             const solvedProblems = await fetchAllSolvedProblemsData(
-                currentUser?.leetcodeId || '', 
-                currentUser?.codeforcesId || ''
+                leetcodeId || '', 
+                codeforcesId || ''
             );
             console.log('Fetched solved problems:', 
                 {
@@ -63,7 +63,7 @@ export const useProblemUserData = (problems: Problem[]) => {
         } catch (error) {
             console.error('Error fetching external platform data:', error);
         }
-    }, [currentUser]);
+    }, [leetcodeId, codeforcesId]);
 
     // Load user data from localStorage on initial render and when user changes
     useEffect(() => {
@@ -157,8 +157,7 @@ export const useProblemUserData = (problems: Problem[]) => {
 
     // Apply user data to problems
     const problemsWithUserData = problems.map(problem => {
-        // Determine the source of the problem (leetcode, codeforces, etc.)
-        // The source might be explicitly set or determined from the problem URL
+        // Determine the source of the problem
         let source = (problem as any).source || 'unknown';
         
         // If source is not explicitly set, try to determine it from various properties
@@ -176,8 +175,12 @@ export const useProblemUserData = (problems: Problem[]) => {
             // Try to identify from problem properties and format
             if (source === 'unknown') {
                 // LeetCode problems often have a slug property or certain format
-                if (problem.slug) {
-                    source = 'leetcode';
+                if (problem.slug && !problem.slug.includes('-')) {
+                    // LeetCode slugs are usually hyphenated (e.g., "two-sum")
+                    const hasHyphen = problem.slug.includes('-');
+                    if (hasHyphen) {
+                        source = 'leetcode';
+                    }
                 }
                 
                 // CodeForces problems often include contest IDs or have a specific format
@@ -186,7 +189,8 @@ export const useProblemUserData = (problems: Problem[]) => {
                 if (
                     title.match(/^\d+[A-Z]\s*-/) || // Format: "123A - Problem"
                     title.match(/Contest\s*\d+/) || // Format: "Contest 123"
-                    problem.url?.includes('contest') // URL includes 'contest'
+                    problem.url?.includes('contest') || // URL includes 'contest'
+                    problem.url?.includes('problemset') // URL includes 'problemset'
                 ) {
                     source = 'codeforces';
                 }
@@ -195,11 +199,12 @@ export const useProblemUserData = (problems: Problem[]) => {
         
         // Debug log to help troubleshoot
         if (externalSolvedProblems && (source === 'leetcode' || source === 'codeforces')) {
-            console.debug(`[Debug] Problem ${problem.id} source: ${source}, title: ${problem.title}`);
+            console.debug(`[Problem Source Detection] Problem ${problem.id} detected as: ${source}, title: ${problem.title}`);
         }
         
         return {
             ...problem,
+            source, // Ensure source is set on the problem
             // Pass the full problem object to getProblemStatus for better matching
             status: getProblemStatus(problem.id, source, problem),
             bookmarked: isBookmarked(problem.id, source)

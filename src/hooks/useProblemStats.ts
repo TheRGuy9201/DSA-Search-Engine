@@ -15,7 +15,7 @@ interface UseProblemStatsResult {
   error: string | null;
   refreshStats: () => Promise<void>;
   totalSolved: number;
-  getProblemStatus: (problemId: number, source: string) => 'Solved' | 'Attempted' | 'Not Attempted';
+  getProblemStatus: (problemId: number, source: string, problemData?: { contestId?: number; index?: string; slug?: string }) => 'Solved' | 'Attempted' | 'Not Attempted';
   updateProblemStatus: (
     problemId: number, 
     status: 'Solved' | 'Attempted' | 'Not Attempted', 
@@ -71,9 +71,10 @@ export const useProblemStats = (leetcodeId?: string, codeforcesId?: string): Use
    */
   const getProblemStatus = useCallback((
     problemId: number, 
-    source: string
+    source: string,
+    problemData?: { contestId?: number; index?: string; slug?: string }
   ): 'Solved' | 'Attempted' | 'Not Attempted' => {
-    // Check local storage data
+    // Check local storage data first for manual overrides
     const localData = localStorage.getItem('dsa-search-engine-problem-data');
     if (localData) {
       try {
@@ -88,11 +89,38 @@ export const useProblemStats = (leetcodeId?: string, codeforcesId?: string): Use
       }
     }
     
-    // If we have maps of solved problems from external APIs, we could check those here
-    // Placeholder for future implementation
+    // Check actual API data from cache
+    try {
+      if (source.toLowerCase().includes('leetcode') && leetcodeId) {
+        const cacheKey = `leetcode-solved:${leetcodeId}`;
+        const cachedData = localStorage.getItem(cacheKey);
+        if (cachedData) {
+          const leetcodeData = JSON.parse(cachedData);
+          if (leetcodeData.solvedProblemIds && leetcodeData.solvedProblemIds.includes(problemId)) {
+            return 'Solved';
+          }
+        }
+      }
+      
+      if (source.toLowerCase().includes('codeforces') && codeforcesId && problemData) {
+        const cacheKey = `codeforces-solved:${codeforcesId}`;
+        const cachedData = localStorage.getItem(cacheKey);
+        if (cachedData) {
+          const codeforcesData = JSON.parse(cachedData);
+          if (codeforcesData.solvedProblemIds && problemData.contestId && problemData.index) {
+            const problemKey = `${problemData.contestId}-${problemData.index}`;
+            if (codeforcesData.solvedProblemIds.includes(problemKey)) {
+              return 'Solved';
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error checking cached API data:', error);
+    }
     
     return 'Not Attempted';
-  }, []);
+  }, [leetcodeId, codeforcesId]);
 
   /**
    * Update status for a specific problem

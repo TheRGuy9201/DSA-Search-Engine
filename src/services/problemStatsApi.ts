@@ -136,6 +136,22 @@ export const fetchLeetCodeSolvedProblemsData = async (username: string): Promise
       return cachedData;
     }
     
+    // Check localStorage for persistent data
+    try {
+      const localData = localStorage.getItem(cacheKey);
+      if (localData) {
+        const parsedData = JSON.parse(localData);
+        if (parsedData.success) {
+          console.log(`Retrieved LeetCode data from localStorage for ${username}`);
+          // Also update in-memory cache
+          setCache(cacheKey, parsedData);
+          return parsedData;
+        }
+      }
+    } catch (error) {
+      console.error('Error reading from localStorage:', error);
+    }
+    
     console.log(`Fetching LeetCode solved problems for ${username} using serverless function...`);
     
     // Use our serverless function which bypasses CORS issues
@@ -160,6 +176,10 @@ export const fetchLeetCodeSolvedProblemsData = async (username: string): Promise
       
       // Cache the result
       setCache(cacheKey, result);
+      
+      // Also store in localStorage for persistence
+      localStorage.setItem(cacheKey, JSON.stringify(result));
+      
       return result;
     }
     
@@ -253,6 +273,22 @@ export const fetchCodeForcesSolvedProblemsData = async (handle: string): Promise
       return cachedData;
     }
     
+    // Check localStorage for persistent data
+    try {
+      const localData = localStorage.getItem(cacheKey);
+      if (localData) {
+        const parsedData = JSON.parse(localData);
+        if (parsedData.success) {
+          console.log(`Retrieved CodeForces data from localStorage for ${handle}`);
+          // Also update in-memory cache
+          setCache(cacheKey, parsedData);
+          return parsedData;
+        }
+      }
+    } catch (error) {
+      console.error('Error reading from localStorage:', error);
+    }
+    
     console.log(`Fetching Codeforces solved problems for ${handle} using serverless function...`);
     
     // Use our serverless function to avoid potential CORS issues
@@ -315,6 +351,10 @@ export const fetchCodeForcesSolvedProblemsData = async (handle: string): Promise
       
       // Store in cache
       setCache(cacheKey, result);
+      
+      // Also store in localStorage for persistence
+      localStorage.setItem(cacheKey, JSON.stringify(result));
+      
       return result;
     } catch (fallbackError) {
       console.error('Codeforces direct API failed:', fallbackError);
