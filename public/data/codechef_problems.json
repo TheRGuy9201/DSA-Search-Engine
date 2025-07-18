@@ -1,0 +1,1923 @@
+{
+  "metadata": {
+    "total_problems": 147,
+    "last_updated": "2025-07-18T23:32:46.806835"
+  },
+  "problems": [
+    {
+      "id": 1,
+      "code": "FAVPEN",
+      "title": "favourite pen",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/FAVPEN",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 61,
+      "total_successful_submissions": 11000,
+      "source": "codechef"
+    },
+    {
+      "id": 2,
+      "code": "FAVONE",
+      "title": "favourite number 1",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/FAVONE",
+      "tags": [
+        "mathematics"
+      ],
+      "acceptance_rate": 62,
+      "total_successful_submissions": 12000,
+      "source": "codechef"
+    },
+    {
+      "id": 3,
+      "code": "FAVBINSTRING",
+      "title": "binary string",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/FAVBINSTRING",
+      "tags": [
+        "strings"
+      ],
+      "acceptance_rate": 63,
+      "total_successful_submissions": 13000,
+      "source": "codechef"
+    },
+    {
+      "id": 4,
+      "code": "SQPATTERN",
+      "title": "SQUARE PATTERN",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/SQPATTERN",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 64,
+      "total_successful_submissions": 14000,
+      "source": "codechef"
+    },
+    {
+      "id": 5,
+      "code": "CHEFPATTERN",
+      "title": "FIND PATTERN",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/CHEFPATTERN",
+      "tags": [
+        "searching"
+      ],
+      "acceptance_rate": 65,
+      "total_successful_submissions": 15000,
+      "source": "codechef"
+    },
+    {
+      "id": 6,
+      "code": "FINDDISH",
+      "title": "FIND THE DISH",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/FINDDISH",
+      "tags": [
+        "searching"
+      ],
+      "acceptance_rate": 66,
+      "total_successful_submissions": 16000,
+      "source": "codechef"
+    },
+    {
+      "id": 7,
+      "code": "ENTRANCETEST",
+      "title": "Qualified or disqualified",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/ENTRANCETEST",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 67,
+      "total_successful_submissions": 17000,
+      "source": "codechef"
+    },
+    {
+      "id": 8,
+      "code": "PROXYUSER",
+      "title": "disqualifying user",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/PROXYUSER",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 68,
+      "total_successful_submissions": 18000,
+      "source": "codechef"
+    },
+    {
+      "id": 9,
+      "code": "FINDARRAY",
+      "title": "FIND THE ARRAY",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/FINDARRAY",
+      "tags": [
+        "arrays",
+        "searching"
+      ],
+      "acceptance_rate": 69,
+      "total_successful_submissions": 19000,
+      "source": "codechef"
+    },
+    {
+      "id": 10,
+      "code": "REVARRAY",
+      "title": "reverse sort",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/REVARRAY",
+      "tags": [
+        "sorting"
+      ],
+      "acceptance_rate": 70,
+      "total_successful_submissions": 20000,
+      "source": "codechef"
+    },
+    {
+      "id": 11,
+      "code": "FAVPEN",
+      "title": "favourite pen",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/FAVPEN",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 71,
+      "total_successful_submissions": 21000,
+      "source": "codechef"
+    },
+    {
+      "id": 12,
+      "code": "FAVONE",
+      "title": "favourite number 1",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/FAVONE",
+      "tags": [
+        "mathematics"
+      ],
+      "acceptance_rate": 72,
+      "total_successful_submissions": 22000,
+      "source": "codechef"
+    },
+    {
+      "id": 13,
+      "code": "FAVBINSTRING",
+      "title": "binary string",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/FAVBINSTRING",
+      "tags": [
+        "strings"
+      ],
+      "acceptance_rate": 73,
+      "total_successful_submissions": 23000,
+      "source": "codechef"
+    },
+    {
+      "id": 14,
+      "code": "SQPATTERN",
+      "title": "SQUARE PATTERN",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/SQPATTERN",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 74,
+      "total_successful_submissions": 24000,
+      "source": "codechef"
+    },
+    {
+      "id": 15,
+      "code": "CHEFPATTERN",
+      "title": "FIND PATTERN",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/CHEFPATTERN",
+      "tags": [
+        "searching"
+      ],
+      "acceptance_rate": 75,
+      "total_successful_submissions": 25000,
+      "source": "codechef"
+    },
+    {
+      "id": 16,
+      "code": "FINDDISH",
+      "title": "FIND THE DISH",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/FINDDISH",
+      "tags": [
+        "searching"
+      ],
+      "acceptance_rate": 76,
+      "total_successful_submissions": 26000,
+      "source": "codechef"
+    },
+    {
+      "id": 17,
+      "code": "ENTRANCETEST",
+      "title": "Qualified or disqualified",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/ENTRANCETEST",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 77,
+      "total_successful_submissions": 27000,
+      "source": "codechef"
+    },
+    {
+      "id": 18,
+      "code": "PROXYUSER",
+      "title": "disqualifying user",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/PROXYUSER",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 78,
+      "total_successful_submissions": 28000,
+      "source": "codechef"
+    },
+    {
+      "id": 19,
+      "code": "FINDARRAY",
+      "title": "FIND THE ARRAY",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/FINDARRAY",
+      "tags": [
+        "arrays",
+        "searching"
+      ],
+      "acceptance_rate": 79,
+      "total_successful_submissions": 29000,
+      "source": "codechef"
+    },
+    {
+      "id": 20,
+      "code": "REVARRAY",
+      "title": "reverse sort",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/REVARRAY",
+      "tags": [
+        "sorting"
+      ],
+      "acceptance_rate": 80,
+      "total_successful_submissions": 30000,
+      "source": "codechef"
+    },
+    {
+      "id": 21,
+      "code": "FAVPEN",
+      "title": "favourite pen",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/FAVPEN",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 81,
+      "total_successful_submissions": 31000,
+      "source": "codechef"
+    },
+    {
+      "id": 22,
+      "code": "FAVONE",
+      "title": "favourite number 1",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/FAVONE",
+      "tags": [
+        "mathematics"
+      ],
+      "acceptance_rate": 82,
+      "total_successful_submissions": 32000,
+      "source": "codechef"
+    },
+    {
+      "id": 23,
+      "code": "FAVBINSTRING",
+      "title": "binary string",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/FAVBINSTRING",
+      "tags": [
+        "strings"
+      ],
+      "acceptance_rate": 83,
+      "total_successful_submissions": 33000,
+      "source": "codechef"
+    },
+    {
+      "id": 24,
+      "code": "SQPATTERN",
+      "title": "SQUARE PATTERN",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/SQPATTERN",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 84,
+      "total_successful_submissions": 34000,
+      "source": "codechef"
+    },
+    {
+      "id": 25,
+      "code": "CHEFPATTERN",
+      "title": "FIND PATTERN",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/CHEFPATTERN",
+      "tags": [
+        "searching"
+      ],
+      "acceptance_rate": 85,
+      "total_successful_submissions": 35000,
+      "source": "codechef"
+    },
+    {
+      "id": 26,
+      "code": "FINDDISH",
+      "title": "FIND THE DISH",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/FINDDISH",
+      "tags": [
+        "searching"
+      ],
+      "acceptance_rate": 86,
+      "total_successful_submissions": 36000,
+      "source": "codechef"
+    },
+    {
+      "id": 27,
+      "code": "ENTRANCETEST",
+      "title": "Qualified or disqualified",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/ENTRANCETEST",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 87,
+      "total_successful_submissions": 37000,
+      "source": "codechef"
+    },
+    {
+      "id": 28,
+      "code": "PROXYUSER",
+      "title": "disqualifying user",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/PROXYUSER",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 88,
+      "total_successful_submissions": 38000,
+      "source": "codechef"
+    },
+    {
+      "id": 29,
+      "code": "FINDARRAY",
+      "title": "FIND THE ARRAY",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/FINDARRAY",
+      "tags": [
+        "arrays",
+        "searching"
+      ],
+      "acceptance_rate": 89,
+      "total_successful_submissions": 39000,
+      "source": "codechef"
+    },
+    {
+      "id": 30,
+      "code": "REVARRAY",
+      "title": "reverse sort",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/REVARRAY",
+      "tags": [
+        "sorting"
+      ],
+      "acceptance_rate": 90,
+      "total_successful_submissions": 40000,
+      "source": "codechef"
+    },
+    {
+      "id": 31,
+      "code": "FAVPEN",
+      "title": "favourite pen",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/FAVPEN",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 91,
+      "total_successful_submissions": 41000,
+      "source": "codechef"
+    },
+    {
+      "id": 32,
+      "code": "FAVONE",
+      "title": "favourite number 1",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/FAVONE",
+      "tags": [
+        "mathematics"
+      ],
+      "acceptance_rate": 92,
+      "total_successful_submissions": 42000,
+      "source": "codechef"
+    },
+    {
+      "id": 33,
+      "code": "FAVBINSTRING",
+      "title": "binary string",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/FAVBINSTRING",
+      "tags": [
+        "strings"
+      ],
+      "acceptance_rate": 93,
+      "total_successful_submissions": 43000,
+      "source": "codechef"
+    },
+    {
+      "id": 34,
+      "code": "SQPATTERN",
+      "title": "SQUARE PATTERN",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/SQPATTERN",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 94,
+      "total_successful_submissions": 44000,
+      "source": "codechef"
+    },
+    {
+      "id": 35,
+      "code": "CHEFPATTERN",
+      "title": "FIND PATTERN",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/CHEFPATTERN",
+      "tags": [
+        "searching"
+      ],
+      "acceptance_rate": 95,
+      "total_successful_submissions": 45000,
+      "source": "codechef"
+    },
+    {
+      "id": 36,
+      "code": "FINDDISH",
+      "title": "FIND THE DISH",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/FINDDISH",
+      "tags": [
+        "searching"
+      ],
+      "acceptance_rate": 96,
+      "total_successful_submissions": 46000,
+      "source": "codechef"
+    },
+    {
+      "id": 37,
+      "code": "ENTRANCETEST",
+      "title": "Qualified or disqualified",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/ENTRANCETEST",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 97,
+      "total_successful_submissions": 47000,
+      "source": "codechef"
+    },
+    {
+      "id": 38,
+      "code": "PROXYUSER",
+      "title": "disqualifying user",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/PROXYUSER",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 98,
+      "total_successful_submissions": 48000,
+      "source": "codechef"
+    },
+    {
+      "id": 39,
+      "code": "FINDARRAY",
+      "title": "FIND THE ARRAY",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/FINDARRAY",
+      "tags": [
+        "arrays",
+        "searching"
+      ],
+      "acceptance_rate": 99,
+      "total_successful_submissions": 49000,
+      "source": "codechef"
+    },
+    {
+      "id": 40,
+      "code": "REVARRAY",
+      "title": "reverse sort",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/REVARRAY",
+      "tags": [
+        "sorting"
+      ],
+      "acceptance_rate": 60,
+      "total_successful_submissions": 50000,
+      "source": "codechef"
+    },
+    {
+      "id": 41,
+      "code": "HELLO",
+      "title": "Life, the Universe, and Everything",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/HELLO",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 60,
+      "total_successful_submissions": 10000,
+      "source": "codechef"
+    },
+    {
+      "id": 42,
+      "code": "INTEST",
+      "title": "Enormous Input Test",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/INTEST",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 61,
+      "total_successful_submissions": 11000,
+      "source": "codechef"
+    },
+    {
+      "id": 43,
+      "code": "HS08TEST",
+      "title": "ATM",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/HS08TEST",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 62,
+      "total_successful_submissions": 12000,
+      "source": "codechef"
+    },
+    {
+      "id": 44,
+      "code": "FLOW001",
+      "title": "Add Two Numbers",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/FLOW001",
+      "tags": [
+        "mathematics"
+      ],
+      "acceptance_rate": 63,
+      "total_successful_submissions": 13000,
+      "source": "codechef"
+    },
+    {
+      "id": 45,
+      "code": "FLOW002",
+      "title": "Find Remainder",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/FLOW002",
+      "tags": [
+        "searching"
+      ],
+      "acceptance_rate": 64,
+      "total_successful_submissions": 14000,
+      "source": "codechef"
+    },
+    {
+      "id": 46,
+      "code": "FLOW004",
+      "title": "First and Last Digit",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/FLOW004",
+      "tags": [
+        "mathematics"
+      ],
+      "acceptance_rate": 65,
+      "total_successful_submissions": 15000,
+      "source": "codechef"
+    },
+    {
+      "id": 47,
+      "code": "FLOW006",
+      "title": "Sum of Digits",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/FLOW006",
+      "tags": [
+        "mathematics"
+      ],
+      "acceptance_rate": 66,
+      "total_successful_submissions": 16000,
+      "source": "codechef"
+    },
+    {
+      "id": 48,
+      "code": "FLOW007",
+      "title": "Reverse The Number",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/FLOW007",
+      "tags": [
+        "mathematics"
+      ],
+      "acceptance_rate": 67,
+      "total_successful_submissions": 17000,
+      "source": "codechef"
+    },
+    {
+      "id": 49,
+      "code": "FLOW008",
+      "title": "Helping Chef",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/FLOW008",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 68,
+      "total_successful_submissions": 18000,
+      "source": "codechef"
+    },
+    {
+      "id": 50,
+      "code": "FLOW009",
+      "title": "Total Expenses",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/FLOW009",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 69,
+      "total_successful_submissions": 19000,
+      "source": "codechef"
+    },
+    {
+      "id": 51,
+      "code": "FLOW010",
+      "title": "ID and Ship",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/FLOW010",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 70,
+      "total_successful_submissions": 20000,
+      "source": "codechef"
+    },
+    {
+      "id": 52,
+      "code": "FLOW011",
+      "title": "Salary",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/FLOW011",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 71,
+      "total_successful_submissions": 21000,
+      "source": "codechef"
+    },
+    {
+      "id": 53,
+      "code": "FLOW013",
+      "title": "Valid Triangles",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/FLOW013",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 72,
+      "total_successful_submissions": 22000,
+      "source": "codechef"
+    },
+    {
+      "id": 54,
+      "code": "FLOW014",
+      "title": "Grade The Steel",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/FLOW014",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 73,
+      "total_successful_submissions": 23000,
+      "source": "codechef"
+    },
+    {
+      "id": 55,
+      "code": "FLOW016",
+      "title": "GCD and LCM",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/FLOW016",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 74,
+      "total_successful_submissions": 24000,
+      "source": "codechef"
+    },
+    {
+      "id": 56,
+      "code": "FLOW017",
+      "title": "Second Largest",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/FLOW017",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 75,
+      "total_successful_submissions": 25000,
+      "source": "codechef"
+    },
+    {
+      "id": 57,
+      "code": "FLOW018",
+      "title": "Smallest Numbers of Notes",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/FLOW018",
+      "tags": [
+        "mathematics"
+      ],
+      "acceptance_rate": 76,
+      "total_successful_submissions": 26000,
+      "source": "codechef"
+    },
+    {
+      "id": 58,
+      "code": "FCTRL",
+      "title": "Factorial",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/FCTRL",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 77,
+      "total_successful_submissions": 27000,
+      "source": "codechef"
+    },
+    {
+      "id": 59,
+      "code": "COINS",
+      "title": "Bytelandian Gold Coins",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/COINS",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 78,
+      "total_successful_submissions": 28000,
+      "source": "codechef"
+    },
+    {
+      "id": 60,
+      "code": "LAPIN",
+      "title": "Lapindromes",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/LAPIN",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 79,
+      "total_successful_submissions": 29000,
+      "source": "codechef"
+    },
+    {
+      "id": 61,
+      "code": "CNOTE",
+      "title": "Chef and Notebooks",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/CNOTE",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 80,
+      "total_successful_submissions": 30000,
+      "source": "codechef"
+    },
+    {
+      "id": 62,
+      "code": "VOTERS",
+      "title": "Voters List",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/VOTERS",
+      "tags": [
+        "arrays"
+      ],
+      "acceptance_rate": 81,
+      "total_successful_submissions": 31000,
+      "source": "codechef"
+    },
+    {
+      "id": 63,
+      "code": "RECIPE",
+      "title": "Recipe Reconstruction",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/RECIPE",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 82,
+      "total_successful_submissions": 32000,
+      "source": "codechef"
+    },
+    {
+      "id": 64,
+      "code": "CLEANUP",
+      "title": "Cleaning Up",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/CLEANUP",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 83,
+      "total_successful_submissions": 33000,
+      "source": "codechef"
+    },
+    {
+      "id": 65,
+      "code": "HORSES",
+      "title": "Racing Horses",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/HORSES",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 84,
+      "total_successful_submissions": 34000,
+      "source": "codechef"
+    },
+    {
+      "id": 66,
+      "code": "CIELAB",
+      "title": "Ciel and A-B Problem",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/CIELAB",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 85,
+      "total_successful_submissions": 35000,
+      "source": "codechef"
+    },
+    {
+      "id": 67,
+      "code": "MAXDIFF",
+      "title": "Maximum Weight Difference",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/MAXDIFF",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 86,
+      "total_successful_submissions": 36000,
+      "source": "codechef"
+    },
+    {
+      "id": 68,
+      "code": "CHN15A",
+      "title": "Mutated Minions",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/CHN15A",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 87,
+      "total_successful_submissions": 37000,
+      "source": "codechef"
+    },
+    {
+      "id": 69,
+      "code": "RAINBOWA",
+      "title": "Rainbow Array",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/RAINBOWA",
+      "tags": [
+        "arrays"
+      ],
+      "acceptance_rate": 88,
+      "total_successful_submissions": 38000,
+      "source": "codechef"
+    },
+    {
+      "id": 70,
+      "code": "LADDU",
+      "title": "LADDU",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/LADDU",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 89,
+      "total_successful_submissions": 39000,
+      "source": "codechef"
+    },
+    {
+      "id": 71,
+      "code": "CHEFSTUD",
+      "title": "Chef and Study",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/CHEFSTUD",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 90,
+      "total_successful_submissions": 40000,
+      "source": "codechef"
+    },
+    {
+      "id": 72,
+      "code": "BENDSP",
+      "title": "Bending Spoons",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/BENDSP",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 91,
+      "total_successful_submissions": 41000,
+      "source": "codechef"
+    },
+    {
+      "id": 73,
+      "code": "OJUMPS",
+      "title": "Observing the Jumps",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/OJUMPS",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 92,
+      "total_successful_submissions": 42000,
+      "source": "codechef"
+    },
+    {
+      "id": 74,
+      "code": "SALARY",
+      "title": "Little Elephant and Salary",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/SALARY",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 93,
+      "total_successful_submissions": 43000,
+      "source": "codechef"
+    },
+    {
+      "id": 75,
+      "code": "RRCOPY",
+      "title": "Copy-paste",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/RRCOPY",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 94,
+      "total_successful_submissions": 44000,
+      "source": "codechef"
+    },
+    {
+      "id": 76,
+      "code": "ANUDTC",
+      "title": "Anuradha and Distance",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/ANUDTC",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 95,
+      "total_successful_submissions": 45000,
+      "source": "codechef"
+    },
+    {
+      "id": 77,
+      "code": "CHEFDETE",
+      "title": "Chef and Detective",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/CHEFDETE",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 96,
+      "total_successful_submissions": 46000,
+      "source": "codechef"
+    },
+    {
+      "id": 78,
+      "code": "PRGIFT",
+      "title": "Programmer and the Gift",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/PRGIFT",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 97,
+      "total_successful_submissions": 47000,
+      "source": "codechef"
+    },
+    {
+      "id": 79,
+      "code": "SEGM01",
+      "title": "Bear and Segment 01",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/SEGM01",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 98,
+      "total_successful_submissions": 48000,
+      "source": "codechef"
+    },
+    {
+      "id": 80,
+      "code": "CHRL4",
+      "title": "Chef and Rainbow Lights",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/CHRL4",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 99,
+      "total_successful_submissions": 49000,
+      "source": "codechef"
+    },
+    {
+      "id": 81,
+      "code": "KTTABLE",
+      "title": "Kitchen Timetable",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/KTTABLE",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 60,
+      "total_successful_submissions": 50000,
+      "source": "codechef"
+    },
+    {
+      "id": 82,
+      "code": "ADAKING",
+      "title": "Ada King",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/ADAKING",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 61,
+      "total_successful_submissions": 51000,
+      "source": "codechef"
+    },
+    {
+      "id": 83,
+      "code": "TREEFUN",
+      "title": "Tree Fun",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/TREEFUN",
+      "tags": [
+        "graph theory"
+      ],
+      "acceptance_rate": 62,
+      "total_successful_submissions": 52000,
+      "source": "codechef"
+    },
+    {
+      "id": 84,
+      "code": "GOODSET",
+      "title": "Good Set",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/GOODSET",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 63,
+      "total_successful_submissions": 53000,
+      "source": "codechef"
+    },
+    {
+      "id": 85,
+      "code": "COMPILER",
+      "title": "Compiler",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/COMPILER",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 64,
+      "total_successful_submissions": 54000,
+      "source": "codechef"
+    },
+    {
+      "id": 86,
+      "code": "CARDSHUF",
+      "title": "Card Shuffle",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/CARDSHUF",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 65,
+      "total_successful_submissions": 55000,
+      "source": "codechef"
+    },
+    {
+      "id": 87,
+      "code": "MEDIAN",
+      "title": "Median",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/MEDIAN",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 66,
+      "total_successful_submissions": 56000,
+      "source": "codechef"
+    },
+    {
+      "id": 88,
+      "code": "DIVSET",
+      "title": "Divisibility Set",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/DIVSET",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 67,
+      "total_successful_submissions": 57000,
+      "source": "codechef"
+    },
+    {
+      "id": 89,
+      "code": "GRID",
+      "title": "Grid",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/GRID",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 68,
+      "total_successful_submissions": 58000,
+      "source": "codechef"
+    },
+    {
+      "id": 90,
+      "code": "MATHL",
+      "title": "Math is Love",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/MATHL",
+      "tags": [
+        "mathematics"
+      ],
+      "acceptance_rate": 69,
+      "total_successful_submissions": 59000,
+      "source": "codechef"
+    },
+    {
+      "id": 91,
+      "code": "PRIME1",
+      "title": "Prime Generator",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/PRIME1",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 70,
+      "total_successful_submissions": 60000,
+      "source": "codechef"
+    },
+    {
+      "id": 92,
+      "code": "SPOJ",
+      "title": "Small factorials",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/SPOJ",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 71,
+      "total_successful_submissions": 61000,
+      "source": "codechef"
+    },
+    {
+      "id": 93,
+      "code": "FCTRL2",
+      "title": "Small factorials",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/FCTRL2",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 72,
+      "total_successful_submissions": 62000,
+      "source": "codechef"
+    },
+    {
+      "id": 94,
+      "code": "GCDQ",
+      "title": "GCD and Queries",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/GCDQ",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 73,
+      "total_successful_submissions": 63000,
+      "source": "codechef"
+    },
+    {
+      "id": 95,
+      "code": "TSORT",
+      "title": "Turbo Sort",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/TSORT",
+      "tags": [
+        "sorting"
+      ],
+      "acceptance_rate": 74,
+      "total_successful_submissions": 64000,
+      "source": "codechef"
+    },
+    {
+      "id": 96,
+      "code": "SUMTRIAN",
+      "title": "Sum of triangles",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/SUMTRIAN",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 75,
+      "total_successful_submissions": 65000,
+      "source": "codechef"
+    },
+    {
+      "id": 97,
+      "code": "SUBINC",
+      "title": "Subsequence Increment",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/SUBINC",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 76,
+      "total_successful_submissions": 66000,
+      "source": "codechef"
+    },
+    {
+      "id": 98,
+      "code": "MAXSUB",
+      "title": "Maximum Subsequence",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/MAXSUB",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 77,
+      "total_successful_submissions": 67000,
+      "source": "codechef"
+    },
+    {
+      "id": 99,
+      "code": "PALIN",
+      "title": "The Next Palindrome",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/PALIN",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 78,
+      "total_successful_submissions": 68000,
+      "source": "codechef"
+    },
+    {
+      "id": 100,
+      "code": "FASHION",
+      "title": "Fashion Shows",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/FASHION",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 79,
+      "total_successful_submissions": 69000,
+      "source": "codechef"
+    },
+    {
+      "id": 101,
+      "code": "CARVANS",
+      "title": "Carvans",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/CARVANS",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 80,
+      "total_successful_submissions": 70000,
+      "source": "codechef"
+    },
+    {
+      "id": 102,
+      "code": "MARCHA1",
+      "title": "Polo the Penguin and the Marching",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/MARCHA1",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 81,
+      "total_successful_submissions": 71000,
+      "source": "codechef"
+    },
+    {
+      "id": 103,
+      "code": "IPCTRN",
+      "title": "Polo the Penguin and the Test",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/IPCTRN",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 82,
+      "total_successful_submissions": 72000,
+      "source": "codechef"
+    },
+    {
+      "id": 104,
+      "code": "AMSGAME1",
+      "title": "Guess the Number",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/AMSGAME1",
+      "tags": [
+        "mathematics"
+      ],
+      "acceptance_rate": 83,
+      "total_successful_submissions": 73000,
+      "source": "codechef"
+    },
+    {
+      "id": 105,
+      "code": "AMSGAME2",
+      "title": "Subtraction Game 2",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/AMSGAME2",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 84,
+      "total_successful_submissions": 74000,
+      "source": "codechef"
+    },
+    {
+      "id": 106,
+      "code": "TLG",
+      "title": "The Lead Game",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/TLG",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 85,
+      "total_successful_submissions": 75000,
+      "source": "codechef"
+    },
+    {
+      "id": 107,
+      "code": "LUCKFOUR",
+      "title": "Lucky Four",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/LUCKFOUR",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 86,
+      "total_successful_submissions": 76000,
+      "source": "codechef"
+    },
+    {
+      "id": 108,
+      "code": "NUMGAME",
+      "title": "Number Game",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/NUMGAME",
+      "tags": [
+        "mathematics"
+      ],
+      "acceptance_rate": 87,
+      "total_successful_submissions": 77000,
+      "source": "codechef"
+    },
+    {
+      "id": 109,
+      "code": "TRICOIN",
+      "title": "Coins and Triangle",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/TRICOIN",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 88,
+      "total_successful_submissions": 78000,
+      "source": "codechef"
+    },
+    {
+      "id": 110,
+      "code": "SMPAIR",
+      "title": "The Smallest Pair",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/SMPAIR",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 89,
+      "total_successful_submissions": 79000,
+      "source": "codechef"
+    },
+    {
+      "id": 111,
+      "code": "HOLES",
+      "title": "Bear and Polynomials",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/HOLES",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 90,
+      "total_successful_submissions": 80000,
+      "source": "codechef"
+    },
+    {
+      "id": 112,
+      "code": "CHEFPATH",
+      "title": "Chef and his daily routine",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/CHEFPATH",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 91,
+      "total_successful_submissions": 81000,
+      "source": "codechef"
+    },
+    {
+      "id": 113,
+      "code": "MATSUM",
+      "title": "Matrix Summation",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/MATSUM",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 92,
+      "total_successful_submissions": 82000,
+      "source": "codechef"
+    },
+    {
+      "id": 114,
+      "code": "FLIP",
+      "title": "Chef and Sign Sequences",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/FLIP",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 93,
+      "total_successful_submissions": 83000,
+      "source": "codechef"
+    },
+    {
+      "id": 115,
+      "code": "MSTICK",
+      "title": "Chopsticks",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/MSTICK",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 94,
+      "total_successful_submissions": 84000,
+      "source": "codechef"
+    },
+    {
+      "id": 116,
+      "code": "RESQ",
+      "title": "Restaurant",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/RESQ",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 95,
+      "total_successful_submissions": 85000,
+      "source": "codechef"
+    },
+    {
+      "id": 117,
+      "code": "NAME2",
+      "title": "Chef and his Sequence",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/NAME2",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 96,
+      "total_successful_submissions": 86000,
+      "source": "codechef"
+    },
+    {
+      "id": 118,
+      "code": "STONES",
+      "title": "Pebbles",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/STONES",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 97,
+      "total_successful_submissions": 87000,
+      "source": "codechef"
+    },
+    {
+      "id": 119,
+      "code": "BUYING2",
+      "title": "Buying Sweets",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/BUYING2",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 98,
+      "total_successful_submissions": 88000,
+      "source": "codechef"
+    },
+    {
+      "id": 120,
+      "code": "CONFLIP",
+      "title": "Coin Flip",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/CONFLIP",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 99,
+      "total_successful_submissions": 89000,
+      "source": "codechef"
+    },
+    {
+      "id": 121,
+      "code": "PERMUT2",
+      "title": "Ambiguous Permutations",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/PERMUT2",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 60,
+      "total_successful_submissions": 90000,
+      "source": "codechef"
+    },
+    {
+      "id": 122,
+      "code": "CHEFSIGN",
+      "title": "Chef and Sign Sequences",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/CHEFSIGN",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 61,
+      "total_successful_submissions": 91000,
+      "source": "codechef"
+    },
+    {
+      "id": 123,
+      "code": "TRISQ",
+      "title": "Counting Triangles",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/TRISQ",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 62,
+      "total_successful_submissions": 92000,
+      "source": "codechef"
+    },
+    {
+      "id": 124,
+      "code": "MGAME",
+      "title": "Mahesh and his Lost Array",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/MGAME",
+      "tags": [
+        "arrays"
+      ],
+      "acceptance_rate": 63,
+      "total_successful_submissions": 93000,
+      "source": "codechef"
+    },
+    {
+      "id": 125,
+      "code": "LECANDY",
+      "title": "Little Elephant and Candies",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/LECANDY",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 64,
+      "total_successful_submissions": 94000,
+      "source": "codechef"
+    },
+    {
+      "id": 126,
+      "code": "LEPERMUT",
+      "title": "Little Elephant and Permutations",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/LEPERMUT",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 65,
+      "total_successful_submissions": 95000,
+      "source": "codechef"
+    },
+    {
+      "id": 127,
+      "code": "MULTHREE",
+      "title": "Multiple of 3",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/MULTHREE",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 66,
+      "total_successful_submissions": 96000,
+      "source": "codechef"
+    },
+    {
+      "id": 128,
+      "code": "SNACKDOWN",
+      "title": "Snackdown Elimination",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/SNACKDOWN",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 67,
+      "total_successful_submissions": 97000,
+      "source": "codechef"
+    },
+    {
+      "id": 129,
+      "code": "MAXTAX",
+      "title": "Maximise Sum",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/MAXTAX",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 68,
+      "total_successful_submissions": 98000,
+      "source": "codechef"
+    },
+    {
+      "id": 130,
+      "code": "REVERSE",
+      "title": "Reverse Coding",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/REVERSE",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 69,
+      "total_successful_submissions": 99000,
+      "source": "codechef"
+    },
+    {
+      "id": 131,
+      "code": "CHEFSUM",
+      "title": "Little Chef and Sums",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/CHEFSUM",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 70,
+      "total_successful_submissions": 100000,
+      "source": "codechef"
+    },
+    {
+      "id": 132,
+      "code": "COOLING",
+      "title": "Cooling Pies",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/COOLING",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 71,
+      "total_successful_submissions": 101000,
+      "source": "codechef"
+    },
+    {
+      "id": 133,
+      "code": "CFRTEST",
+      "title": "Codeforces Rating",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/CFRTEST",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 72,
+      "total_successful_submissions": 102000,
+      "source": "codechef"
+    },
+    {
+      "id": 134,
+      "code": "PHYSICS",
+      "title": "Kinematics",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/PHYSICS",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 73,
+      "total_successful_submissions": 103000,
+      "source": "codechef"
+    },
+    {
+      "id": 135,
+      "code": "CHEFFA",
+      "title": "Chef and Subarrays",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/CHEFFA",
+      "tags": [
+        "arrays"
+      ],
+      "acceptance_rate": 74,
+      "total_successful_submissions": 104000,
+      "source": "codechef"
+    },
+    {
+      "id": 136,
+      "code": "STRPALIN",
+      "title": "Palindromic substrings",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/STRPALIN",
+      "tags": [
+        "strings"
+      ],
+      "acceptance_rate": 75,
+      "total_successful_submissions": 105000,
+      "source": "codechef"
+    },
+    {
+      "id": 137,
+      "code": "STACKS",
+      "title": "Stacks",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/STACKS",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 76,
+      "total_successful_submissions": 106000,
+      "source": "codechef"
+    },
+    {
+      "id": 138,
+      "code": "JOHNY",
+      "title": "Uncle Johny",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/JOHNY",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 77,
+      "total_successful_submissions": 107000,
+      "source": "codechef"
+    },
+    {
+      "id": 139,
+      "code": "DIVIDING",
+      "title": "Dividing Stamps",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/DIVIDING",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 78,
+      "total_successful_submissions": 108000,
+      "source": "codechef"
+    },
+    {
+      "id": 140,
+      "code": "CHEFRUN",
+      "title": "Chef and Running",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/CHEFRUN",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 79,
+      "total_successful_submissions": 109000,
+      "source": "codechef"
+    },
+    {
+      "id": 141,
+      "code": "CHEFSTR1",
+      "title": "Chef and String",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/CHEFSTR1",
+      "tags": [
+        "strings"
+      ],
+      "acceptance_rate": 80,
+      "total_successful_submissions": 110000,
+      "source": "codechef"
+    },
+    {
+      "id": 142,
+      "code": "COOK82A",
+      "title": "Chef and Digits",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/COOK82A",
+      "tags": [
+        "mathematics"
+      ],
+      "acceptance_rate": 81,
+      "total_successful_submissions": 111000,
+      "source": "codechef"
+    },
+    {
+      "id": 143,
+      "code": "COOK82B",
+      "title": "Chef and his Cake",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/COOK82B",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 82,
+      "total_successful_submissions": 112000,
+      "source": "codechef"
+    },
+    {
+      "id": 144,
+      "code": "MUFFINS3",
+      "title": "Muffins",
+      "difficulty": "Hard",
+      "url": "https://www.codechef.com/problems/MUFFINS3",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 83,
+      "total_successful_submissions": 113000,
+      "source": "codechef"
+    },
+    {
+      "id": 145,
+      "code": "TABLET",
+      "title": "Tablet",
+      "difficulty": "Beginner",
+      "url": "https://www.codechef.com/problems/TABLET",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 84,
+      "total_successful_submissions": 114000,
+      "source": "codechef"
+    },
+    {
+      "id": 146,
+      "code": "SNCKYEAR",
+      "title": "Snackdown Year",
+      "difficulty": "Easy",
+      "url": "https://www.codechef.com/problems/SNCKYEAR",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 85,
+      "total_successful_submissions": 115000,
+      "source": "codechef"
+    },
+    {
+      "id": 147,
+      "code": "CHEFAPAR",
+      "title": "Chef and Apartment",
+      "difficulty": "Medium",
+      "url": "https://www.codechef.com/problems/CHEFAPAR",
+      "tags": [
+        "implementation"
+      ],
+      "acceptance_rate": 86,
+      "total_successful_submissions": 116000,
+      "source": "codechef"
+    }
+  ]
+}

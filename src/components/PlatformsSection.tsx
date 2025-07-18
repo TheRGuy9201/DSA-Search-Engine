@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { LeetCodeIcon, CodeforcesIcon, RightArrowIcon } from '../components/icons/Icons';
+import { LeetCodeIcon, CodeforcesIcon, CodeChefIcon, RightArrowIcon } from '../components/icons/Icons';
 
 interface PlatformsSectionProps {
     onPlatformSelect: (platform: string) => void;
@@ -38,7 +38,9 @@ const PlatformsSection: React.FC<PlatformsSectionProps> = ({ onPlatformSelect })
                 Integrated Platforms
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl">
+            {/* First row: LeetCode and Codeforces */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mb-12">
+                {/* LeetCode Platform */}
                 <div
                     className={`platform-block p-8 rounded-xl glass-effect flex flex-col items-center hover:border-indigo-500 transition-all duration-500 transform ${inView ? 'scale-100 opacity-100' : 'scale-50 opacity-0'
                         }`}
@@ -68,6 +70,7 @@ const PlatformsSection: React.FC<PlatformsSectionProps> = ({ onPlatformSelect })
                     <div className="absolute right-0 bottom-0 w-32 h-32 bg-gradient-to-tl from-blue-500/20 to-transparent rounded-br-xl pointer-events-none"></div>
                 </div>
 
+                {/* Codeforces Platform */}
                 <div
                     className={`platform-block p-8 rounded-xl glass-effect flex flex-col items-center hover:border-indigo-500 transition-all duration-500 transform ${inView ? 'scale-100 opacity-100' : 'scale-50 opacity-0'
                         }`}
@@ -95,6 +98,39 @@ const PlatformsSection: React.FC<PlatformsSectionProps> = ({ onPlatformSelect })
                         </span>
                     </button>
                     <div className="absolute right-0 bottom-0 w-32 h-32 bg-gradient-to-tl from-purple-500/20 to-transparent rounded-br-xl pointer-events-none"></div>
+                </div>
+            </div>
+
+            {/* Second row: CodeChef (centered) */}
+            <div className="flex justify-center max-w-6xl w-full">
+                {/* CodeChef Platform */}
+                <div
+                    className={`platform-block p-8 rounded-xl glass-effect flex flex-col items-center hover:border-indigo-500 transition-all duration-500 transform w-full ${inView ? 'scale-100 opacity-100' : 'scale-50 opacity-0'
+                        }`}
+                    style={{ transitionDelay: '0.5s' }}
+                >
+                    <div className="w-16 h-16 mb-2 flex items-center justify-center">
+                        <CodeChefIcon />
+                    </div>
+                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-orange-500/10 to-transparent rounded-xl pointer-events-none"></div>
+                    <div className="p-1 rounded-full bg-gradient-to-r from-orange-500 to-red-500">
+                        <div className="p-1 bg-gray-900 rounded-full">
+                            <div className="w-1 h-1 rounded-full bg-orange-400"></div>
+                        </div>
+                    </div>
+                    <h3 className="text-2xl font-bold my-4">CodeChef</h3>
+                    <p className="text-center text-gray-300 mb-6">Solve algorithmic challenges from CodeChef's extensive problem library.</p>
+                    <button
+                        onClick={() => onPlatformSelect('codechef')}
+                        className="relative group px-6 py-2.5 bg-gradient-to-r from-orange-600 to-red-600 rounded-lg shadow-lg hover:from-orange-500 hover:to-red-500 transition-all duration-300 text-white font-semibold overflow-hidden"
+                    >
+                        <span className="relative z-10">Browse Problems</span>
+                        <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-orange-400 to-red-400 opacity-0 group-hover:opacity-50 transition-opacity duration-300"></span>
+                        <span className="absolute right-2 top-1/2 transform -translate-y-1/2 transition-all duration-300 group-hover:translate-x-1">
+                            <RightArrowIcon />
+                        </span>
+                    </button>
+                    <div className="absolute right-0 bottom-0 w-32 h-32 bg-gradient-to-tl from-orange-500/20 to-transparent rounded-br-xl pointer-events-none"></div>
                 </div>
             </div>
         </div>

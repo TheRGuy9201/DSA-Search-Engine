@@ -50,6 +50,12 @@ export const CodeforcesIcon: React.FC = () => (
     />
 );
 
+export const CodeChefIcon: React.FC = () => (
+    <div className="w-8 h-8 flex items-center justify-center bg-orange-500 text-white font-bold text-xs rounded" style={{ fontSize: '10px' }}>
+        CC
+    </div>
+);
+
 export const MenuIcon: React.FC = () => (
     <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16m-7 6h7"></path>

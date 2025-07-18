@@ -49,11 +49,13 @@ export interface Problem {
   difficulty: 'Easy' | 'Medium' | 'Hard' | 'Beginner' | 'Lower-Mid' | 'Mid-Level' | 'Upper-Mid' | 'Very Hard' | string;
   url: string;
   slug?: string;
+  code?: string;  // For CodeChef problem code
   acceptance_rate?: number;
   tags?: string[];
   status?: 'Solved' | 'Attempted' | 'Not Attempted';
   bookmarked?: boolean;
   points?: number;  // For Codeforces problem rating
+  source?: string;  // Platform source (leetcode, codeforces, codechef)
 }
 
 /**

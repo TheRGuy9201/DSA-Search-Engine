@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { BackIcon, LeetCodeIcon, CodeforcesIcon, SearchIcon, ExternalLinkIcon, CheckCircleIcon, CircleIcon } from '../components/icons/Icons';
-import { getPaginatedLeetcodeProblems, getPaginatedCodeforcesProblems } from '../services/problemsApi';
+import { BackIcon, LeetCodeIcon, CodeforcesIcon, CodeChefIcon, SearchIcon, ExternalLinkIcon, CheckCircleIcon, CircleIcon } from '../components/icons/Icons';
+import { getPaginatedLeetcodeProblems, getPaginatedCodeforcesProblems, getPaginatedCodechefProblems } from '../services/problemsApi';
 import { useProblemUserData } from '../hooks/useProblemUserData';
 import type { Problem } from '../types';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -99,6 +99,21 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform: propsPlatform, on
                     <option value="Depth-First Search">DFS</option>
                     <option value="Binary Search">Binary Search</option>
                     <option value="Tree">Tree</option>
+                </>
+            );
+        } else if (platform === 'codechef') {
+            return (
+                <>
+                    <option value="implementation">Implementation</option>
+                    <option value="basic programming">Basic Programming</option>
+                    <option value="conditional statements">Conditional</option>
+                    <option value="mathematics">Mathematics</option>
+                    <option value="dynamic programming">DP</option>
+                    <option value="greedy">Greedy</option>
+                    <option value="strings">Strings</option>
+                    <option value="number theory">Number Theory</option>
+                    <option value="memoization">Memoization</option>
+                    <option value="algorithms">Algorithms</option>
                 </>
             );
         } else {
@@ -349,6 +364,104 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform: propsPlatform, on
                     } else {
                         setProblems(filteredProblems);
                     }
+                } else if (platform === 'codechef') {
+                    // For CodeChef, follow a similar approach as LeetCode and Codeforces
+                    const fetchAllProblems = selectedTopics.length > 0;
+
+                    // Different approach based on whether we need all problems or just the current page
+                    let allProblems: Problem[] = [];
+
+                    // Fetch problems with pagination
+                    if (fetchAllProblems) {
+                        // Fetch all problems without pagination for topic filtering
+                        const { problems: allFetchedProblems } = await getPaginatedCodechefProblems(1, 5000, {
+                            difficulty: selectedDifficulty !== 'All' ? [selectedDifficulty] : undefined,
+                            searchTerm: debouncedSearchTerm || undefined
+                        });
+
+                        allProblems = allFetchedProblems;
+                        console.log(`Fetched ${allProblems.length} total CodeChef problems for topic filtering`);
+
+                        // Set filtered info message
+                        setFilteredInfo("Note: Problems with no tags are automatically filtered out.");
+                    } else {
+                        // Normal paginated fetch
+                        const { problems: fetchedProblems, totalProblems, totalPages } =
+                            await getPaginatedCodechefProblems(currentPage, itemsPerPage, {
+                                difficulty: selectedDifficulty !== 'All' ? [selectedDifficulty] : undefined,
+                                searchTerm: debouncedSearchTerm || undefined
+                            });
+
+                        allProblems = fetchedProblems;
+                        setTotalProblems(totalProblems);
+                        setTotalPages(totalPages);
+
+                        // Set filtered info message
+                        setFilteredInfo("Note: Problems with no tags are automatically filtered out.");
+                    }
+
+                    // Apply filtering based on topics if needed
+                    let filteredProblems = allProblems;
+
+                    if (selectedTopics.length > 0) {
+                        // Find problems that match ANY of the selected topics
+                        filteredProblems = allProblems.filter(problem => {
+                            if (!problem.tags || problem.tags.length === 0) return false;
+
+                            // Check if problem has any of the selected topics
+                            return selectedTopics.some(topic =>
+                                problem.tags?.some(tag =>
+                                    tag.toLowerCase().includes(topic.toLowerCase())
+                                )
+                            );
+                        });
+
+                        // Still sort so that problems with all topics appear first
+                        const problemsWithAllTopics = filteredProblems.filter(problem => {
+                            if (!problem.tags || problem.tags.length === 0) return false;
+
+                            return selectedTopics.every(topic =>
+                                problem.tags?.some(tag =>
+                                    tag.toLowerCase().includes(topic.toLowerCase())
+                                )
+                            );
+                        });
+
+                        const allTopicsIds = new Set(problemsWithAllTopics.map(p => p.id));
+
+                        filteredProblems.sort((a, b) => {
+                            if (allTopicsIds.has(a.id) && !allTopicsIds.has(b.id)) return -1;
+                            if (!allTopicsIds.has(a.id) && allTopicsIds.has(b.id)) return 1;
+                            return 0;
+                        });
+
+                        console.log(`Found ${filteredProblems.length} CodeChef problems with ANY selected topic`);
+                        console.log(`Found ${problemsWithAllTopics.length} CodeChef problems with ALL selected topics`);
+                    }
+
+                    // For topic filtering, handle pagination client-side
+                    if (selectedTopics.length > 0) {
+                        const totalFilteredProblems = filteredProblems.length;
+                        const totalFilteredPages = Math.ceil(totalFilteredProblems / itemsPerPage);
+
+                        // Adjust current page if it's out of bounds
+                        const adjustedCurrentPage = Math.min(currentPage, totalFilteredPages || 1);
+
+                        // Get the slice for the current page
+                        const startIndex = (adjustedCurrentPage - 1) * itemsPerPage;
+                        const endIndex = startIndex + itemsPerPage;
+                        const paginatedProblems = filteredProblems.slice(startIndex, endIndex);
+
+                        setProblems(paginatedProblems);
+                        setTotalProblems(totalFilteredProblems);
+                        setTotalPages(totalFilteredPages);
+
+                        if (adjustedCurrentPage !== currentPage) {
+                            setCurrentPage(adjustedCurrentPage);
+                        }
+                    } else {
+                        setProblems(filteredProblems);
+                    }
                 }
 
                 setError(null);
@@ -415,8 +528,8 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform: propsPlatform, on
         }
     }, [problems, selectedTopics, isLoading]);
 
-    const platformName = platform === 'leetcode' ? 'LeetCode' : 'Codeforces';
-    const platformIcon = platform === 'leetcode' ? <LeetCodeIcon /> : <CodeforcesIcon />;
+    const platformName = platform === 'leetcode' ? 'LeetCode' : platform === 'codeforces' ? 'Codeforces' : 'CodeChef';
+    const platformIcon = platform === 'leetcode' ? <LeetCodeIcon /> : platform === 'codeforces' ? <CodeforcesIcon /> : <CodeChefIcon />;
 
     // Function to handle problem click - would open in new tab
     const openProblem = (url: string) => {
@@ -530,6 +643,21 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform: propsPlatform, on
                     return <span className="platform-difficulty-badge">{calculatedDifficulty}{pointsDisplay}</span>;
             }
         }
+        // For CodeChef difficulties
+        else if (platform === 'codechef') {
+            switch (difficulty.toLowerCase()) {
+                case 'beginner':
+                    return <span className="px-2 py-1 rounded-full text-xs bg-blue-900 text-blue-300">Beginner</span>;
+                case 'easy':
+                    return <span className="px-2 py-1 rounded-full text-xs bg-green-900 text-green-300">Easy</span>;
+                case 'medium':
+                    return <span className="px-2 py-1 rounded-full text-xs bg-yellow-900 text-yellow-300">Medium</span>;
+                case 'hard':
+                    return <span className="px-2 py-1 rounded-full text-xs bg-red-900 text-red-300">Hard</span>;
+                default:
+                    return <span className="px-2 py-1 rounded-full text-xs bg-gray-900 text-gray-300">{difficulty}</span>;
+            }
+        }
         // For LeetCode and default difficulties
         else {
             switch (difficulty.toLowerCase()) {
@@ -616,6 +744,13 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform: propsPlatform, on
                                     <option value="All">Difficulty</option>
                                     {platform === 'leetcode' ? (
                                         <>
+                                            <option value="Easy">Easy</option>
+                                            <option value="Medium">Medium</option>
+                                            <option value="Hard">Hard</option>
+                                        </>
+                                    ) : platform === 'codechef' ? (
+                                        <>
+                                            <option value="Beginner">Beginner</option>
                                             <option value="Easy">Easy</option>
                                             <option value="Medium">Medium</option>
                                             <option value="Hard">Hard</option>
