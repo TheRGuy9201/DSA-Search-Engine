@@ -61,6 +61,61 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform: propsPlatform, on
         updateProblemStatus,
     } = useProblemUserData(problems);
 
+    // Compute filtered problems for consistent filtering and pagination
+    const filteredProblemsWithUserData = React.useMemo(() => {
+        return problemsWithUserData.filter(problem => {
+            // Apply status filter
+            if (selectedStatus !== 'All' && problem.status !== selectedStatus) {
+                return false;
+            }
+            // Apply bookmark filter
+            if (showBookmarkedOnly && !problem.bookmarked) {
+                return false;
+            }
+            // Topic filtering is handled in the useEffect that fetches problems
+            return true;
+        });
+    }, [problemsWithUserData, selectedStatus, showBookmarkedOnly]);
+
+    // Compute pagination for filtered results
+    const filteredPaginationInfo = React.useMemo(() => {
+        const hasClientSideFilters = selectedStatus !== 'All' || showBookmarkedOnly;
+        
+        if (!hasClientSideFilters) {
+            // Use server-side pagination
+            return {
+                currentPageProblems: filteredProblemsWithUserData,
+                totalFilteredProblems: totalProblems,
+                totalFilteredPages: totalPages,
+                shouldUsePagination: true
+            };
+        }
+        
+        // Use client-side pagination for filtered results
+        const totalFilteredProblems = filteredProblemsWithUserData.length;
+        const totalFilteredPages = Math.ceil(totalFilteredProblems / itemsPerPage);
+        const adjustedCurrentPage = Math.min(currentPage, totalFilteredPages || 1);
+        
+        const startIndex = (adjustedCurrentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const currentPageProblems = filteredProblemsWithUserData.slice(startIndex, endIndex);
+        
+        return {
+            currentPageProblems,
+            totalFilteredProblems,
+            totalFilteredPages,
+            adjustedCurrentPage,
+            shouldUsePagination: true
+        };
+    }, [filteredProblemsWithUserData, currentPage, itemsPerPage, selectedStatus, showBookmarkedOnly, totalProblems, totalPages]);
+
+    // Adjust current page when filtered results change
+    useEffect(() => {
+        if (filteredPaginationInfo.adjustedCurrentPage && filteredPaginationInfo.adjustedCurrentPage !== currentPage) {
+            setCurrentPage(filteredPaginationInfo.adjustedCurrentPage);
+        }
+    }, [filteredPaginationInfo.adjustedCurrentPage, currentPage]);
+
     // Function to cycle through problem status (only for LeetCode)
     const toggleProblemStatus = (problemId: number, currentStatus: string) => {
         if (platform !== 'leetcode') return; // Only allow status changes for LeetCode
@@ -906,18 +961,7 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform: propsPlatform, on
                                 </tr>
                             </thead>
                             <tbody>
-                                {problemsWithUserData.filter(problem => {
-                                    // Apply additional client-side filters
-                                    if (showBookmarkedOnly && !problem.bookmarked) {
-                                        return false;
-                                    }
-                                    if (selectedStatus !== 'All' && problem.status !== selectedStatus) {
-                                        return false;
-                                    }
-                                    // Note: Topic filtering is now handled in the useEffect
-                                    // that fetches the problems, so we don't need to check for topics here
-                                    return true;
-                                }).map((problem, index) => (
+                                {filteredPaginationInfo.currentPageProblems.map((problem, index) => (
                                     <React.Fragment key={problem.id}>
                                         <tr
                                             className={`border-b border-gray-800 hover:bg-gray-800 transition-all duration-300 ${isLoaded ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-5'
@@ -1061,16 +1105,7 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform: propsPlatform, on
                             </tbody>
                         </table>
 
-                        {problemsWithUserData.filter(problem => {
-                            if (showBookmarkedOnly && !problem.bookmarked) {
-                                return false;
-                            }
-                            if (selectedStatus !== 'All' && problem.status !== selectedStatus) {
-                                return false;
-                            }
-                            // Topic filtering is now handled in the useEffect
-                            return true;
-                        }).length === 0 && (
+                        {filteredProblemsWithUserData.length === 0 && (
                                 <div className="py-12 text-center text-gray-400">
                                     <p>No problems matching your filters.</p>
                                 </div>
@@ -1113,7 +1148,7 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform: propsPlatform, on
                 </div>
 
                 {/* Pagination Controls */}
-                {totalPages > 1 && (
+                {filteredPaginationInfo.totalFilteredPages > 1 && (
                     <div className="flex justify-center items-center gap-2 mt-8">
                         <button
                             className={`px-3 py-1 rounded-md ${currentPage === 1
@@ -1136,15 +1171,15 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform: propsPlatform, on
                         </button>
 
                         {/* Page numbers */}
-                        {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                        {Array.from({ length: Math.min(5, filteredPaginationInfo.totalFilteredPages) }, (_, i) => {
                             // Calculate page numbers to show around current page
                             let pageNum;
-                            if (totalPages <= 5) {
+                            if (filteredPaginationInfo.totalFilteredPages <= 5) {
                                 pageNum = i + 1;
                             } else if (currentPage <= 3) {
                                 pageNum = i + 1;
-                            } else if (currentPage >= totalPages - 2) {
-                                pageNum = totalPages - 4 + i;
+                            } else if (currentPage >= filteredPaginationInfo.totalFilteredPages - 2) {
+                                pageNum = filteredPaginationInfo.totalFilteredPages - 4 + i;
                             } else {
                                 pageNum = currentPage - 2 + i;
                             }
@@ -1163,39 +1198,34 @@ const PlatformPage: React.FC<PlatformPageProps> = ({ platform: propsPlatform, on
                         })}
 
                         <button
-                            className={`px-3 py-1 rounded-md ${currentPage === totalPages
+                            className={`px-3 py-1 rounded-md ${currentPage === filteredPaginationInfo.totalFilteredPages
                                 ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
                                 : 'bg-gray-800 text-white hover:bg-indigo-600'}`}
                             onClick={() => handlePageChange(currentPage + 1)}
-                            disabled={currentPage === totalPages}
+                            disabled={currentPage === filteredPaginationInfo.totalFilteredPages}
                         >
                             Next
                         </button>
 
                         <button
-                            className={`px-3 py-1 rounded-md ${currentPage === totalPages
+                            className={`px-3 py-1 rounded-md ${currentPage === filteredPaginationInfo.totalFilteredPages
                                 ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
                                 : 'bg-gray-800 text-white hover:bg-indigo-600'}`}
-                            onClick={() => handlePageChange(totalPages)}
-                            disabled={currentPage === totalPages}
+                            onClick={() => handlePageChange(filteredPaginationInfo.totalFilteredPages)}
+                            disabled={currentPage === filteredPaginationInfo.totalFilteredPages}
                         >
                             Last
                         </button>
 
                         <span className="text-sm text-gray-400 ml-2">
-                            Page {currentPage} of {totalPages}
+                            Page {currentPage} of {filteredPaginationInfo.totalFilteredPages}
                         </span>
                     </div>
                 )}
 
                 {/* Updated information */}
                 <div className="text-center text-sm text-gray-500 mt-4">
-                    Showing {problemsWithUserData.filter(problem => {
-                        if (showBookmarkedOnly && !problem.bookmarked) return false;
-                        if (selectedStatus !== 'All' && problem.status !== selectedStatus) return false;
-                        // Topic filtering is now handled in the useEffect
-                        return true;
-                    }).length} of {totalProblems} problems
+                    Showing {filteredPaginationInfo.currentPageProblems.length} of {filteredPaginationInfo.totalFilteredProblems} problems
                 </div>
             </div>
         </div>
